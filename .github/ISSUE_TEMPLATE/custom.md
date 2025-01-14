@@ -1,7 +1,7 @@
 ---
 name: Custom issue template
 about: Describe this issue template's purpose here.
-title: ''
+title: "[FEAT / STYLE 등] 이슈 제목"
 labels: ''
 assignees: ''
 
