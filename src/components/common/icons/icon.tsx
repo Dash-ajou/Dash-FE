@@ -4,13 +4,11 @@ import IconRegistry from './IconRegistry';
 type IconProps = {
     name: keyof typeof IconRegistry;
     size?: number;
-    color?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Icon: React.FC<IconProps> = ({
                                        name,
                                        size = 24,
-                                       color = 'currentColor',
                                        ...props
                                    }) => {
     const SelectedIcon = IconRegistry[name];
@@ -23,13 +21,12 @@ const Icon: React.FC<IconProps> = ({
     return (
         <div
             className={'flex items-center justify-center'}
-            style={{ width: size, height: size }}
+            style={{width: size, height: size}}
             {...props}
         >
             {React.cloneElement(SelectedIcon, {
                 width: size,
                 height: size,
-                fill: color,
             })}
         </div>
     );
