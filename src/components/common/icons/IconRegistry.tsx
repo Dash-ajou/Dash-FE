@@ -358,6 +358,14 @@ const IconRegistry = {
                   fill="white"/>
         </svg>
     ),
+    addicon_line: (
+        <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_d_610_7402)">
+                <path d="M32 17.5L5 17.5" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M18.5 4L18.5 31" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+            </g>
+        </svg>
+    )
 };
 
 export default IconRegistry;
