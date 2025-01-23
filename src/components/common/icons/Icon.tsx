@@ -8,7 +8,7 @@ type IconProps = {
 
 const Icon: React.FC<IconProps> = ({
                                        name,
-                                       size = 24,
+                                       size = 20,
                                        ...props
                                    }) => {
     const SelectedIcon = IconRegistry[name];
