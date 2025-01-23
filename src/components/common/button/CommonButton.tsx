@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {HTMLAttributes} from 'react';
 import IconRegistry from "../icons/IconRegistry.tsx";
 import Icon from "../icons/Icon.tsx";
 
@@ -12,7 +12,7 @@ type CommonButtonProps = {
         position: "right" | "left" | "none";
         icon?: keyof typeof IconRegistry;
     };
-} & React.HTMLAttributes<HTMLButtonElement>;
+} & HTMLAttributes<HTMLButtonElement>;
 
 /*
 mini: 로그아웃, 회원 탈퇴 등 텍스트 버튼
