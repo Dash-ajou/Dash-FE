@@ -32,7 +32,7 @@ const baseStyles =
 // Size styles
 const sizeStyles = {
     mini: "py-1 text-sm",
-    small: "flex-1 py-3 text-sm font-bold",
+    small: "flex-1 py-2 text-sm font-bold",
     normal: "px-3 py-4 text-base font-bold flex-none w-40",
     large: "flex-1 py-4 text-base font-bold",
 };
