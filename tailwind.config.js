@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'custom-basic': '0 0 4px rgba(0, 0, 0, 0.25)'
+      },
       colors: {
         blue: {
           50: "#E9F1FD", // Main 5
