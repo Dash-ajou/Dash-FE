@@ -41,7 +41,7 @@ const sizeStyles = {
 const colorStyles = {
     blue: "text-white bg-blue-500 hover:bg-blue-600",
     red: "text-white bg-red-500 hover:bg-red-600",
-    gray: "text-gray-500 bg-gray-200 hover:bg-gray-300",
+    gray: "text-black bg-gray-200 hover:bg-gray-300",
     black: "text-black",
 };
 
@@ -57,7 +57,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
     const modeStyles = {
         fill: `shadow ${colorStyles[color]}`,
         line: `border-2 border-${color}-500 text-${color}-500 bg-transparent`,
-        text: `text-${color}-500 underline bg-transparent`,
+        text: `${color=="black" ? 'text-black' : `text-${color}-500`} underline bg-transparent`,
         ghost: `border-2 border-gray-300 bg-white text-${color}-500`,
     };
 
