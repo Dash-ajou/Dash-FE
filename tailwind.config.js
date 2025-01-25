@@ -34,9 +34,6 @@ module.exports = {
         green: {
           500: "#35CC4C" // ServiceColor 01
         },
-        black: {
-          500: "#000000"
-        },
       },
     },
   },

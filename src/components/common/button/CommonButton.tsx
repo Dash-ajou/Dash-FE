@@ -41,7 +41,7 @@ const sizeStyles = {
 const colorStyles = {
     blue: "text-white bg-blue-500 hover:bg-blue-600",
     red: "text-white bg-red-500 hover:bg-red-600",
-    gray: "text-gray-500 bg-gray-200 hover:bg-gray-500",
+    gray: "text-gray-500 bg-gray-200 hover:bg-gray-300",
     black: "text-black",
 };
 
