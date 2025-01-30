@@ -10,7 +10,7 @@ type CircleButtonProps = {
 } & HTMLAttributes<HTMLButtonElement>;
 
 const sizeStyles = {
-    small: "w-8 h-8",
+    small: "w-10 h-10",
     large: "w-12 h-12",
 };
 
