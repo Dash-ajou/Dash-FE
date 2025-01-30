@@ -358,6 +358,13 @@ const IconRegistry = {
                   fill="white"/>
         </svg>
     ),
+    arrowicon_line_down: (
+        <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd"
+                  d="M0.190641 0.940641C0.361495 0.769786 0.638505 0.769786 0.809359 0.940641L4 4.13128L7.19064 0.940641C7.36149 0.769786 7.6385 0.769786 7.80936 0.940641C7.98021 1.1115 7.98021 1.3885 7.80936 1.55936L4.30936 5.05936C4.1385 5.23021 3.8615 5.23021 3.69064 5.05936L0.190641 1.55936C0.0197864 1.3885 0.0197864 1.1115 0.190641 0.940641Z"
+                  fill="black"/>
+        </svg>
+    ),
     addicon_line: (
         <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_d_610_7402)">
