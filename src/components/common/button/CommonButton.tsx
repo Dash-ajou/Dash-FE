@@ -58,7 +58,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         fill: `shadow ${colorStyles[color]}`,
         line: `border-2 border-${color}-500 text-${color}-500 bg-transparent`,
         text: `${color=="black" ? 'text-black' : `text-${color}-500`} underline bg-transparent`,
-        ghost: `border-2 border-gray-300 bg-white text-${color}-500`,
+        ghost: `shadow-custom-basic bg-white text-${color}-500`,
     };
 
     // Disabled styles
