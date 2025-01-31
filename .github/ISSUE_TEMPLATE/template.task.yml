@@ -1,0 +1,49 @@
+name: '프로젝트 이슈 생성 - 개발 Task'
+description: 'Issue를 Task 유형으로 생성합니다. Jira와 Github에 모두 기록됩니다'
+labels: [feat]
+title: '[FEAT / STYLE 등] 이슈 제목'
+body:
+  - type: input
+    id: parentKey
+    attributes:
+      label: '🎟️ 상위 작업 (Ticket Number, Issue Key)'
+      description: '상위 작업의 Ticket Number(Issue Key)를 기입해주세요'
+      placeholder: 'DASH-1'
+    validations:
+      required: true
+
+  - type: input
+    id: brief
+    attributes:
+      label: '💡 이슈 한 줄 요약'
+      description: '이슈의 내용을 명확하고 간결하게 작성해주세요.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: '🔨 상세 작업 내용'
+      description: '어떤 작업을 했는지 상세하게 작성해주세요.'
+      value: |
+        - [ ] To-do 1
+        - [ ] To-do 2
+        - [ ] To-do 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: '📄 참고 사항'
+      description: '테스트 방법 등 참고 사항이 있다면 작성해주세요.'
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: '📸 스크린샷'
+      description: '이슈에 해당하는 부분을 보여주세요.'
+    validations:
+      required: false
