@@ -48,8 +48,8 @@ const Statistics: React.FC<StatisticsProps> = ({
             strokeWidth={getStrokeWidth("totalstat")}
             styles={buildStyles({
             pathColor: "#256FEF",
-            trailColor: "#D3E2FC",
-            backgroundColor: "#E9F1FD"
+            trailColor: "#E9F1FD",
+            backgroundColor: "#D3E2FC"
             })}
             background={true}
             backgroundPadding={0}
@@ -83,17 +83,17 @@ const Statistics: React.FC<StatisticsProps> = ({
     <div className="w-[297px] h-[128px] flex items-center justify-center bg-white border rounded-xl shadow-custom">
       <div className="relative w-[100px] h-[100px]">
         <CircularProgressbar
-          value={percentage}          background={true}
-          backgroundPadding={0}
-          text={""}
-
+          value={percentage}
           strokeWidth={getStrokeWidth("simplestat")}
           styles={buildStyles({
             textColor: "#256FEF",
             pathColor: "#256FEF",
-            trailColor: "#D3E2FC",
-            backgroundColor: "#E9F1FD",
+            trailColor: "#E9F1FD",
+            backgroundColor: "#D3E2FC",
           })}
+          background={true}
+          backgroundPadding={0}
+          text={""}
         />
         <div className="absolute inset-0 flex items-center justify-center text-base font-bold text-[#256FEF]">
             {`${percentage}%`}
