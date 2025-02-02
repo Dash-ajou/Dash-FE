@@ -5,6 +5,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+<<<<<<< Updated upstream
       boxShadow: {
         'custom-basic': '0 0 4px rgba(0, 0, 0, 0.25)'
       },
@@ -37,6 +38,26 @@ module.exports = {
         green: {
           500: "#35CC4C" // ServiceColor 01
         },
+=======
+      colors: {
+        main05: '#E9F1FD',
+        main50: '#256FEF',
+        main70: '#16438F',
+        serviceColor02: '#707070',
+        serviceColor03: '#9D9D9D',
+        serviceColor04: '#CCCCCC',
+        serviceColor05: '#EEEEEE',
+      },
+      spacing: {
+        '22.625': '22.625rem',
+        '4.563': '4.563rem',
+      },
+      borderRadius: {
+        '12px': '12px',
+      },
+      boxShadow: {
+        custom: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+>>>>>>> Stashed changes
       },
     },
   },
