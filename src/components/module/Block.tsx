@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import Toggle from "../common/Toggle";
+import Status from "../common/Status";
+import IconRegistry from "../common/icons/IconRegistry";
 
 type BlockType = "button" | "toggle" | "detail";
 
@@ -8,6 +11,7 @@ interface BlockProps {
 	subtitle?: string;
 	info?: string;
 	action?: React.ReactNode;
+	statusType?: "approved" | "rejected" | "pending";
 }
 
 const Block: React.FC<BlockProps> = ({
@@ -16,17 +20,57 @@ const Block: React.FC<BlockProps> = ({
 	subtitle,
 	info,
 	action,
+	statusType,
 }) => {
+
+	const [isToggleon, setIsToggleOn] = useState(false);
+
 	return (
-		<div className="flex justify-between items-center bg-white shadow-md rounded-lg p-4 mb-4">
+		<div className="flex w-full justify-between items-center bg-white shadow-custom-basic rounded-2xl px-7 py-6 mb-4">
 			<div>
-				<div className="font-bold text-lg">{title}</div>
-				{subtitle && <div className="text-sm text-black">{subtitle}</div>}
-				{info && <div className="text-sm text-black">{info}</div>}
+				<div className="font-bold text-lg text-black mb-1">{title}</div>
+				{subtitle && <div className="text-sm text-black text-opacity-60 mb-1">{subtitle}</div>}
+				{info && <div className="text-sm text-black text-opacity-60">{info}</div>}
 			</div>
 
 			{/* 오른쪽 영역*/}
-			<div>{action}</div>
+			<div>
+				{type === "button" ? (
+					action
+				) : type === "toggle" ? (
+					<div className="flex flex-col items-center">
+					<div className="mb-6">
+						<Status
+							statusType={isToggleon ? "active" : "paused"}
+							color={isToggleon ? "blue" : "darkgray"}
+						/>
+					</div>
+					<Toggle
+						isOn={isToggleon}
+						onToggle={(state) => setIsToggleOn(state)}
+					/>
+				</div>
+				) : type === "detail" ? (
+					<div className="flex items-center">
+						<Status
+							statusType={statusType || "pending"}
+							color={
+								statusType === "approved"
+									? "blue"
+									: statusType === "rejected"
+									? "red"
+									: "darkgray"	
+							}
+						/>
+						<div 
+							onClick={() => alert("페이지 이동 예정")}
+							className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer"
+						>
+							{IconRegistry.arrowicon_line_right}
+						</div>
+					</div>
+				) : null}
+			</div>
 		</div>
 	);
 };
