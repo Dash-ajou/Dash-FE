@@ -10,7 +10,7 @@ type QRModalProps = {
 
 const QRModal: React.FC<QRModalProps> = ({ title, qrimg, coupnum, storename, duedate }) => {
   return (
-    <div className="flex flex-col p-8 bg-white rounded-xl shadow-md justify-between items-center max-w-sm">
+    <div className="flex flex-col p-8 bg-white rounded-xl shadow-custom-basic justify-between items-center max-w-sm">
       {/* Title */}
       <div className="w-full flex flex-col mb-8 items-start">
         <h1 className="text-black text-xl font-bold leading-normal">{title}</h1>
@@ -30,17 +30,17 @@ const QRModal: React.FC<QRModalProps> = ({ title, qrimg, coupnum, storename, due
 
       {/* Store and Due Date */}
       <div className="w-full flex flex-col gap-4 items-start">
-        <p className="text-black text-base font-bold opacity-60 leading-normal">
+        <p className="text-black text-base font-bold opacity-60 leading-normal mb-3">
           {storename}
           <br />
           유효기간 ~{duedate}
         </p>
         {/* Buttons */}
         <div className="flex justify-between w-full gap-4">
-          <button className="flex-1 bg-blue-600 text-white text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
+          <button className="flex-1 bg-blue-500 text-white text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
             쿠폰 선물하기
           </button>
-          <button className="flex-1 border border-blue-600 text-blue-600 text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
+          <button className="flex-1 border border-blue-500 text-blue-500 text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
             쿠폰 삭제하기
           </button>
         </div>
