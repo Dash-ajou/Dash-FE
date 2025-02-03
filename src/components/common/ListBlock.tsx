@@ -22,7 +22,7 @@ const ListButton: React.FC<ListButtonProps> = ({ coupnum, coupstatus, name }) =>
     };
 
     return (
-        <div className="flex items-center justify-between w-full px-6 py-4 mx-6 rounded-[12px] bg-main05 text-[12px] text-black font-normal my-1">
+        <div className="flex items-center justify-between w-full px-6 py-4 rounded-[12px] bg-blue-50 text-[12px] text-black font-normal my-1 ">
             {/* 왼쪽: coupnum */}
             <span>{coupnum}</span>
             {/* 오른쪽: 상태 및 이름 */}
