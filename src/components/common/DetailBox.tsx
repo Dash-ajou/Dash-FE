@@ -1,4 +1,5 @@
 import React from "react";
+import Status from "./Status";
 
 type DetailBoxProps = {
   mode: "default" | "coupinfo" | "setting";
@@ -6,6 +7,8 @@ type DetailBoxProps = {
   leftstring?: string[];
   rightstring?: string[];
   rightButtonLinks?: string[];
+  statusType?: "used" | "unused";
+  statusColor?: "blue" | "red" | "gray" | "green" | "button";
 };
 
 const DetailBox: React.FC<DetailBoxProps> = ({
@@ -13,19 +16,32 @@ const DetailBox: React.FC<DetailBoxProps> = ({
   title,
   leftstring = [],
   rightstring = [],
-  rightButtonLinks = [],
+  // rightButtonLinks = [],
+  statusType,
+  statusColor = "gray",
 }) => {
   const leftStringStyle =
-    mode === "setting" ? "font-normal text-black" : "font-semibold text-sm";
+    mode === "setting" ? "font-normal text-[16px] text-black" : "font-semibold text-sm";
+  
   return (
     <div
-      className={`border rounded-xl px-4 py-5 shadow-sm bg-white w-[329px]`}
+      className={`border rounded-xl px-4 py-5 shadow-custom-basic bg-white w-full`}
       style={{
         height: "auto",
       }}
     >
-      <h3 className="px-1 text-base font-semibold mb-3 text-main50">{title}</h3>
-      <div className=" w-[282px] h-[1px] bg-serviceColor02 mx-auto mb-4"></div>
+      <div className="flex justify-between mb-3">
+      <h3 className="px-1 text-base font-semibold text-blue-500">{title}</h3>
+      {mode === "coupinfo" && statusType && (
+        <Status 
+          statusType={statusType}
+          color={statusColor}
+        />
+      )}
+      </div>
+      
+      <div className=" w-full h-[1px] bg-gray-500 mx-auto mb-4"></div>
+      
       <div className="px-1 space-y-3">
         {leftstring.map((left, index) => (
           <div
@@ -35,20 +51,13 @@ const DetailBox: React.FC<DetailBoxProps> = ({
               gap: "12px",
             }}
           >
-            <span className={`${leftStringStyle} min-w-[100px]`}>
+            <span className={`${leftStringStyle} text-black min-w-[90px]`}>
               {left}
             </span>
             <span className="text-black text-sm font-light text-left flex-1">
               {rightstring[index] || ""}
             </span>
-            {rightButtonLinks[index] && (
-                <button
-                    onClick={() => window.location.href = rightButtonLinks[index]}
-                    className="text-black bg-transparent border-none p-0 text-lg"
-                >
-                    &gt;
-                </button>
-            )}
+            
           </div>
         ))}
       </div>
