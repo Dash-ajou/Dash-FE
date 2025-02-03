@@ -1,5 +1,5 @@
-import React, { useState, useEffect, TouchEvent } from 'react';
-import IconRegistry from './IconRegistry';
+import React, { useState, useEffect } from 'react';
+import IconRegistry from '../icons/IconRegistry';
 
 type PushButtonProps = {
   read: boolean;
@@ -16,19 +16,19 @@ const PushButton: React.FC<PushButtonProps> = ({
   onClick,
   onRead,
 }) => {
-  const [read, setRead] = useState(initialRead); // 읽음 상태
-  const [startX, setStartX] = useState<number | null>(null); // 터치 시작 위치
-  const [currentX, setCurrentX] = useState(0); // 현재 슬라이드 위치
-  const [isSlid, setIsSlid] = useState(false); // 슬라이드 여부
+  const [read, setRead] = useState(initialRead);
+  const [startX, setStartX] = useState<number | null>(null);
+  const [currentX, setCurrentX] = useState(0);
+  const [isSlid, setIsSlid] = useState(false);
 
   const iconAndAlarm = (() => {
     switch (type) {
       case 'couprequest':
-        return { icon: IconRegistry.checkicon_fill, message: '쿠폰 발행 요청이 도착했어요' };
+        return { icon: IconRegistry.checkicon_line_black, message: '쿠폰 발행 요청이 도착했어요' };
       case 'coupused':
-        return { icon: IconRegistry.checkicon_fill, message: '쿠폰 사용이 완료되었어요' };
+        return { icon: IconRegistry.checkicon_line_black, message: '쿠폰 사용이 완료되었어요' };
       case 'couptime':
-        return { icon: IconRegistry.pendingicon_fill, message: '쿠폰 만료가 임박했어요' };
+        return { icon: IconRegistry.clockicon_line, message: '쿠폰 만료가 임박했어요' };
       case 'coupgift':
         return { icon: IconRegistry.gifticon_line, message: '쿠폰을 선물받았어요' };
       default:
@@ -37,15 +37,15 @@ const PushButton: React.FC<PushButtonProps> = ({
   })();
 
   // 터치 시작 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (read) return;
-    setStartX(e.touches[0].clientX);
+    setStartX(e.touches[0].clientX); //터치 시작 지점 저장
   };
 
   // 터치 이동 
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (read || startX === null) return;
-    const deltaX = e.touches[0].clientX - startX;
+    const deltaX = e.touches[0].clientX - startX; //이동 거리 계산
     if (deltaX < 0) {
       setCurrentX(deltaX);
     }
@@ -54,33 +54,40 @@ const PushButton: React.FC<PushButtonProps> = ({
   // 터치 종료 
   const handleTouchEnd = () => {
     if (read) return;
-    if (currentX < -50) {
+    if (currentX < -50) { // -50px 이상 이동하면 슬라이드 완료
       setIsSlid(true);
     } else {
-      setCurrentX(0);
+      setCurrentX(0); 
     }
     setStartX(null);
+
+    if (!isSlid) {
+      onClick();
+    }
   };
 
-  // 읽음 버튼 클릭
+
+  // 읽음 버튼 클릭 시 처리
   const handleReadClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // 이벤트 전파 방지
-    setRead(true);
-    onRead();
+    e.stopPropagation(); //부모 클릭 이벤트 실행 방지
+    setRead(true); //읽음 처리
+    onRead(); 
     setIsSlid(false);
     setCurrentX(0);
   };
 
-  // 슬라이드 상태 초기화
+  // 슬라이드 초기화
   const resetSlide = () => {
     setIsSlid(false);
     setCurrentX(0);
   };
 
-  // 화면 클릭 이벤트 감지
+  // 화면 클릭 감지
   useEffect(() => {
-    const handleClickOutside = () => {
-      if (isSlid) resetSlide(); // 슬라이드 상태일 때만 초기화
+    const handleClickOutside = (e: MouseEvent) => {
+      if (isSlid) {
+        resetSlide();
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -90,17 +97,14 @@ const PushButton: React.FC<PushButtonProps> = ({
   }, [isSlid]);
 
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      onClick={(e) => e.stopPropagation()} // 자체 클릭 이벤트 전파 방지
-    >
-
+    <div className="relative w-full overflow-hidden">
       <div
-        className={`flex items-center justify-between w-full h-16 py-3 px-5 rounded-xl transition-transform duration-300 ${
-          read ? 'bg-serviceColor05 text-gray-900' : 'bg-main05 text-black-900'
+        className={`flex items-center justify-between py-3 px-5 rounded-xl transition-transform duration-300 ${
+          read ? 'bg-gray-200 text-gray-900' : 'bg-blue-50 text-black'
         }`}
         style={{
           transform: `translateX(${isSlid ? -80 : currentX}px)`,
+          transition: 'transform 0.3s ease',
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -114,7 +118,7 @@ const PushButton: React.FC<PushButtonProps> = ({
           </div>
           <div className="flex justify-between mt-1">
             <div className="text-xs">{iconAndAlarm.message}</div>
-            <div className="text-xs">자세히 보기<span>{'>'}</span></div>
+            <div className="text-xs ml-1">자세히 보기<span className="ml-1">{'>'}</span></div>
           </div>
         </div>
       </div>
