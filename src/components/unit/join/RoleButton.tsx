@@ -9,7 +9,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({ type }) => {
   return (
       <div className="flex">
         {type === "user" && (
-          <div className="bg-blue-500 text-white w-full rounded-lg shadow-boxShadow">
+          <div className="bg-blue-500 text-white w-full rounded-lg shadow-custom-basic">
             <div className="flex flex-col items-center justify-center px-12 py-10">
               <div className="flex items-center justify-center rounded-full pb-2">
                 {IconRegistry.personicon_line}
@@ -21,7 +21,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({ type }) => {
         )}
 
         {type === "partner" && (
-          <div className="bg-blue-500 text-white w-full rounded-lg shadow-boxShadow">
+          <div className="bg-blue-500 text-white w-full rounded-lg shadow-custom-basic">
             <div className="flex flex-col items-center justify-center px-12 py-10">
               <div className="flex items-center justify-center rounded-full pb-2">
                 {IconRegistry.storeicon_line}
