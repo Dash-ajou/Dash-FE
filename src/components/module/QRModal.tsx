@@ -1,4 +1,5 @@
 import React from "react";
+import CommonButton from "../common/button/CommonButton";
 
 type QRModalProps = {
   title: string;
@@ -28,25 +29,32 @@ const QRModal: React.FC<QRModalProps> = ({ title, qrimg, coupnum, storename, due
         <p className="text-black text-sm font-normal tracking-widest text-center mb-8">{coupnum}</p>
       </div>
 
-      {/* Store and Due Date */}
       <div className="w-full flex flex-col gap-4 items-start">
         <p className="text-black text-base font-bold opacity-60 leading-normal mb-3">
           {storename}
           <br />
           유효기간 ~{duedate}
         </p>
-        {/* Buttons */}
-        <div className="flex justify-between w-full gap-4">
-          <button className="flex-1 bg-blue-500 text-white text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
-            쿠폰 선물하기
-          </button>
-          <button className="flex-1 border border-blue-500 text-blue-500 text-sm font-semibold py-2 rounded-xl flex justify-center items-center">
-            쿠폰 삭제하기
-          </button>
+        <div className="flex w-full gap-2">
+          <CommonButton
+              size="small"
+              isActive={true}
+              mode="fill"
+              color="blue"
+              detail={{label: "쿠폰 선물하기", position: "none"}}
+          />
+          <CommonButton
+              size="small"
+              isActive={true}
+              mode="line"
+              color="blue"
+              detail={{label: "쿠폰 삭제하기", position: "none"}}
+          />
         </div>
       </div>
     </div>
   );
 };
+
 
 export default QRModal;
