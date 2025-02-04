@@ -22,34 +22,38 @@ const Block: React.FC<BlockProps> = ({
 	action,
 	statusType,
 }) => {
-
 	const [isToggleon, setIsToggleOn] = useState(false);
+	const handleDetailClick = () => {
+		if (type === "detail") {
+			alert("페이지 이동 예정");
+		}
+	};
 
 	return (
-		<div className="flex w-full justify-between items-center bg-white shadow-custom-basic rounded-2xl px-7 py-6 mb-4">
+		<div
+			className="flex w-full justify-between items-center bg-white shadow-custom-basic rounded-2xl px-7 py-6 mb-4"
+			onClick={handleDetailClick} // 전체에 클릭 이벤트 추가
+			style={type === "detail" ? { cursor: "pointer" } : {}}
+		>
 			<div>
 				<div className="font-bold text-lg text-black mb-1">{title}</div>
 				{subtitle && <div className="text-sm text-black text-opacity-60 mb-1">{subtitle}</div>}
 				{info && <div className="text-sm text-black text-opacity-60">{info}</div>}
 			</div>
 
-			{/* 오른쪽 영역*/}
 			<div>
 				{type === "button" ? (
 					action
 				) : type === "toggle" ? (
 					<div className="flex flex-col items-center">
-					<div className="mb-6">
-						<Status
-							statusType={isToggleon ? "active" : "paused"}
-							color={isToggleon ? "blue" : "darkgray"}
-						/>
+						<div className="mb-6">
+							<Status
+								statusType={isToggleon ? "active" : "paused"}
+								color={isToggleon ? "blue" : "gray"}
+							/>
+						</div>
+						<Toggle isOn={isToggleon} onToggle={(state) => setIsToggleOn(state)} />
 					</div>
-					<Toggle
-						isOn={isToggleon}
-						onToggle={(state) => setIsToggleOn(state)}
-					/>
-				</div>
 				) : type === "detail" ? (
 					<div className="flex items-center">
 						<Status
@@ -59,13 +63,10 @@ const Block: React.FC<BlockProps> = ({
 									? "blue"
 									: statusType === "rejected"
 									? "red"
-									: "darkgray"	
+									: "gray"
 							}
 						/>
-						<div 
-							onClick={() => alert("페이지 이동 예정")}
-							className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer"
-						>
+						<div className="flex items-center justify-center w-8 h-8 rounded-full">
 							{IconRegistry.arrowicon_line_right}
 						</div>
 					</div>
