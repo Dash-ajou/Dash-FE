@@ -1,31 +1,56 @@
 import React from "react";
 
 type ListButtonProps = {
-    coupnum: string;
+    type: "coupstatuslist" | "datetimelist" | "orgnamelist";
+    coupnum?: string;
     coupstatus?: "Issued" | "Registered" | "Used";
     name?: string;
+    datetime?: string;
+    orgname?: string;
+    coupea?: number;
+    usedea?: number;
 };
 
-const ListButton: React.FC<ListButtonProps> = ({ coupnum, coupstatus, name }) => {
-    // 상태에 따른 텍스트 생성
-    const getContent = () => {
+const ListButton: React.FC<ListButtonProps> = ({ type, coupnum, coupstatus, name, datetime, orgname, coupea, usedea }) => {
+
+    // 쿠폰 상태별 텍스트 설정
+    const coupstatuslist = () => {
         switch (coupstatus) {
             case "Issued":
-                return "미등록";
+                return `미등록`;
             case "Registered":
                 return `${name ? `${name}/` : ""}등록완료`;
             case "Used":
                 return `${name ? `${name}/` : ""}사용완료`;
             default:
-                return ""; // 상태가 없을 경우 기본값
+                return ""; 
+        }
+    };
+
+    // 표시할 내용 결정
+    const getContent = () => {
+        switch (type) {
+            case "coupstatuslist": 
+                return coupstatuslist();
+            case "datetimelist":
+                return coupnum && datetime ? `${datetime}` : "정보 없음";
+            case "orgnamelist":
+                return orgname && coupea !== undefined && usedea !== undefined
+                    ? `${usedea}/${coupea}`
+                    : "정보 없음";
+            default:
+                return "잘못된 타입";
         }
     };
 
     return (
-        <div className="flex items-center justify-between w-full px-6 py-4 rounded-[12px] bg-blue-50 text-[12px] text-black font-normal my-1 ">
-            {/* 왼쪽: coupnum */}
-            <span>{coupnum}</span>
-            {/* 오른쪽: 상태 및 이름 */}
+        <div className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
+                        ${type === "orgnamelist" ? "bg-gray-200" : "bg-blue-50"}`}>
+
+            <span className={type === "datetimelist" ? "flex flex-wrap text-base font-medium" : ""}>
+                {type === "orgnamelist" ? orgname : coupnum}
+            </span>
+
             <span>{getContent()}</span>
         </div>
     );
