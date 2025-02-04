@@ -13,7 +13,7 @@ type StatusType =
 
 type StatusProps = {
     statusType: StatusType;
-    color: "blue" | "red" | "gray" | "green" | "button" | "darkgray";
+    color: "blue" | "red" | "gray" | "green" | "button";
     onClick?: () => void;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -31,8 +31,7 @@ const statusTextMap: { [key in StatusType]: string } = {
 const colorStyles = {
     blue: "text-white bg-blue-500",
     red: "text-white bg-red-500",
-    gray: "text-black bg-gray-200",
-    darkgray: "text-black bg-gray-300",
+    gray: "text-black bg-gray-300",
     green: "text-white bg-green-500",
     button: "text-black bg-blue-50 hover:bg-blue-100"
 };
