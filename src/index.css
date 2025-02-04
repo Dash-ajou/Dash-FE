@@ -31,23 +31,14 @@ html {
 }
 
 body {
-<<<<<<< Updated upstream
   font-size: 1.6rem;
-=======
-  margin: 0;
-  display: flex;
-  place-items: center;
->>>>>>> Stashed changes
   width: 100%;
   max-width: 450px;
   min-width: 350px;
   background-color: white;
   position: relative;
   height: 100vh;
-<<<<<<< Updated upstream
   overflow: hidden;
-=======
->>>>>>> Stashed changes
 }
 
 h1 {
