@@ -38,12 +38,11 @@ const Statistics: React.FC<StatisticsProps> = ({
 
   const totalStat = (
     <div className="flex flex-col px-6 py-5 bg-white border rounded-xl shadow-custom-basic">
-      <h2 className="text-black text-[16px] font-bold">{title || "종합통계"}</h2>
+      <h2 className="text-black text-base font-bold">{title || "종합통계"}</h2>
       <p className="text-gray-400 text-xs font-bold mt-0">사용률</p>
-      <div className="w-auto h-[1px] bg-gray-300 my-3"></div>
-
+      <hr className="w-full my-3 border-gray-300" />
       <div className="flex justify-between items-center mx-8">
-        <div className="relative w-[96px] h-[96px]">
+        <div className="relative w-24 h-24">
           <CircularProgressbar
               value={percentage}
               strokeWidth={getStrokeWidth("totalstat")}
@@ -56,17 +55,17 @@ const Statistics: React.FC<StatisticsProps> = ({
               backgroundPadding={0}
               text={""}
           />
-          <div className="absolute inset-0 flex items-center justify-center text-base font-bold text-[#256FEF]">
+          <div className="absolute inset-0 flex items-center justify-center text-base font-bold text-blue-500">
               {`${percentage}%`}
           </div>
         </div>
 
-        <div className="flex flex-col text-xs items-center ml-6">
-            <div className="pb-3">
+        <div className="flex flex-col text-xs items-center ml-6 space-y-3">
+            <div>
                 <span className="font-bold text-black">발행매수</span>
                 <span className="font-light text-black ml-4">{published}매</span>
             </div>
-            <div className="pb-3">
+            <div>
                 <span className="font-bold text-black">사용매수</span>
                 <span className="font-light text-black ml-4">{used}매</span>
             </div>
@@ -82,7 +81,7 @@ const Statistics: React.FC<StatisticsProps> = ({
 
   const simpleStat = (
     <div className="flex items-center justify-center bg-white border rounded-xl shadow-custom-basic px-5 py-3">
-      <div className="relative w-[104px] h-[104px]">
+      <div className="relative w-24 h-24">
         <CircularProgressbar
           value={percentage}
           strokeWidth={getStrokeWidth("simplestat")}
@@ -96,16 +95,16 @@ const Statistics: React.FC<StatisticsProps> = ({
           backgroundPadding={0}
           text={""}
         />
-        <div className="absolute inset-0 flex items-center justify-center text-base font-bold text-[#256FEF]">
+        <div className="absolute inset-0 flex items-center justify-center text-base font-bold text-blue-500">
             {`${percentage}%`}
         </div>
       </div>
-      <div className="flex flex-col ml-9 text-xs">
-            <div className="pb-2">
+      <div className="flex flex-col ml-9 text-xs space-y-2">
+            <div>
                 <span className="font-bold text-black">발행매수</span>
                 <span className="font-light text-black ml-4">{published}매</span>
             </div>
-            <div className="pb-2">
+            <div>
                 <span className="font-bold text-black">사용매수</span>
                 <span className="font-light text-black ml-4">{used}매</span>
             </div>
@@ -120,8 +119,8 @@ const Statistics: React.FC<StatisticsProps> = ({
   const orgStat = (
     <div className="flex flex-col items-center bg-white border rounded-xl shadow-custom-basic px-2">
       <p className="text-left mt-2 mb-1.5 text-[10px] text-black font-bold w-full">{orgname}</p>
-      <div className="w-full h-[1px] bg-gray-300 mx-2 mb-3"></div>
-      <div className="relative w-[77px] h-[77px] mb-2">
+      <hr className="w-full mb-3 border-gray-300" />
+      <div className="relative w-20 h-20 mb-2">
         <CircularProgressbar
           value={percentage}
           strokeWidth={getStrokeWidth("orgstat")}
@@ -132,13 +131,13 @@ const Statistics: React.FC<StatisticsProps> = ({
           })}
           text={""}
         />
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#000000]">
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-black">
             {`${percentage}%`}
         </div>
       </div>
       <div>
-        <div className="text-xs flex flex-col items-center mt-2">
-            <div className="pb-2">
+        <div className="text-xs flex flex-col items-center mt-2 space-y-2">
+            <div>
                 <span className="font-regular text-black pr-1">발행매수</span>
                 <span className="font-bold text-blue-500">{published}매</span>
             </div>
@@ -153,7 +152,7 @@ const Statistics: React.FC<StatisticsProps> = ({
 
   const detailStat = (
     <div className="flex items-center justify-center bg-white border rounded-xl shadow-custom-basic px-5 py-6">
-      <div className="relative w-[76px] h-[76px]">
+      <div className="relative w-20 h-20">
         <CircularProgressbar
           value={percentage}
           strokeWidth={getStrokeWidth("detailstat")}
@@ -167,35 +166,35 @@ const Statistics: React.FC<StatisticsProps> = ({
           backgroundPadding={0}
           text={""}
         />
-        <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#16438F]">
+        <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-700">
             {`${percentage}%`}
         </div>
       </div>
       
       <div className="flex ml-4">
-        <div className="flex flex-col leading-tight">
+        <div className="flex flex-col space-y-3 leading-tight text-xs text-black">
           <div>
-            <span className="text-xs text-black font-bold mr-3">발행매수</span>
-            <span className="text-xs text-black font-light">{published}매</span>
+            <span className="font-bold mr-3">발행매수</span>
+            <span className="font-light">{published}매</span>
           </div>
           <div>
-            <span className="text-xs text-black font-bold mr-3">등록매수</span>
-            <span className="text-xs text-black font-light">{registered}매</span>
+            <span className="font-bold mr-3">등록매수</span>
+            <span className="font-light">{registered}매</span>
           </div>
           <div>
-            <span className="text-xs text-black font-bold mr-3">사용매수</span>
-            <span className="text-xs text-black font-light">{used}매</span>
+            <span className="font-bold mr-3">사용매수</span>
+            <span className="font-light">{used}매</span>
           </div>
         </div>
         
-        <div className="flex flex-col justify-end leading-tight">
-          <div className="ml-3">
-            <span className="text-xs text-black font-bold mr-3">미등록매수</span>
-            <span className="text-xs text-black font-light">{published - registered}매</span>
+        <div className="flex flex-col justify-end leading-tight text-xs text-black space-y-3 ml-3">
+          <div>
+            <span className=" font-bold mr-3">미등록매수</span>
+            <span className=" font-light">{published - registered}매</span>
           </div>
-          <div className="ml-3">
-            <span className="text-xs text-black font-bold mr-3">잔여매수</span>
-            <span className="text-xs text-black font-light">{published - used}매</span>
+          <div>
+            <span className=" font-bold mr-3">잔여매수</span>
+            <span className=" font-light">{published - used}매</span>
           </div>
         </div>
       </div>
