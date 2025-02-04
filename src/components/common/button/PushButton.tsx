@@ -118,7 +118,12 @@ const PushButton: React.FC<PushButtonProps> = ({
           </div>
           <div className="flex justify-between mt-1">
             <div className="text-xs">{iconAndAlarm.message}</div>
-            <div className="text-xs ml-1">자세히 보기<span className="ml-1">{'>'}</span></div>
+            <div className="flex items-center" onClick={() => alert("페이지 이동 예정")}>
+              <div className='text-xs ml-l'>자세히 보기</div>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer">
+							  {IconRegistry.arrowicon_line_right}
+						  </div>
+            </div>
           </div>
         </div>
       </div>
