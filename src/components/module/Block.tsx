@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Toggle from "../common/Toggle";
 import Status from "../common/Status";
-import IconRegistry from "../common/icons/IconRegistry";
+import Icon from "../common/icons/Icon";
 
 type BlockType = "button" | "toggle" | "detail";
 
@@ -66,8 +66,8 @@ const Block: React.FC<BlockProps> = ({
 									: "gray"
 							}
 						/>
-						<div className="flex items-center justify-center w-8 h-8 rounded-full">
-							{IconRegistry.arrowicon_line_right}
+						<div className="flex items-center justify-center rounded-full">
+							<Icon name="arrowicon_line_right" size={12}/>
 						</div>
 					</div>
 				) : null}
