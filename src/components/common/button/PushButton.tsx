@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import IconRegistry from '../icons/IconRegistry';
+import Icon from '../icons/Icon';
 
 type PushButtonProps = {
   read: boolean;
@@ -24,13 +24,13 @@ const PushButton: React.FC<PushButtonProps> = ({
   const iconAndAlarm = (() => {
     switch (type) {
       case 'couprequest':
-        return { icon: IconRegistry.checkicon_line_black, message: '쿠폰 발행 요청이 도착했어요' };
+        return { icon: <Icon name="checkicon_line_black"/>, message: '쿠폰 발행 요청이 도착했어요' };
       case 'coupused':
-        return { icon: IconRegistry.checkicon_line_black, message: '쿠폰 사용이 완료되었어요' };
+        return { icon: <Icon name="checkicon_line_black"/>, message: '쿠폰 사용이 완료되었어요' };
       case 'couptime':
-        return { icon: IconRegistry.clockicon_line, message: '쿠폰 만료가 임박했어요' };
+        return { icon: <Icon name="clockicon_line"/>, message: '쿠폰 만료가 임박했어요' };
       case 'coupgift':
-        return { icon: IconRegistry.gifticon_line, message: '쿠폰을 선물받았어요' };
+        return { icon: <Icon name="gifticon_line"/>, message: '쿠폰을 선물받았어요' };
       default:
         return { icon: null, message: '' };
     }
@@ -116,12 +116,12 @@ const PushButton: React.FC<PushButtonProps> = ({
             <div>{iconAndAlarm.icon}</div>
             <div className="font-semibold text-base ml-2">{title}</div>
           </div>
-          <div className="flex justify-between mt-1">
+          <div className="flex justify-between items-center mt-1">
             <div className="text-xs">{iconAndAlarm.message}</div>
             <div className="flex items-center" onClick={() => alert("페이지 이동 예정")}>
               <div className='text-xs ml-l'>자세히 보기</div>
-              <div className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer">
-							  {IconRegistry.arrowicon_line_right}
+              <div className="flex items-center justify-center rounded-full cursor-pointer pl-1">
+							  <Icon name="arrowicon_line_right" size={12}/>
 						  </div>
             </div>
           </div>
