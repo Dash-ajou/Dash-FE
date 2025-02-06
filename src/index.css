@@ -25,6 +25,11 @@ html {
   overflow: hidden;
 }
 
+html {
+  display: flex;
+  justify-content: center;
+}
+
 body {
   font-size: 1.6rem;
   width: 100%;
