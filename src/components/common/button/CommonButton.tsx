@@ -70,6 +70,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         <button
             className={`${baseStyles} ${sizeStyles[size]} ${modeStyles[mode]} ${disabledStyles}`}
             {...props}
+            disabled={!isActive}
         >
             {detail.icon && detail.position === "left" && (
                 <span className="mr-2">
