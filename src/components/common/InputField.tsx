@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEventHandler, useCallback, useEffect, useState} from 'react';
 import IconRegistry from "./icons/IconRegistry.tsx";
 import Icon from "./icons/Icon.tsx";
 
@@ -13,8 +13,8 @@ type InputFieldProps = {
     dropdown: boolean;
     viewonly?: boolean;
     fetchSuggestions?: (query: string) => Promise<string[]>;
-    initialValue?: string;
-} & React.HTMLAttributes<HTMLInputElement>;
+    value: string;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputField: React.FC<InputFieldProps> = ({
                                                    label,
@@ -23,16 +23,20 @@ const InputField: React.FC<InputFieldProps> = ({
                                                    dropdown,
                                                    viewonly,
                                                    fetchSuggestions,
-                                                   initialValue,
+                                                   value,
                                                    ...props
                                                }) => {
-    const [inputValue, setInputValue] = useState(initialValue || "");
+    const [inputValue, setInputValue] = useState(value || "");
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        setInputValue(initialValue || "");
-    }, [initialValue]);
+        if (dropdown) setShowDropdown(true);
+    }, [inputValue]);
+
+    useEffect(() => {
+        setInputValue(value || "");
+    }, [value]);
 
     useEffect(() => {
         if (dropdown && fetchSuggestions && inputValue.trim()) {
@@ -41,6 +45,15 @@ const InputField: React.FC<InputFieldProps> = ({
             setSuggestions([]);
         }
     }, [inputValue, dropdown, fetchSuggestions]);
+
+    const onTagBlur = useCallback(() => {
+        setTimeout(() => setShowDropdown(false), 200)
+    }, []);
+
+    const onValueChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setInputValue(e.currentTarget.value);
+        if (props?.onChange) props.onChange(e);
+    }
 
     return (
         <div className="relative w-full">
@@ -54,11 +67,8 @@ const InputField: React.FC<InputFieldProps> = ({
                     {...(placeholder ? {placeholder} : {})}
                     readOnly={viewonly}
                     value={inputValue}
-                    onChange={(e) => {
-                        setInputValue(e.target.value);
-                        if (dropdown) setShowDropdown(true);
-                    }}
-                    onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+                    onChange={onValueChange}
+                    onBlur={onTagBlur}
                     {...props}
                 />
 
