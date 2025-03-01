@@ -13,6 +13,7 @@ type InputFieldProps = {
     dropdown: boolean;
     viewonly?: boolean;
     fetchSuggestions?: (query: string) => Promise<string[]>;
+    initialValue?: string;
 } & React.HTMLAttributes<HTMLInputElement>;
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,11 +23,16 @@ const InputField: React.FC<InputFieldProps> = ({
                                                    dropdown,
                                                    viewonly,
                                                    fetchSuggestions,
+                                                   initialValue,
                                                    ...props
                                                }) => {
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState(initialValue || "");
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
+
+    useEffect(() => {
+        setInputValue(initialValue || "");
+    }, [initialValue]);
 
     useEffect(() => {
         if (dropdown && fetchSuggestions && inputValue.trim()) {
@@ -45,7 +51,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     className={`w-full border-b border-black py-2 px-3 text-base text-black focus:outline-none ${
                         viewonly ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none" : "bg-white"
                     }`}
-                    {...(placeholder ? { placeholder } : {})}
+                    {...(placeholder ? {placeholder} : {})}
                     readOnly={viewonly}
                     value={inputValue}
                     onChange={(e) => {
@@ -81,7 +87,8 @@ const InputField: React.FC<InputFieldProps> = ({
                             <Icon name={notice.icon} size={16}/>
                         </span>
                     )}
-                    <span className={`text-sm ${notice.color=="black" ? 'text-black' : `text-${notice.color}-500`}`}>{notice.detail}</span>
+                    <span
+                        className={`text-sm ${notice.color == "black" ? 'text-black' : `text-${notice.color}-500`}`}>{notice.detail}</span>
                 </div>
             )}
         </div>
