@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 
 type SlideUpModalProps = {
     isOpen: boolean;
-    height: "long" | "short";
+    height: "long" | "auto";
     title?: string;
     children?: React.ReactNode;
     onClose: () => void;
@@ -40,8 +40,8 @@ const SlideUpModal: React.FC<SlideUpModalProps> = ({
             {...props}
         >
             <div
-                className={`w-[100%] max-w-[450px] min-w-[350px] bg-white rounded-t-xl shadow-custom-basic transition-transform duration-300 
-                ${height === "long" ? "h-[70%]" : "h-[40%]"} 
+                className={`w-[100%] max-w-[450px] bg-white rounded-t-xl shadow-custom-basic transition-transform duration-300 
+                ${height === "long" ? "h-[70%]" : "min-h-fit max-h-[80vh]"} 
                 ${visible ? "translate-y-0" : "translate-y-full"}`}
                 onClick={(e) => e.stopPropagation()}
             >
