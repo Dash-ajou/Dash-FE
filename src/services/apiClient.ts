@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -6,32 +6,6 @@ const apiClient = axios.create({
     baseURL: apiUrl,
     withCredentials: true,
 });
-
-const setAuthorizationHeader = (config: AxiosRequestConfig, token: string | null): void => {
-    if (token && config.headers) {
-        config.headers.access = token;
-    }
-};
-
-apiClient.interceptors.request.use((
-        config: InternalAxiosRequestConfig,
-    ): InternalAxiosRequestConfig => {
-        const excludedPaths = [
-            '/api/test',
-        ];
-
-        const isExcluded =
-            excludedPaths.some(path => config.url?.includes(path));
-
-        if (!isExcluded) {
-            const accessToken = localStorage.getItem('accessToken');
-            setAuthorizationHeader(config, accessToken);
-        }
-
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
 
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
