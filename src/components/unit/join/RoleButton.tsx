@@ -7,21 +7,21 @@ type RoleButtonProps = {
 
 const RoleButton: React.FC<RoleButtonProps> = ({type}) => {
     return (
-        <div
-            className="bg-blue-500 rounded-lg shadow-custom-basic flex flex-col items-center justify-center px-12 py-10">
+        <button
+            className="bg-blue-500 rounded-lg shadow-custom-basic flex flex-col items-center justify-center px-12 py-12">
             {type === "user" && (
                 <>
-                    <Icon name={"personicon_line"} size={60}/>
+                    <Icon name={"personicon_line"} size={68}/>
                     <span className="text-lg font-semibold text-white">일반</span>
                 </>
             )}
             {type === "partner" && (
                 <>
-                    <Icon name={"storeicon_line"} size={60}/>
+                    <Icon name={"storeicon_line"} size={68}/>
                     <span className="text-lg font-semibold">파트너</span>
                 </>
             )}
-        </div>
+        </button>
     )
 };
 
