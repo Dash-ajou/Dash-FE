@@ -20,6 +20,7 @@
     "react-native": "^0.71.10",
     "react-native-wheely": "^0.6.0",
     "react-router-dom": "^7.1.5",
+    "react-swipeable": "^7.0.2",
     "react-time-picker-typescript": "^1.2.5"
   },
   "devDependencies": {
