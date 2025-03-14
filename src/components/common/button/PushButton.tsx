@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Icon from '../icons/Icon';
+import React, { useState, useEffect } from "react";
+import Icon from "../icons/Icon";
 
 type PushButtonProps = {
   read: boolean;
-  type: 'couprequest' | 'coupused' | 'couptime' | 'coupgift';
+  type: "couprequest" | "coupused" | "couptime" | "coupgift";
   title?: string;
   onClick: () => void;
   onRead: () => void;
@@ -23,26 +23,38 @@ const PushButton: React.FC<PushButtonProps> = ({
 
   const iconAndAlarm = (() => {
     switch (type) {
-      case 'couprequest':
-        return { icon: <Icon name="checkicon_line_black"/>, message: '쿠폰 발행 요청이 도착했어요' };
-      case 'coupused':
-        return { icon: <Icon name="checkicon_line_black"/>, message: '쿠폰 사용이 완료되었어요' };
-      case 'couptime':
-        return { icon: <Icon name="clockicon_line"/>, message: '쿠폰 만료가 임박했어요' };
-      case 'coupgift':
-        return { icon: <Icon name="gifticon_line"/>, message: '쿠폰을 선물받았어요' };
+      case "couprequest":
+        return {
+          icon: <Icon name="checkicon_line_black" />,
+          message: "쿠폰 발행 요청이 도착했어요",
+        };
+      case "coupused":
+        return {
+          icon: <Icon name="checkicon_line_black" />,
+          message: "쿠폰 사용이 완료되었어요",
+        };
+      case "couptime":
+        return {
+          icon: <Icon name="clockicon_line" />,
+          message: "쿠폰 만료가 임박했어요",
+        };
+      case "coupgift":
+        return {
+          icon: <Icon name="gifticon_line" />,
+          message: "쿠폰을 선물받았어요",
+        };
       default:
-        return { icon: null, message: '' };
+        return { icon: null, message: "" };
     }
   })();
 
-  // 터치 시작 
+  // 터치 시작
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (read) return;
     setStartX(e.touches[0].clientX); //터치 시작 지점 저장
   };
 
-  // 터치 이동 
+  // 터치 이동
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (read || startX === null) return;
     const deltaX = e.touches[0].clientX - startX; //이동 거리 계산
@@ -51,13 +63,14 @@ const PushButton: React.FC<PushButtonProps> = ({
     }
   };
 
-  // 터치 종료 
+  // 터치 종료
   const handleTouchEnd = () => {
     if (read) return;
-    if (currentX < -50) { // -50px 이상 이동하면 슬라이드 완료
+    if (currentX < -50) {
+      // -50px 이상 이동하면 슬라이드 완료
       setIsSlid(true);
     } else {
-      setCurrentX(0); 
+      setCurrentX(0);
     }
     setStartX(null);
 
@@ -66,12 +79,11 @@ const PushButton: React.FC<PushButtonProps> = ({
     }
   };
 
-
   // 읽음 버튼 클릭 시 처리
   const handleReadClick = (e: React.MouseEvent) => {
     e.stopPropagation(); //부모 클릭 이벤트 실행 방지
     setRead(true); //읽음 처리
-    onRead(); 
+    onRead();
     setIsSlid(false);
     setCurrentX(0);
   };
@@ -90,9 +102,9 @@ const PushButton: React.FC<PushButtonProps> = ({
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isSlid]);
 
@@ -100,11 +112,11 @@ const PushButton: React.FC<PushButtonProps> = ({
     <div className="relative w-full overflow-hidden">
       <div
         className={`flex items-center justify-between py-3 px-5 rounded-xl transition-transform duration-300 ${
-          read ? 'bg-gray-200 text-gray-900' : 'bg-blue-50 text-black'
+          read ? "bg-gray-200 text-gray-900" : "bg-blue-50 text-black"
         }`}
         style={{
           transform: `translateX(${isSlid ? -80 : currentX}px)`,
-          transition: 'transform 0.3s ease',
+          transition: "transform 0.3s ease",
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -118,11 +130,14 @@ const PushButton: React.FC<PushButtonProps> = ({
           </div>
           <div className="flex justify-between items-center mt-1">
             <div className="text-xs">{iconAndAlarm.message}</div>
-            <div className="flex items-center" onClick={() => alert("페이지 이동 예정")}>
-              <div className='text-xs ml-l'>자세히 보기</div>
+            <div
+              className="flex items-center"
+              onClick={() => alert("페이지 이동 예정")}
+            >
+              <div className="text-xs ml-l">자세히 보기</div>
               <div className="flex items-center justify-center rounded-full cursor-pointer pl-1">
-							  <Icon name="arrowicon_line_right" size={12}/>
-						  </div>
+                <Icon name="arrowicon_line_right" size={12} />
+              </div>
             </div>
           </div>
         </div>
