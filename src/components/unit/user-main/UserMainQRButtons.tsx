@@ -1,14 +1,23 @@
 import { useState, useRef } from "react";
 import QRButton from "./QRButton";
 import { useSwipeable } from "react-swipeable";
+import BasicModal from "../../common/modal/BasicModal";
+import QRModal from "../../module/QRModal";
+
+type QRData = {
+  title: string;
+  partnername: string;
+  duedate: string;
+  qrimg: string;
+};
 
 type UserMainQRButtonProps = {
   qrCount: number;
 };
 
 const UserMainQRButton: React.FC<UserMainQRButtonProps> = ({ qrCount }) => {
-  /// 더미데이터
-  const qrData = Array.from({ length: qrCount }, (_, index) => ({
+  // 더미 데이터
+  const qrData: QRData[] = Array.from({ length: qrCount }, (_, index) => ({
     title: `요청 ${index + 1}`,
     partnername: `파트너 ${String.fromCharCode(65 + index)}`,
     duedate: `2025-03-${20 + index}`,
@@ -16,6 +25,10 @@ const UserMainQRButton: React.FC<UserMainQRButtonProps> = ({ qrCount }) => {
   }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isBasicModalOpen, setIsBasicModalOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [selectedQR, setSelectedQR] = useState<QRData | null>(null);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSwipe = (direction: "left" | "right") => {
@@ -33,6 +46,20 @@ const UserMainQRButton: React.FC<UserMainQRButtonProps> = ({ qrCount }) => {
     trackMouse: true,
   });
 
+  const handleQRButtonClick = (qr: QRData) => {
+    setSelectedQR(qr);
+    setIsBasicModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    setIsBasicModalOpen(false);
+    setIsQRModalOpen(true);
+  };
+
+  const handleCloseQRModal = () => {
+    setIsQRModalOpen(false);
+  };
+
   return (
     <div className="relative w-full py-1 overflow-hidden" {...handlers}>
       <div
@@ -42,13 +69,13 @@ const UserMainQRButton: React.FC<UserMainQRButtonProps> = ({ qrCount }) => {
       >
         {qrData.map((data, index) => (
           <div key={index} className="w-full flex-shrink-0 px-2">
-            <QRButton {...data} />
+            <QRButton {...data} onClick={() => handleQRButtonClick(data)} />
           </div>
         ))}
       </div>
 
       <div className="flex justify-center">
-        <div className="w-16 h-3 inline-flex justify- items-center gap-[3px] mx-auto mt-3">
+        <div className="w-16 h-3 inline-flex justify-items-center gap-[3px] mx-auto mt-3">
           {qrData.map((_, index) => {
             let opacity = "opacity-20";
             if (index === currentIndex) opacity = "";
@@ -64,6 +91,32 @@ const UserMainQRButton: React.FC<UserMainQRButtonProps> = ({ qrCount }) => {
           })}
         </div>
       </div>
+
+      {/* Basic Modal */}
+      <BasicModal
+        mode="YesNo"
+        isOpen={isBasicModalOpen}
+        title="쿠폰을 사용하시나요?"
+        onClose={() => setIsBasicModalOpen(false)}
+        onConfirm={handleConfirm}
+      />
+
+      {/* QR Modal */}
+      {isQRModalOpen && selectedQR && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={handleCloseQRModal}
+        >
+          <QRModal
+            title={selectedQR.title}
+            qrimg={selectedQR.qrimg}
+            coupnum="1234-567-81"
+            storename={selectedQR.partnername}
+            duedate={selectedQR.duedate}
+            onClose={handleCloseQRModal}
+          />
+        </div>
+      )}
     </div>
   );
 };
