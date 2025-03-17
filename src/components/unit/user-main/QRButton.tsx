@@ -3,6 +3,7 @@ type QRButtonProps = {
   partnername: string;
   duedate: string;
   qrimg: string;
+  onClick?: () => void;
 };
 
 const QRButton: React.FC<QRButtonProps> = ({
@@ -10,9 +11,13 @@ const QRButton: React.FC<QRButtonProps> = ({
   partnername,
   duedate,
   qrimg,
+  onClick,
 }) => {
   return (
-    <div className="flex w-full justify-between items-center px-5 py-7 rounded-xl shadow-custom-basic bg-white ">
+    <div
+      className="flex w-full justify-between items-center px-5 py-7 rounded-xl shadow-custom-basic bg-white"
+      onClick={onClick}
+    >
       <div className="flex flex-col">
         {/* Title */}
         <div className="flex pb-2">
