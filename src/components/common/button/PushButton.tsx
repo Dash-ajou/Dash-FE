@@ -96,7 +96,7 @@ const PushButton: React.FC<PushButtonProps> = ({
 
   // 화면 클릭 감지
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = () => {
       if (isSlid) {
         resetSlide();
       }
