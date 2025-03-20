@@ -1,13 +1,14 @@
-import React from "react";
+import React, {HTMLAttributes} from "react";
 import Icon from "../../common/icons/Icon.tsx";
 
 type RoleButtonProps = {
     type: "user" | "partner";
-};
+} & HTMLAttributes<HTMLButtonElement>;
 
-const RoleButton: React.FC<RoleButtonProps> = ({type}) => {
+const RoleButton: React.FC<RoleButtonProps> = ({type, ...props}) => {
     return (
         <button
+            {...props}
             className="bg-blue-500 rounded-lg shadow-custom-basic flex flex-col items-center justify-center px-12 py-12">
             {type === "user" && (
                 <>
