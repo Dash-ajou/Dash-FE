@@ -1,0 +1,99 @@
+import React, {useEffect, useState} from "react";
+import Layout from "../../components/layout/Layout.tsx";
+import RoleSelect from "../../components/unit/join/RoleSelect.tsx";
+import {Role} from "../../constants/role.ts";
+import {useSearchParams} from "react-router-dom";
+import PartnerDetail from "../../components/unit/join/PartnerDetail.tsx";
+import PartnerForm from "../../components/unit/join/PartnerForm.tsx";
+import {JoinStep, PartnerInfo} from "../../types/JoinTypes.ts";
+import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx";
+import NameInfo from "../../components/unit/join/NameInfo.tsx";
+import OAuthConnect from "../../components/unit/join/OAuthConnect.tsx";
+import PasswordInput from "../../components/unit/join/PasswordInput.tsx";
+import JoinComplete from "../../components/unit/join/JoinComplete.tsx";
+
+const Join: React.FC = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentStep = searchParams.get("step") || JoinStep.ROLE_SELECT;
+
+    const [partnerInfo, setPartnerInfo] = useState<PartnerInfo>({
+        storeName: "",
+        address: "",
+        ownerName: "",
+    });
+
+    const [phoneNum, setPhoneNum] = useState<string>("");
+    const [userName, setUserName] = useState<string>("");
+
+    useEffect(() => {
+        if (!searchParams.get("step")) {
+            setSearchParams({step: JoinStep.ROLE_SELECT});
+        }
+    }, []);
+
+    const handleRoleSelect = (role: (typeof Role)[keyof typeof Role] | null) => {
+        setSearchParams({
+            step: role === Role.USER ? JoinStep.PHONE_AUTH : JoinStep.PARTNER_FORM,
+        });
+    };
+
+    return (
+        <Layout>
+            {currentStep === JoinStep.ROLE_SELECT && (
+                <RoleSelect
+                    onSelect={(role) => handleRoleSelect(role)}
+                    onPartnerInfo={() => setSearchParams({step: JoinStep.PARTNER_INFO})}
+                />
+            )}
+
+            {currentStep === JoinStep.PARTNER_INFO && (
+                <PartnerDetail
+                    onNext={() => setSearchParams({step: JoinStep.PARTNER_FORM})}
+                />
+            )}
+
+            {currentStep === JoinStep.PARTNER_FORM && (
+                <PartnerForm
+                    partnerInfo={partnerInfo}
+                    setPartnerInfo={setPartnerInfo}
+                    onNext={() => setSearchParams({step: JoinStep.PHONE_AUTH})}
+                />
+            )}
+
+            {currentStep === JoinStep.PHONE_AUTH && (
+                <PhoneAuth
+                    phoneNum={phoneNum}
+                    setPhoneNum={setPhoneNum}
+                    onNext={() => setSearchParams({step: JoinStep.NAME})}
+                />
+            )}
+
+            {currentStep === JoinStep.NAME && (
+                <NameInfo
+                    userName={userName}
+                    setUserName={setUserName}
+                    onNext={() => setSearchParams({step: JoinStep.OAUTH_CONNECT})}
+                />
+            )}
+
+            {currentStep === JoinStep.OAUTH_CONNECT && (
+                <OAuthConnect
+                    onNext={() => setSearchParams({step: JoinStep.PASSWORD_INPUT})}
+                />
+            )}
+
+            {currentStep === JoinStep.PASSWORD_INPUT && (
+                <PasswordInput
+                    onNext={() => setSearchParams({step: JoinStep.COMPLETE})}
+                />
+            )}
+
+            {currentStep === JoinStep.COMPLETE && (
+                <JoinComplete/>
+            )}
+
+        </Layout>
+    )
+}
+
+export default Join;
