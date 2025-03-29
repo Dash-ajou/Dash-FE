@@ -26,10 +26,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
       : "font-semibold text-sm";
   return (
     <div
-      className={`border rounded-xl px-4 py-5 shadow-custom-basic bg-white w-full`}
-      style={{
-        height: "auto",
-      }}
+      className={`border rounded-xl px-4 py-5 shadow-custom-basic bg-white w-full h-auto`}
     >
       <div className="flex justify-between mb-3">
         <h3 className="px-1 text-base font-semibold text-blue-500">{title}</h3>
