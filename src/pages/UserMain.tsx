@@ -53,12 +53,6 @@ const UserMain = () => {
                         duedate="2025-12-31"
                         onClose={handleCloseQRModal}
                     />
-                    <button
-                        className="absolute top-4 right-4 text-white"
-                        onClick={handleCloseQRModal}
-                    >
-                        X
-                    </button>
                 </div>
             )}
             ;
