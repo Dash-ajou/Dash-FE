@@ -12,7 +12,6 @@ type PartnerFormProps = {
 const INPUT_FIELD_CONFIG = [
     {id: "storeName", placeholder: "상호명"},
     {id: "address", placeholder: "주소"},
-    {id: "ownerName", placeholder: "점주명"}
 ];
 
 const PartnerForm: React.FC<PartnerFormProps> = ({partnerInfo, setPartnerInfo, onNext}) => {

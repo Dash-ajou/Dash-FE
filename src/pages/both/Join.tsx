@@ -19,7 +19,6 @@ const Join: React.FC = () => {
     const [partnerInfo, setPartnerInfo] = useState<PartnerInfo>({
         storeName: "",
         address: "",
-        ownerName: "",
     });
 
     const [phoneNum, setPhoneNum] = useState<string>("");

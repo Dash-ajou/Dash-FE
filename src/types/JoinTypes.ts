@@ -1,6 +1,5 @@
 export type PartnerInfo = {
     storeName: string;
-    ownerName: string;
     address: string;
 };
 

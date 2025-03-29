@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     }
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value); // ✅ 실시간 업데이트
+        setPassword(event.target.value);
     };
 
     const handleLogin = () => {
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
                         <InputField
                             placeholder={"비밀번호"}
                             dropdown={false}
-                            notice={showLoginFail ? {detail: "비밀번호가 올바르지 않습니다", color: "red"} : undefined} //수정필요
+                            notice={showLoginFail ? {detail: "비밀번호가 올바르지 않습니다", color: "red"} : undefined}
                             value={password}
                             onInput={handlePasswordChange}
                             type={showPassword ? "text" : "password"}
@@ -91,7 +91,7 @@ const Login: React.FC = () => {
                         mode="text_no_line"
                         color="black"
                         detail={{label: "새롭게 시작할래요!", position: "none"}}
-                        onClick={() => navigate("/join")}
+                        onClick={() => navigate("/join?step=roleSelect")}
                     />
                 </div>
             </div>
