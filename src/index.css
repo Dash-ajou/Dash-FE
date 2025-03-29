@@ -112,3 +112,10 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+.mask-qr {
+  mask: url(#qr-mask);
+  -webkit-mask: url(#qr-mask);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+}
