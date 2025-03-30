@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "../../common/icons/Icon";
 
 type MenuButtonType = "newcoup" | "gift" | "couprequest" | "couplist";
@@ -8,6 +9,8 @@ interface MenuButtonProps {
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({ type, onClick }) => {
+  const navigate = useNavigate();
+
   const getContent = () => {
     switch (type) {
       case "newcoup":
@@ -20,7 +23,16 @@ const MenuButton: React.FC<MenuButtonProps> = ({ type, onClick }) => {
           message: "쿠폰 등록",
         };
       case "gift":
-        return { icon: <Icon name="gifticon" size={50} />, message: "선물함" };
+        return {
+          icon: (
+            <Icon
+              name="gifticon"
+              size={50}
+              onClick={() => navigate("/usergift")}
+            />
+          ),
+          message: "선물함",
+        };
       case "couprequest":
         return {
           icon: <Icon name="couprequesticon" size={50} />,
