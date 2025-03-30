@@ -10,7 +10,7 @@ const SubHeader = () => {
 
   return (
     <header className="w-full flex items-center p-5 bg-white">
-      <Icon name="arrowicon_line_left" onClick={() => navigate(-1)} />
+      <Icon name="arrowicon_line_left" onClick={() => navigate("/usermain")} />
       <h1 className="ml-4 text-2xl font-bold text-black">{pageTitle}</h1>
     </header>
   );
