@@ -23,6 +23,7 @@ const Join: React.FC = () => {
 
     const [phoneNum, setPhoneNum] = useState<string>("");
     const [userName, setUserName] = useState<string>("");
+    const [isVerified, setIsVerified] = useState<boolean>(false);
 
     useEffect(() => {
         if (!searchParams.get("step")) {
@@ -35,6 +36,10 @@ const Join: React.FC = () => {
             step: role === Role.USER ? JoinStep.PHONE_AUTH : JoinStep.PARTNER_FORM,
         });
     };
+
+    const handleJoin = () => {
+        setSearchParams({step: JoinStep.COMPLETE})
+    }
 
     return (
         <Layout>
@@ -63,6 +68,8 @@ const Join: React.FC = () => {
                 <PhoneAuth
                     phoneNum={phoneNum}
                     setPhoneNum={setPhoneNum}
+                    isVerified={isVerified}
+                    setIsVerified={setIsVerified}
                     onNext={() => setSearchParams({step: JoinStep.NAME})}
                 />
             )}
@@ -83,7 +90,7 @@ const Join: React.FC = () => {
 
             {currentStep === JoinStep.PASSWORD_INPUT && (
                 <PasswordInput
-                    onNext={() => setSearchParams({step: JoinStep.COMPLETE})}
+                    onNext={handleJoin}
                 />
             )}
 

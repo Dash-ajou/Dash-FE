@@ -13,3 +13,8 @@ export enum JoinStep {
     PASSWORD_INPUT = "password-input",
     COMPLETE = "complete",
 }
+
+export enum FindPWStep {
+    PHONE_AUTH = "phone-auth",
+    RESET_PW = "reset-pw"
+}

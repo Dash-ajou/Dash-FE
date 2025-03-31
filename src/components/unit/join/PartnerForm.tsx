@@ -24,6 +24,17 @@ const PartnerForm: React.FC<PartnerFormProps> = ({partnerInfo, setPartnerInfo, o
         );
     }, [localPartnerInfo]);
 
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            setPartnerInfo(localPartnerInfo);
+        };
+
+        window.addEventListener("popstate", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("popstate", handleBeforeUnload);
+        };
+    }, [localPartnerInfo]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const key = e.currentTarget.getAttribute("id");
         if (!key) return;

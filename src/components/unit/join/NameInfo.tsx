@@ -16,6 +16,17 @@ const NameInfo: React.FC<NameInfoProps> = ({userName, setUserName, onNext}) => {
         setIsButtonActive(localName.trim() !== "");
     }, [localName]);
 
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            setUserName(localName);
+        };
+
+        window.addEventListener("popstate", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("popstate", handleBeforeUnload);
+        };
+    }, [localName]);
+
     const handleNext = () => {
         setUserName(localName);
         onNext();

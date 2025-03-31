@@ -1,15 +1,20 @@
 import InputField from "../../common/InputField.tsx";
 import CommonButton from "../../common/button/CommonButton.tsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Status from "../../common/Status.tsx";
+import {useLocation} from "react-router-dom";
 
 type PhoneAuthProps = {
     phoneNum: string;
     setPhoneNum: (num: string) => void;
+    isVerified: boolean;
+    setIsVerified: (verify: boolean) => void;
     onNext: () => void;
 }
 
-const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) => {
+const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, isVerified, setIsVerified, onNext}) => {
+    const location = useLocation();
+
     const [localPhoneNum, setLocalPhoneNum] = useState<string>(phoneNum);
     const [showNotice, setShowNotice] = useState<boolean>(false);
     const [isVerifyClicked, setIsVerifyClicked] = useState<boolean>(false);
@@ -17,8 +22,31 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) =>
     const [showAuthNotice, setShowAuthNotice] = useState<boolean>(false);
     const [isCodeSixDigits, setIsCodeSixDigits] = useState<boolean>(false);
 
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            setPhoneNum(localPhoneNum);
+        };
+
+        window.addEventListener("popstate", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("popstate", handleBeforeUnload);
+        };
+    }, [localPhoneNum]);
+
+    useEffect(() => {
+        const changed = localPhoneNum !== phoneNum;
+        if (changed && isVerified) {
+            setIsVerified(false);
+            setIsVerifyClicked(false);
+            setAuthCode("");
+        }
+    }, [localPhoneNum, phoneNum]);
+
     const handleNext = () => {
         setPhoneNum(localPhoneNum);
+        if (isVerified) {
+           onNext();
+        }
         CheckAuthCode();
     }
 
@@ -49,6 +77,7 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) =>
         const correctCode = "123456";
 
         if (authCode === correctCode) {
+            setIsVerified(true);
             onNext();
         } else {
             setShowAuthNotice(true);
@@ -57,9 +86,16 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) =>
 
     return (
         <div className="flex flex-col justify-center gap-6 w-full">
-            <div className="text-black font-bold text-xl mt-16">온라인 쿠폰 관리 플랫폼 Dash <br/>회원가입을 진행할게요</div>
+            <div
+                className="text-black font-bold text-xl mt-16"
+                style={{
+                    visibility: location.pathname.startsWith("/join") ? "visible" : "hidden"
+                }}
+            >
+                온라인 쿠폰 관리 플랫폼 Dash <br/>회원가입을 진행할게요
+            </div>
 
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row">
                 <InputField
                     label={"전화번호를 입력해주세요"}
                     dropdown={false}
@@ -67,7 +103,11 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) =>
                     value={localPhoneNum}
                     onInput={handleChange}
                 />
-                <Status statusType="verify" color="button" onClick={handleAuth}/>
+                {!isVerified && (
+                    <div className="mt-4">
+                        <Status statusType="verify" color="button" onClick={handleAuth}/>
+                    </div>
+                )}
             </div>
 
             {isVerifyClicked && (
@@ -83,7 +123,7 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, onNext}) =>
                 </div>
             )}
 
-            {isCodeSixDigits && (
+            {(isVerified || (!isVerified && isCodeSixDigits)) && (
                 <div className="absolute bottom-[336px] px-6 left-0 right-0 w-full flex">
                     <CommonButton
                         size="large"
