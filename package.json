@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.2",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
@@ -19,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.10",
     "react-native-wheely": "^0.6.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
     "react-time-picker-typescript": "^1.2.5"
   },
