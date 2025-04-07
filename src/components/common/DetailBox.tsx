@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Status from "./Status";
-import { Link } from "react-router-dom"; // ✅ OK!
+import Icon from "./icons/Icon";
 
 type DetailBoxProps = {
     mode: "default" | "coupinfo" | "setting";
@@ -21,10 +22,11 @@ const DetailBox: React.FC<DetailBoxProps> = ({
     statusType,
     statusColor = "gray",
 }) => {
-    const leftStringStyle =
-        mode === "setting"
-            ? "font-normal text-base text-black hover:underline cursor-pointer"
-            : "font-semibold text-sm";
+    const rowCount = Math.max(
+        leftstring.length,
+        rightstring.length,
+        linkurl.length
+    );
 
     return (
         <div className="border rounded-xl px-4 py-5 shadow-custom-basic bg-white w-full h-auto">
@@ -39,32 +41,97 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                     />
                 )}
             </div>
-            <hr className="w-full border-t border-black h-[1px] mx-auto mb-4" />
-            <div className="px-1 space-y-3">
-                {leftstring.map((left, index) => {
-                    const url = linkurl[index] || "#";
-                    const content = (
-                        <span className={`${leftStringStyle} min-w-[90px]`}>
-                            {left}
-                        </span>
-                    );
 
-                    return (
-                        <div key={index} className="flex items-start gap-3">
-                            {mode === "setting" ? (
-                                <Link to={url}>{content}</Link>
-                            ) : (
-                                content
-                            )}
-                            {mode !== "setting" && (
+            <hr className="w-full border-t border-black h-[1px] mx-auto mb-4" />
+
+            {mode === "setting" ? (
+                <div className="flex flex-row justify-between pl-3">
+                    <div className="flex flex-col gap-2.5 items-start">
+                        {Array.from({ length: rowCount }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="text-black text-base font-bold text-Main100"
+                            >
+                                {leftstring[i] ?? ""}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-col gap-3.5 items-start">
+                        {Array.from({ length: rowCount }).map((_, i) => {
+                            const value = rightstring[i] ?? "";
+                            const isMissing = value.includes("없어요");
+                            return (
+                                <div
+                                    key={i}
+                                    className={`self-stretch ${
+                                        isMissing
+                                            ? "text-black opacity-20 text-xs font-medium"
+                                            : "text-black text-sm font-light"
+                                    }`}
+                                >
+                                    {value}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="flex flex-col justify-between gap-1.5 items-start">
+                        {Array.from({ length: rowCount }).map((_, i) => {
+                            const url = linkurl[i];
+                            return (
+                                <div
+                                    key={i}
+                                    className="h-7 flex flex-col justify-center items-center"
+                                >
+                                    {url ? (
+                                        <Link
+                                            to={url}
+                                            className="rounded-full p-2 flex justify-center items-center hover:no-underline"
+                                        >
+                                            <Icon
+                                                name="arrowicon_line_right"
+                                                size={12}
+                                            />
+                                        </Link>
+                                    ) : (
+                                        <div className="w-6 h-6" />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            ) : (
+                <div className="px-1 space-y-3">
+                    {leftstring.map((left, index) => {
+                        const right = rightstring?.[index] ?? "";
+                        const url = linkurl?.[index] ?? "";
+
+                        return (
+                            <div
+                                key={index}
+                                className="flex items-start justify-between gap-3"
+                            >
+                                {url ? (
+                                    <Link
+                                        to={url}
+                                        className="text-base text-black hover:underline"
+                                    >
+                                        {left}
+                                    </Link>
+                                ) : (
+                                    <span className="text-base text-black">
+                                        {left}
+                                    </span>
+                                )}
                                 <span className="text-black text-sm font-light text-left flex-1">
-                                    {rightstring[index] || ""}
+                                    {right}
                                 </span>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };
