@@ -1,14 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Html5Qrcode, Html5QrcodeCameraScanConfig } from "html5-qrcode";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Html5Qrcode, Html5QrcodeCameraScanConfig} from "html5-qrcode";
 import SlideUpModal from "../../common/modal/SlideUpModal.tsx";
 import InputField from "../../common/InputField.tsx";
 import CommonButton from "../../common/button/CommonButton.tsx";
 
-const QRScan: React.FC = () => {
+type QRScanProps = {
+    couponNum: string;
+    setCouponNum: (data: string) => void;
+    onClick: () => void;
+}
+
+const QRScan: React.FC<QRScanProps> = ({
+                                           couponNum,
+                                           setCouponNum,
+                                           onClick
+                                       }) => {
     const boxRef = useRef<HTMLDivElement>(null);
-    const [maskBoxPx, setMaskBoxPx] = useState({ x: 0, y: 0, width: 0, height: 0 });
-    const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
-    const [couponNum, setCouponNum] = useState<string>("");
+    const [maskBoxPx, setMaskBoxPx] = useState({x: 0, y: 0, width: 0, height: 0});
+    const [screenSize, setScreenSize] = useState({width: 0, height: 0});
+    const [scanned, setScanned] = useState(false);
+
+    const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setCouponNum(event.target.value);
+    }, []);
 
     useEffect(() => {
         const html5QrCode = new Html5Qrcode("custom-qr-reader");
@@ -21,21 +35,22 @@ const QRScan: React.FC = () => {
 
             const config: Html5QrcodeCameraScanConfig = {
                 fps: 10,
-                qrbox: { width: 250, height: 250 },
+                qrbox: {width: 250, height: 250},
                 aspectRatio: 1.0,
             };
 
             html5QrCode
                 .start(
-                    { facingMode: "environment" },
+                    {facingMode: "environment"},
                     config,
                     (decodedText) => {
-                        console.log("✅ QR 스캔 성공:", decodedText);
-                        alert(`QR 코드: ${decodedText}`);
+                        if (!scanned) {
+                            setScanned(true);
+                            setCouponNum(decodedText);
+                            onClick();
+                        }
                     },
-                    (errorMessage) => {
-                        //console.log("스캔 실패:", errorMessage);
-                    }
+                    () => {}
                 )
                 .catch((err) => {
                     console.error("카메라 시작 실패:", err);
@@ -61,8 +76,8 @@ const QRScan: React.FC = () => {
                 const x = rawX - width / 2; // ← 여기 수정
                 const y = box.offsetTop;
 
-                setScreenSize({ width: vw, height: vh });
-                setMaskBoxPx({ x, y, width, height });
+                setScreenSize({width: vw, height: vh});
+                setMaskBoxPx({x, y, width, height});
             }
         };
 
@@ -145,6 +160,7 @@ const QRScan: React.FC = () => {
                             color: "black",
                         }}
                         value={couponNum}
+                        onInput={handleChange}
                     />
                     <CommonButton
                         size="large"
@@ -152,6 +168,7 @@ const QRScan: React.FC = () => {
                         mode="fill"
                         color="blue"
                         detail={{label: "쿠폰등록", position: "none"}}
+                        onClick={onClick}
                     />
                 </div>
             </SlideUpModal>

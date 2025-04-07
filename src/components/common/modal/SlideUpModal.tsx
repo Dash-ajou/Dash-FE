@@ -61,7 +61,7 @@ const SlideUpModal: React.FC<SlideUpModalProps> = ({
     return (
         <div
             className={`fixed inset-0 flex items-end justify-center bg-black transition-opacity duration-300 ${
-                visible ? "bg-opacity-50" : "bg-opacity-0"
+                isFixed ? (expanded ? "bg-opacity-50" : "bg-opacity-0") : (visible ? "bg-opacity-50" : "bg-opacity-0")
             } z-50`}
             onClick={handleClose}
             {...props}
