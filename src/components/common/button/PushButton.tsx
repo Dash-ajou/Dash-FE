@@ -1,52 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Icon from "../icons/Icon";
 
 type PushButtonProps = {
-  read: boolean;
-  type: "couprequest" | "coupused" | "couptime" | "coupgift";
-  title?: string;
-  onClick: () => void;
-  onRead: () => void;
+  notification: {
+    notification_id: number;
+    message: string;
+    sender_type: string;
+    received_at: string;
+    readed: boolean;
+  };
+  onRead: (id: number) => void;
 };
 
-const PushButton: React.FC<PushButtonProps> = ({
-  read: initialRead,
-  type,
-  title = "호시 타코야키 오리지널 10EA",
-  onClick,
-  onRead,
-}) => {
-  const [read, setRead] = useState(initialRead);
+const PushButton: React.FC<PushButtonProps> = ({ notification, onRead }) => {
+  const [read, setRead] = useState(notification.readed);
   const [startX, setStartX] = useState<number | null>(null);
   const [currentX, setCurrentX] = useState(0);
   const [isSlid, setIsSlid] = useState(false);
-
-  const iconAndAlarm = (() => {
-    switch (type) {
-      case "couprequest":
-        return {
-          icon: <Icon name="checkicon_line_black" />,
-          message: "쿠폰 발행 요청이 도착했어요",
-        };
-      case "coupused":
-        return {
-          icon: <Icon name="checkicon_line_black" />,
-          message: "쿠폰 사용이 완료되었어요",
-        };
-      case "couptime":
-        return {
-          icon: <Icon name="clockicon_line" />,
-          message: "쿠폰 만료가 임박했어요",
-        };
-      case "coupgift":
-        return {
-          icon: <Icon name="gifticon_line" />,
-          message: "쿠폰을 선물받았어요",
-        };
-      default:
-        return { icon: null, message: "" };
-    }
-  })();
 
   // 터치 시작
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -73,40 +43,15 @@ const PushButton: React.FC<PushButtonProps> = ({
       setCurrentX(0);
     }
     setStartX(null);
-
-    if (!isSlid) {
-      onClick();
-    }
   };
 
   // 읽음 버튼 클릭 시 처리
-  const handleReadClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); //부모 클릭 이벤트 실행 방지
+  const handleReadClick = () => {
     setRead(true); //읽음 처리
-    onRead();
     setIsSlid(false);
     setCurrentX(0);
+    onRead(notification.notification_id);
   };
-
-  // 슬라이드 초기화
-  const resetSlide = () => {
-    setIsSlid(false);
-    setCurrentX(0);
-  };
-
-  // 화면 클릭 감지
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (isSlid) {
-        resetSlide();
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isSlid]);
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -116,29 +61,20 @@ const PushButton: React.FC<PushButtonProps> = ({
         }`}
         style={{
           transform: `translateX(${isSlid ? -80 : currentX}px)`,
-          transition: "transform 0.3s ease",
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onClick={onClick}
       >
         <div className="flex flex-col w-full">
           <div className="flex items-center">
-            <div>{iconAndAlarm.icon}</div>
-            <div className="font-semibold text-base ml-2">{title}</div>
-          </div>
-          <div className="flex justify-between items-center mt-1">
-            <div className="text-xs">{iconAndAlarm.message}</div>
-            <div
-              className="flex items-center"
-              onClick={() => alert("페이지 이동 예정")}
-            >
-              <div className="text-xs ml-l">자세히 보기</div>
-              <div className="flex items-center justify-center rounded-full cursor-pointer pl-1">
-                <Icon name="arrowicon_line_right" size={12} />
-              </div>
+            <Icon name="bellicon_fill" />
+            <div className="font-semibold text-base ml-2">
+              {notification.message}
             </div>
+          </div>
+          <div className="text-xs text-gray-600">
+            {new Date(notification.received_at).toLocaleString()}
           </div>
         </div>
       </div>
