@@ -1,8 +1,8 @@
 import { useState } from "react";
-import UserMainQRButton from "../components/unit/user-main/UserMainQRButtons";
-import UserMainButtons from "../components/unit/user-main/UserMainButtons";
-import BasicModal from "../components/common/modal/BasicModal";
-import QRModal from "../components/module/QRModal";
+import UserMainQRButton from "../../components/unit/user-main/UserMainQRButtons.tsx";
+import UserMainButtons from "../../components/unit/user-main/UserMainButtons.tsx";
+import BasicModal from "../../components/common/modal/BasicModal.tsx";
+import QRModal from "../../components/module/QRModal.tsx";
 
 const UserMain = () => {
     // 나중에 API에서 받아올 값 (현재는 임시값)

@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Html5Qrcode, Html5QrcodeCameraScanConfig } from "html5-qrcode";
+import SlideUpModal from "../../common/modal/SlideUpModal.tsx";
+import InputField from "../../common/InputField.tsx";
+import CommonButton from "../../common/button/CommonButton.tsx";
 
 const QRScan: React.FC = () => {
     const boxRef = useRef<HTMLDivElement>(null);
     const [maskBoxPx, setMaskBoxPx] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+    const [couponNum, setCouponNum] = useState<string>("");
 
     useEffect(() => {
         const html5QrCode = new Html5Qrcode("custom-qr-reader");
@@ -30,7 +34,7 @@ const QRScan: React.FC = () => {
                         alert(`QR 코드: ${decodedText}`);
                     },
                     (errorMessage) => {
-                        console.log("스캔 실패:", errorMessage);
+                        //console.log("스캔 실패:", errorMessage);
                     }
                 )
                 .catch((err) => {
@@ -123,8 +127,34 @@ const QRScan: React.FC = () => {
 
             {/* 안내 문구 */}
             <p className="absolute bottom-24 w-full text-center text-white text-sm z-20">
-                QR코드를 스캔하세요
+                QR코드를 테두리 안에 위치시켜 주세요
             </p>
+
+            <SlideUpModal
+                isOpen={true}
+                isFixed={true}
+                height={"long"}
+                title={"수동 번호 입력"}
+            >
+                <div className="mt-8 gap-8 flex flex-col">
+                    <InputField
+                        dropdown={false}
+                        notice={{
+                            icon: "noticeicon_fill",
+                            detail: "QR코드 하단의 쿠폰번호를 입력해주세요",
+                            color: "black",
+                        }}
+                        value={couponNum}
+                    />
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{label: "쿠폰등록", position: "none"}}
+                    />
+                </div>
+            </SlideUpModal>
         </div>
     );
 };
