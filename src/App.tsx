@@ -9,10 +9,7 @@ import QRScanPage from "./pages/partner/QRScanPage.tsx";
 const App: React.FC = () => {
     return (
         <Routes>
-            <Route
-                path="/qrscan"
-                element={<QRScanPage/>}
-            />
+            <Route path="/user/coupon/register" element={<QRScanPage/>}/>
             <Route
                 path="/usermain"
                 element={
@@ -45,6 +42,8 @@ const App: React.FC = () => {
                     </Layout>
                 }
             />
+            <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
+            <Route path="/partner/coupon/status/:couponNum" element={<></>} />
         </Routes>
     );
 };
