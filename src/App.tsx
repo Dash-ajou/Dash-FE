@@ -4,10 +4,10 @@ import Join from "./pages/both/Join.tsx";
 import Login from "./pages/both/Login.tsx";
 import FindPW from "./pages/both/FIndPW.tsx";
 import Onboarding from "./pages/both/Onboarding.tsx";
-import UserMain from "./pages/UserMain";
+import UserMain from "./pages/user/UserMain.tsx";
 import UserNotification from "./pages/UserNotification";
-import UserMypage from "./pages/UserMypage";
-import UserGift from "./pages/UserGift";
+import UserMypage from "./pages/user/UserMypage.tsx";
+import UserGift from "./pages/user/UserGift.tsx";
 import Layout from "./components/layout/Layout";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 

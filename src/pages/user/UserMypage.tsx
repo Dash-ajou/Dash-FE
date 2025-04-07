@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import CommonButton from "../components/common/button/CommonButton";
-import DetailBox from "../components/common/DetailBox";
-import CouponCount from "../components/unit/user-mypage/CouponCount";
+import CommonButton from "../../components/common/button/CommonButton.tsx";
+import DetailBox from "../../components/common/DetailBox.tsx";
+import CouponCount from "../../components/unit/user-mypage/CouponCount.tsx";
 import { fetchUserMyPage, UserMyPageData } from "../services/userMypageService";
 
 const UserMypage = () => {

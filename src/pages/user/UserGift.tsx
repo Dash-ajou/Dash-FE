@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import Tabs from "../components/unit/user-gift/Tabs";
-import { fetchSentGifts, SentGift } from "../services/userSentGiftService";
-import {
-    fetchReceivedGifts,
-    ReceivedGift,
-} from "../services/userRecivedGiftService";
-import ReceivedGiftTab from "./ReceivedGiftTab";
-import SentGiftTab from "./SentGiftTab";
+import Tabs from "../../components/unit/user-gift/Tabs.tsx";
+import { fetchSentGifts, SentGift } from "../../services/userSentGiftService.ts";
+import {fetchReceivedGifts, ReceivedGift} from "../../services/userRecivedGiftService.ts";
+import SentGiftTab from "../../components/unit/user-gift/SentGiftTab.tsx";
+import ReceivedGiftTab from "../../components/unit/user-gift/ReceivedGiftTab.tsx";
+
 
 const UserGift = () => {
     const [sentGifts, setSentGifts] = useState<SentGift[]>([]);
