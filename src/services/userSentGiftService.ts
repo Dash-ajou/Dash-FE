@@ -1,3 +1,5 @@
+import apiClient from "./apiClient";
+
 export interface SentGift {
     coupon_id: number;
     coupon_name: string;
@@ -14,23 +16,10 @@ export interface SentGiftResponse {
 
 export const fetchSentGifts = async (): Promise<SentGift[]> => {
     try {
-        const response = await fetch(
-            `${import.meta.env.VITE_APP_API_URL}/general/coupons/sent`,
-            {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
+        const response = await apiClient.get<SentGiftResponse>(
+            "/general/coupons/sent"
         );
-
-        if (!response.ok) {
-            throw new Error(`HTTP error status ${response.status}`);
-        }
-
-        const result: SentGiftResponse = await response.json();
-        // console.log("응답 내용:", result); //테스트용
+        const result = response.data;
 
         if (result.status !== "SUCCESS") {
             throw new Error(
@@ -40,7 +29,7 @@ export const fetchSentGifts = async (): Promise<SentGift[]> => {
 
         return result.data;
     } catch (error) {
-        console.error("보낸 선물함 api 오류:", error);
+        console.error("보낸 선물함 API 오류:", error);
         return [];
     }
 };

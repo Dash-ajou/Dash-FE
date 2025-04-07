@@ -1,4 +1,7 @@
-export interface RecievedGift {
+import { AxiosResponse } from "axios";
+import apiClient from "./apiClient";
+
+export interface ReceivedGift {
     coupon_id: number;
     coupon_name: string;
     partner_name: string;
@@ -6,13 +9,14 @@ export interface RecievedGift {
     coupon_status: "PENDING" | "ACCEPTED";
 }
 
-export const fetchRecivedGifts = async (): Promise<RecievedGift[]> => {
+export const fetchReceivedGifts = async (): Promise<ReceivedGift[]> => {
     try {
-        const response = await fetch(
-            `${import.meta.env.VITE_APP_API_URL}/general/coupons/recieved`
+        const response: AxiosResponse = await apiClient.get(
+            "/general/coupons/recieved"
         );
-        const result = await response.json();
+        const result = response.data;
         console.log("응답 내용:", result); //테스트용
+
         if (result.status === "SUCCESS") {
             return result.data;
         } else {
