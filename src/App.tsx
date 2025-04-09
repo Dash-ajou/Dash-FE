@@ -1,47 +1,20 @@
 import { Route, Routes } from "react-router-dom";
-import UserMain from "./pages/user/UserMain.tsx";
-import UserNotification from "./pages/UserNotification";
-import UserMypage from "./pages/user/UserMypage.tsx";
+import UserMain from "./pages/user/UserMain";
+import UserNotification from "./pages/user/UserNotification";
+import UserMypage from "./pages/user/UserMypage";
 import UserGift from "./pages/user/UserGift.tsx";
-import Layout from "./components/layout/Layout";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
+import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 
 const App: React.FC = () => {
     return (
         <Routes>
             <Route path="/user/coupon/register" element={<QRScanPage/>}/>
-            <Route
-                path="/usermain"
-                element={
-                    <Layout>
-                        <UserMain />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usernotification"
-                element={
-                    <Layout>
-                        <UserNotification />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usermypage"
-                element={
-                    <Layout>
-                        <UserMypage />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usergift"
-                element={
-                    <Layout>
-                        <UserGift />
-                    </Layout>
-                }
-            />
+            <Route path="/user/main" element={<UserMain />} />
+            <Route path="/user/notification" element={<UserNotification />} />
+            <Route path="/user/mypage" element={<UserMypage />} />
+            <Route path="/user/gift" element={<UserGift />} />
+            <Route path="/user/accountinfo" element={<UserAccountInfo />} />
             <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
             <Route path="/partner/coupon/status/:couponNum" element={<></>} />
         </Routes>

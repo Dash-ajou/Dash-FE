@@ -10,10 +10,10 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
     const location = useLocation();
     const isMainPage = [
-        "/usermain",
-        "/partnermain",
-        "/usermypage",
-        "/partnermypage",
+        "/user/main",
+        "/partner/main",
+        "/user/mypage",
+        "/partner/mypage",
     ].includes(location.pathname);
 
     return (
