@@ -1,4 +1,4 @@
-import QRScan from "../../components/unit/partner-qrscan/QRScan.tsx";
+import QRScan from "../../components/module/QRScan.tsx";
 import SubHeader from "../../components/layout/SubHeader.tsx";
 import React, {useState} from "react";
 import BasicModal from "../../components/common/modal/BasicModal.tsx";

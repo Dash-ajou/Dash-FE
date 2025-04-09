@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Html5Qrcode, Html5QrcodeCameraScanConfig} from "html5-qrcode";
-import SlideUpModal from "../../common/modal/SlideUpModal.tsx";
-import InputField from "../../common/InputField.tsx";
-import CommonButton from "../../common/button/CommonButton.tsx";
+import SlideUpModal from "../common/modal/SlideUpModal.tsx";
+import InputField from "../common/InputField.tsx";
+import CommonButton from "../common/button/CommonButton.tsx";
 
 type QRScanProps = {
     isPartner: boolean;
