@@ -1,11 +1,12 @@
 import { useState } from "react";
-import UserMainQRButton from "../components/unit/user-main/UserMainQRButtons";
-import UserMainButtons from "../components/unit/user-main/UserMainButtons";
-import BasicModal from "../components/common/modal/BasicModal";
-import QRModal from "../components/module/QRModal";
+import UserMainQRButton from "../../components/unit/user-main/UserMainQRButtons";
+import UserMainButtons from "../../components/unit/user-main/UserMainButtons";
+import BasicModal from "../../components/common/modal/BasicModal";
+import QRModal from "../../components/module/QRModal";
+import Layout from "../../components/layout/Layout";
 
 const UserMain = () => {
-    // 나중에 API에서 받아올 값 (현재는 임시값)
+    // TO-DO; 나중에 API에서 받아올 값 (현재는 임시값)
     const qrCount = 4;
 
     const [isBasicModalOpen, setIsBasicModalOpen] = useState(false);
@@ -21,16 +22,16 @@ const UserMain = () => {
     };
 
     return (
-        <div>
+        <Layout>
             <div className="mt-9 mb-7">
-                <h1 className="text-black text-xl font-semibold pl-8">
-                    이름님의 쿠폰
+                <h1 className="text-black text-xl font-semibold">
+                    ㅇㅇㅇ님의 쿠폰
                 </h1>
             </div>
-            <div className="mx-6">
+            <div>
                 <UserMainQRButton qrCount={qrCount} />
             </div>
-            <div className="mt-6 px-6">
+            <div className="mt-6">
                 <UserMainButtons />
             </div>
             <BasicModal
@@ -56,7 +57,7 @@ const UserMain = () => {
                 </div>
             )}
             ;
-        </div>
+        </Layout>
     );
 };
 
