@@ -46,14 +46,12 @@ const QRScan: React.FC<QRScanProps> = ({
                     async (decodedText) => {
                         if (!scanned) {
                             setScanned(true);
-
                             try {
                                 await html5QrCode.stop();
                                 await html5QrCode.clear();
                             } catch (err) {
                                 console.error(err);
                             }
-
                             onClick(decodedText);
                         }
                     },

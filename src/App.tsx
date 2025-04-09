@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import UserMain from "./pages/user/UserMain.tsx";
-//import UserNotification from "./pages/UserNotification";
-//import UserMypage from "./pages/user/UserMypage.tsx";
+import UserNotification from "./pages/UserNotification";
+import UserMypage from "./pages/user/UserMypage.tsx";
 import UserGift from "./pages/user/UserGift.tsx";
 import Layout from "./components/layout/Layout";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
@@ -18,22 +18,22 @@ const App: React.FC = () => {
                     </Layout>
                 }
             />
-            {/*<Route*/}
-            {/*    path="/usernotification"*/}
-            {/*    element={*/}
-            {/*        <Layout>*/}
-            {/*            <UserNotification />*/}
-            {/*        </Layout>*/}
-            {/*    }*/}
-            {/*/>*/}
-            {/*<Route*/}
-            {/*    path="/usermypage"*/}
-            {/*    element={*/}
-            {/*        <Layout>*/}
-            {/*            <UserMypage />*/}
-            {/*        </Layout>*/}
-            {/*    }*/}
-            {/*/>*/}
+            <Route
+                path="/usernotification"
+                element={
+                    <Layout>
+                        <UserNotification />
+                    </Layout>
+                }
+            />
+            <Route
+                path="/usermypage"
+                element={
+                    <Layout>
+                        <UserMypage />
+                    </Layout>
+                }
+            />
             <Route
                 path="/usergift"
                 element={

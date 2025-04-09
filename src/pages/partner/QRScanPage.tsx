@@ -22,7 +22,6 @@ const QRScanPage: React.FC = () => {
             setLastCalled(now);
 
             if (isPartner) {
-                // TODO - 쿠폰 유효성 조회
                 navigate(`/partner/coupon/status/${couponNum}`);
             } else {
                 handleCouponRegister(couponNum);
@@ -37,7 +36,6 @@ const QRScanPage: React.FC = () => {
             if (result.success) {
                 setModalTitle("등록이 완료되었습니다");
                 setIsSuccess(true);
-                console.log("2 ", couponNum);
             } else {
                 setModalTitle("등록에 실패했습니다. 다시 시도해주세요.");
                 setIsSuccess(false);
