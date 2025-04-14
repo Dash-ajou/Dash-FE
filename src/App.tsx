@@ -1,3 +1,4 @@
+import React from "react";
 import {Route, Routes} from "react-router-dom";
 import UserMain from "./pages/user/UserMain";
 //import UserNotification from "./pages/user/UserNotification";
@@ -6,6 +7,7 @@ import UserGift from "./pages/user/UserGift.tsx";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import CouponRequest from "./pages/vendor/CouponRequest.tsx";
+import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx";
 
 const App: React.FC = () => {
     return (
@@ -19,6 +21,7 @@ const App: React.FC = () => {
             <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
             <Route path="/partner/coupon/status/:couponNum" element={<></>} />
             <Route path="/user/coupon/request" element={<CouponRequest/>}/>
+            <Route path="/coupon/request/confirm" element={<CouponRequestConfirm />} />
         </Routes>
     );
 };

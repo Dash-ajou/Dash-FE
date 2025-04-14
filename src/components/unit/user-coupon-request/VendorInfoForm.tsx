@@ -26,7 +26,6 @@ const VendorInfoForm: React.FC<VendorInfoFormProps> = ({vendorInfo, setVendorInf
     }, [localVendorInfo]);
 
     const handleSave = useCallback(() => {
-        console.log(localVendorInfo);
         setVendorInfo(localVendorInfo);
         onNext();
     }, [localVendorInfo]);
@@ -44,13 +43,36 @@ const VendorInfoForm: React.FC<VendorInfoFormProps> = ({vendorInfo, setVendorInf
     }
 
     return (
-        <div className="flex flex-col gap-4"> {
-            INPUT_FIELD_CONFIG.map(config =>
-                <InputField {...config}
-                            value={localVendorInfo?.[config.id as keyof typeof localVendorInfo] ?? ""}
-                            onInput={handleChange}
-                />
-            )}
+        <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    id="useAccountInfo"
+                    className="
+                        appearance-none w-4 h-4 bg-gray-200 rounded-sm
+                        checked:bg-gray-200
+                        checked:before:content-['✔']
+                        checked:before:text-black
+                        checked:before:text-[10px]
+                        checked:before:flex
+                        checked:before:items-center
+                        checked:before:justify-center
+                        checked:before:w-full
+                        checked:before:h-full
+                        transition-colors
+                    "/>
+                <label htmlFor="useAccountInfo" className="text-sm text-gray-700">
+                    계정정보와 동일하게 입력
+                </label>
+            </div>
+
+            {
+                INPUT_FIELD_CONFIG.map(config =>
+                    <InputField {...config}
+                                value={localVendorInfo?.[config.id as keyof typeof localVendorInfo] ?? ""}
+                                onInput={handleChange}
+                    />
+                )}
             <div className="flex gap-4">
                 <div className="flex-1"></div>
                 {isButtonActive && (
