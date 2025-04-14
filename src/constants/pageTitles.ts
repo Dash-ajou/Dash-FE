@@ -6,6 +6,7 @@ const pageTitles: Record<string, string> = {
     "/user/accountinfo": "계정 정보",
     "/user/gift": "선물함",
     "/qrscan": "QR 인식",
+    "/user/coupon/request": "쿠폰 발행 요청",
 };
 
 export default pageTitles;
