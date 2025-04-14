@@ -8,6 +8,7 @@ import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import CouponRequest from "./pages/vendor/CouponRequest.tsx";
 import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx";
+import CouponRequestList from "./pages/vendor/CouponRequestList.tsx";
 
 const App: React.FC = () => {
     return (
@@ -21,7 +22,8 @@ const App: React.FC = () => {
             <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
             <Route path="/partner/coupon/status/:couponNum" element={<></>} />
             <Route path="/user/coupon/request" element={<CouponRequest/>}/>
-            <Route path="/coupon/request/confirm" element={<CouponRequestConfirm />} />
+            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
+            <Route path="/user/coupon/request/list" element={<CouponRequestList/>}/>
         </Routes>
     );
 };

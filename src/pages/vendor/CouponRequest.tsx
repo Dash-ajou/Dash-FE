@@ -37,7 +37,7 @@ const CouponRequest: React.FC = () => {
     };
 
     const handleNext = () => {
-        navigate("/coupon/request/confirm", {
+        navigate("/user/coupon/request/confirm", {
             state: {
                 vendor: {
                     organizationName: vendorInfo.organizationName,

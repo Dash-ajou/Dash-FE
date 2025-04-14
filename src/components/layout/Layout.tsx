@@ -17,9 +17,11 @@ const Layout = ({ children }: LayoutProps) => {
     ].includes(location.pathname);
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col overflow-y-auto">
             {isMainPage ? <MainHeader /> : <SubHeader />}
-            <main className="flex-grow px-6">{children}</main>
+            <main className="px-6 overflow-y-auto h-[calc(100vh-60px)]">
+                {children}
+            </main>
         </div>
     );
 };
