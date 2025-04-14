@@ -10,12 +10,14 @@ import CouponRequest from "./pages/vendor/CouponRequest.tsx";
 const App: React.FC = () => {
     return (
         <Routes>
-            <Route path="/qrscan" element={<QRScanPage/>}/>
+            <Route path="/user/coupon/register" element={<QRScanPage/>}/>
             <Route path="/user/main" element={<UserMain/>}/>
             {/*<Route path="/user/notification" element={<UserNotification/>}/>*/}
             <Route path="/user/mypage" element={<UserMypage/>}/>
             <Route path="/user/gift" element={<UserGift/>}/>
             <Route path="/user/accountinfo" element={<UserAccountInfo/>}/>
+            <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
+            <Route path="/partner/coupon/status/:couponNum" element={<></>} />
             <Route path="/user/coupon/request" element={<CouponRequest/>}/>
         </Routes>
     );
