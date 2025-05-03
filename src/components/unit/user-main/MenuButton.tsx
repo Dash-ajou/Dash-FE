@@ -40,7 +40,13 @@ const MenuButton: React.FC<MenuButtonProps> = ({ type, onClick }) => {
                 };
             case "couplist":
                 return {
-                    icon: <Icon name="couplisticon" size={50} />,
+                    icon: (
+                        <Icon
+                            name="couplisticon"
+                            size={50}
+                            onClick={() => navigate("/user/coupon/published")}
+                        />
+                    ),
                     message: "쿠폰 배부 내역",
                 };
             default:
