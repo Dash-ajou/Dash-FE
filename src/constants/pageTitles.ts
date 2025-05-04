@@ -6,7 +6,8 @@ const pageTitles: Record<string, string> = {
     "/user/notification": "알림함",
     "/user/mypage": "사용자 마이페이지",
     "/user/accountinfo": "계정 정보",
+    "/user/mypage/usedcoupon": "사용 완료 쿠폰",
     "/user/gift": "선물함",
 };
 
-  export default pageTitles;
+export default pageTitles;
