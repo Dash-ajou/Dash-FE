@@ -7,6 +7,7 @@ import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
 import PartnerMain from "./pages/partner/PartnerMain.tsx";
+import PartnerStat from "./pages/partner/PartnerStat.tsx";
 
 const App: React.FC = () => {
     return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
                 element={<UserUsedCoupon />}
             />
             <Route path="/partner/main" element={<PartnerMain />} />
+            <Route path="/partner/statistics" element={<PartnerStat />} />
         </Routes>
     );
 };

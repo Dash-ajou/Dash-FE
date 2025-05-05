@@ -9,6 +9,7 @@ const pageTitles: Record<string, string> = {
     "/user/mypage/usedcoupon": "사용 완료 쿠폰",
     "/user/gift": "선물함",
     "/partner/main": "파트너 메인화면",
+    "/partner/statistics": "통계 상세",
 };
 
 export default pageTitles;
