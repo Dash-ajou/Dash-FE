@@ -6,6 +6,7 @@ import UserGift from "./pages/user/UserGift.tsx";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
+import PartnerMain from "./pages/partner/PartnerMain.tsx";
 
 const App: React.FC = () => {
     return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
                 path="/user/mypage/usedcoupon"
                 element={<UserUsedCoupon />}
             />
+            <Route path="/partner/main" element={<PartnerMain />} />
         </Routes>
     );
 };
