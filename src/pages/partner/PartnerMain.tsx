@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CircleButton from "../../components/common/button/CircleButton";
 import CommonButton from "../../components/common/button/CommonButton";
 import Icon from "../../components/common/icons/Icon";
@@ -6,19 +7,43 @@ import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import QRScanButton from "../../components/unit/partner-main/QRScanButton";
 import ListBlock from "../../components/common/ListBlock";
+import {
+    fetchPartnerStats,
+    PartnerStats,
+} from "../../services/partnerStatService";
 
 const PartnerMain = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const [stats, setStats] = useState<PartnerStats | null>(null);
+    const navigate = useNavigate();
 
     const toggleCheck = () => {
         setIsChecked((prev) => !prev);
     };
 
+    const goToStatsPage = () => {
+        navigate("/partner/statistics");
+    };
+
+    useEffect(() => {
+        const getStats = async () => {
+            const res = await fetchPartnerStats();
+            setStats(res);
+        };
+        getStats();
+    }, []);
+
     return (
         <Layout>
-            <div className="mt-5">
+            <div className="mt-5" onClick={goToStatsPage}>
                 {/* TO-DO: API 연동 필요 */}
-                <Statistics mode="totalstat" published={158} used={60} />
+                {stats && (
+                    <Statistics
+                        mode="totalstat"
+                        published={stats?.total_issued}
+                        used={stats?.total_used}
+                    />
+                )}
             </div>
             <div className="flex flex-col w-full mt-5">
                 <QRScanButton />
