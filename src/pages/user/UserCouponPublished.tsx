@@ -1,4 +1,3 @@
-//TO-DO: 전역변수로 쿠폰들 상태, 파트너명 넘겨줘야 함
 import { useEffect, useState } from "react";
 import Icon from "../../components/common/icons/Icon";
 import Layout from "../../components/layout/Layout";
@@ -48,21 +47,23 @@ const UserCouponPublished = () => {
             <div className="px-2 flex flex-col gap-4">
                 {filteredCoupons.map((coupon) => (
                     <div
-                        key={coupon.request_id}
+                        key={coupon.issue_id}
                         onClick={() =>
                             navigate("/user/coupon/published/detail", {
                                 state: {
                                     businessName: coupon.partner.business_name,
+                                    issueId: coupon.issue_id,
                                 },
                             })
                         }
                     >
                         <Block
-                            key={coupon.request_id}
+                            key={coupon.issue_id}
                             type="toggle"
                             title={coupon.partner.business_name}
                             subtitle={`사용 현황: ${coupon.used_count} / ${coupon.issue_count}`}
                             info={`유효 기간: ~yyyy.mm.dd`} //TO-DO: API 수정 필요
+                            defaultToggle={coupon.status === "ENABLE"}
                         />
                     </div>
                 ))}
