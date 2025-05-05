@@ -12,6 +12,7 @@ interface BlockProps {
     info?: string;
     action?: React.ReactNode;
     statusType?: "approved" | "rejected" | "pending";
+    defaultToggle?: boolean;
 }
 
 const Block: React.FC<BlockProps> = ({
@@ -21,8 +22,9 @@ const Block: React.FC<BlockProps> = ({
     info,
     action,
     statusType,
+    defaultToggle,
 }) => {
-    const [isToggleon, setIsToggleOn] = useState(false);
+    const [isToggleon, setIsToggleOn] = useState(defaultToggle ?? false);
     const handleDetailClick = () => {
         if (type === "detail") {
             alert("페이지 이동 예정");
