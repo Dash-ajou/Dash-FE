@@ -6,7 +6,10 @@ const SubHeader = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const pageTitle = pageTitles[location.pathname] || "페이지 없음"; // 없는 경우 기본값 설정
+    const pathTitle = pageTitles[location.pathname];
+    const stateName = location.state?.name;
+
+    const pageTitle = stateName || pathTitle || "페이지 없음"; // 없는 경우 기본값 설정
 
     return (
         <header className="w-full flex items-center p-5 bg-white">
