@@ -10,6 +10,8 @@ const pageTitles: Record<string, string> = {
     "/user/gift": "선물함",
     "/partner/main": "파트너 메인화면",
     "/partner/statistics": "통계 상세",
+    "/partner/orgdetail": "단체별 상세조회",
+    "/partner/menudetail": "메뉴별 상세조회",
 };
 
 export default pageTitles;

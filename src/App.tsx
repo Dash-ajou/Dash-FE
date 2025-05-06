@@ -8,6 +8,8 @@ import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
 import PartnerMain from "./pages/partner/PartnerMain.tsx";
 import PartnerStat from "./pages/partner/PartnerStat.tsx";
+import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx";
+import PartnerMenuDetail from "./pages/partner/PartnerMenuDetail.tsx";
 
 const App: React.FC = () => {
     return (
@@ -26,6 +28,8 @@ const App: React.FC = () => {
             />
             <Route path="/partner/main" element={<PartnerMain />} />
             <Route path="/partner/statistics" element={<PartnerStat />} />
+            <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
+            <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
         </Routes>
     );
 };
