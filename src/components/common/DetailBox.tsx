@@ -112,21 +112,22 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                                 key={index}
                                 className="flex items-start justify-between gap-3"
                             >
-                                {url ? (
-                                    <Link
-                                        to={url}
-                                        className="text-base text-black hover:underline"
-                                    >
-                                        {left}
-                                    </Link>
-                                ) : (
-                                    <span className="text-base text-black">
-                                        {left}
-                                    </span>
-                                )}
-                                <span className="text-black text-sm font-light text-left flex-1">
+                                <div className="w-[110px] text-base text-black font-semibold">
+                                    {url ? (
+                                        <Link
+                                            to={url}
+                                            className="hover:underline"
+                                        >
+                                            {left}
+                                        </Link>
+                                    ) : (
+                                        <span>{left}</span>
+                                    )}
+                                </div>
+
+                                <div className="flex-1 text-sm text-black font-light">
                                     {right}
-                                </span>
+                                </div>
                             </div>
                         );
                     })}
