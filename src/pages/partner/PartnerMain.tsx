@@ -7,14 +7,12 @@ import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import QRScanButton from "../../components/unit/partner-main/QRScanButton";
 import ListBlock from "../../components/common/ListBlock";
-import {
-    fetchPartnerStats,
-    PartnerStats,
-} from "../../services/partnerStatService";
+import { MainPartnerStats } from "../../services/partnerStatService";
+import { fetchPartnerStats } from "../../services/partnerStatService";
 
 const PartnerMain = () => {
     const [isChecked, setIsChecked] = useState(false);
-    const [stats, setStats] = useState<PartnerStats | null>(null);
+    const [stats, setStats] = useState<MainPartnerStats | null>(null);
     const navigate = useNavigate();
 
     const toggleCheck = () => {
@@ -36,7 +34,6 @@ const PartnerMain = () => {
     return (
         <Layout>
             <div className="mt-5" onClick={goToStatsPage}>
-                {/* TO-DO: API 연동 필요 */}
                 {stats && (
                     <Statistics
                         mode="totalstat"
