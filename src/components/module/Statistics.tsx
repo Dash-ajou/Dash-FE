@@ -26,15 +26,15 @@ const Statistics: React.FC<StatisticsProps> = ({
     const getStrokeWidth = (mode: string) => {
         switch (mode) {
             case "totalstat":
-                return 9; // 두께를 9%로 설정
+                return 9;
             case "simplestat":
-                return 13; // 두께를 13%로 설정기기
+                return 13;
             case "orgstat":
-                return 12; // 두께를 8%로 설정
+                return 12;
             case "detailstat":
-                return 7; // 두께를 7%로 설정
+                return 7;
             default:
-                return 8; // 기본값
+                return 8;
         }
     };
 
