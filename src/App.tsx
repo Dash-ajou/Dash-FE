@@ -10,6 +10,8 @@ import PartnerMain from "./pages/partner/PartnerMain.tsx";
 import PartnerStat from "./pages/partner/PartnerStat.tsx";
 import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx";
 import PartnerMenuDetail from "./pages/partner/PartnerMenuDetail.tsx";
+import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
+import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
 
 const App: React.FC = () => {
     return (
@@ -27,6 +29,14 @@ const App: React.FC = () => {
             <Route
                 path="/user/mypage/usedcoupon"
                 element={<UserUsedCoupon />}
+            />
+            <Route
+                path="/user/coupon/published"
+                element={<UserCouponPublished />}
+            />
+            <Route
+                path="/user/coupon/published/detail"
+                element={<UserCouponPublishedDetail />}
             />
             <Route path="/partner/main" element={<PartnerMain />} />
             <Route path="/partner/statistics" element={<PartnerStat />} />
