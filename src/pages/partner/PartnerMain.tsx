@@ -43,7 +43,12 @@ const PartnerMain = () => {
                 )}
             </div>
             <div className="flex flex-col w-full mt-5">
-                <QRScanButton />
+                <div
+                    className="flex"
+                    onClick={() => navigate("/partner/coupon/scan")}
+                >
+                    <QRScanButton />
+                </div>
                 <div className="flex w-full justify-between gap-3.5 mt-6 mb-5">
                     <CommonButton
                         size="large"
