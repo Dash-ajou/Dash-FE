@@ -6,12 +6,17 @@ const SubHeader = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const pageTitle = pageTitles[location.pathname] || "페이지 없음"; // 없는 경우 기본값 설정
+    const state = location.state as { businessName?: string } | null;
+
+    const isDetailPage = location.pathname == "/user/coupon/published/detail";
+    const pageTitle = isDetailPage
+        ? state?.businessName || "쿠폰 통계"
+        : pageTitles[location.pathname] || "페이지 없음";
 
     return (
-        <header className="w-full flex items-center p-5 bg-white">
+        <header className="w-full flex items-center px-8 pt-6 pb-3">
             <Icon name="arrowicon_line_left" onClick={() => navigate(-1)} />
-            <h1 className="ml-4 text-2xl font-bold text-black">{pageTitle}</h1>
+            <h1 className="ml-4 text-xl font-bold text-black">{pageTitle}</h1>
         </header>
     );
 };

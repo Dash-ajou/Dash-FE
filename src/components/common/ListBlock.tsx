@@ -1,6 +1,6 @@
 import React from "react";
 
-type ListButtonProps = {
+type ListBlockProps = {
     type: "coupstatuslist" | "datetimelist" | "orgnamelist";
     coupnum?: string;
     coupstatus?: "Issued" | "Registered" | "Used";
@@ -11,8 +11,16 @@ type ListButtonProps = {
     usedea?: number;
 };
 
-const ListButton: React.FC<ListButtonProps> = ({ type, coupnum, coupstatus, name, datetime, orgname, coupea, usedea }) => {
-
+const ListBlock: React.FC<ListBlockProps> = ({
+    type,
+    coupnum,
+    coupstatus,
+    name,
+    datetime,
+    orgname,
+    coupea,
+    usedea,
+}) => {
     // 쿠폰 상태별 텍스트 설정
     const coupstatuslist = () => {
         switch (coupstatus) {
@@ -23,14 +31,14 @@ const ListButton: React.FC<ListButtonProps> = ({ type, coupnum, coupstatus, name
             case "Used":
                 return `${name ? `${name}/` : ""}사용완료`;
             default:
-                return ""; 
+                return "";
         }
     };
 
     // 표시할 내용 결정
     const getContent = () => {
         switch (type) {
-            case "coupstatuslist": 
+            case "coupstatuslist":
                 return coupstatuslist();
             case "datetimelist":
                 return coupnum && datetime ? `${datetime}` : "정보 없음";
@@ -44,10 +52,21 @@ const ListButton: React.FC<ListButtonProps> = ({ type, coupnum, coupstatus, name
     };
 
     return (
-        <div className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
-                        ${type === "orgnamelist" ? "bg-gray-200" : "bg-blue-50"}`}>
-
-            <span className={type === "datetimelist" ? "flex flex-wrap text-base font-medium" : ""}>
+        <div
+            className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
+                        ${
+                            type === "orgnamelist"
+                                ? "bg-gray-200"
+                                : "bg-blue-50"
+                        }`}
+        >
+            <span
+                className={
+                    type === "datetimelist"
+                        ? "flex flex-wrap text-base font-medium"
+                        : ""
+                }
+            >
                 {type === "orgnamelist" ? orgname : coupnum}
             </span>
 
@@ -56,4 +75,4 @@ const ListButton: React.FC<ListButtonProps> = ({ type, coupnum, coupstatus, name
     );
 };
 
-export default ListButton;
+export default ListBlock;
