@@ -39,8 +39,8 @@ const UserAccountInfo = () => {
                     ]}
                     linkurl={[
                         "", // 이름은 클릭 불가
-                        "/update-email",
-                        "/update-phone",
+                        "/mypage/update/email",
+                        "/mypage/update/phone",
                     ]}
                 />
             </div>
