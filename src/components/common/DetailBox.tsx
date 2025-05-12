@@ -6,7 +6,7 @@ import Icon from "./icons/Icon";
 type DetailBoxProps = {
     mode: "default" | "coupinfo" | "setting";
     title: string;
-    leftstring?: string[];
+    leftstring?: (string | React.ReactNode)[];
     rightstring?: string[];
     linkurl?: string[];
     statusType?: "used" | "unused";

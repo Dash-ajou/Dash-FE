@@ -10,6 +10,7 @@ const pageTitles: Record<string, string> = {
     "/user/coupon/request": "쿠폰 발행 요청",
     "/user/coupon/request/confirm": "요청서 최종 확인",
     "/user/coupon/request/list":"쿠폰 요청 목록",
+    "/user/coupon/request/detail": "쿠폰 발행 요청 상세"
 };
 
 export default pageTitles;

@@ -58,9 +58,16 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
     };
 
     const handleSave = useCallback((direction: "prev" | "next") => {
-        const isQuantityValid = localRequestDetail.menu.every(item => /^\d+$/.test(item.quantity.trim()));
+        const isValidQuantity = localRequestDetail.menu.every(item => {
+            const trimmed = item.quantity.trim();
+            if (direction === "prev") {
+                return trimmed === "" || /^\d+$/.test(trimmed);
+            } else {
+                return /^\d+$/.test(trimmed);
+            }
+        });
 
-        if (!isQuantityValid) {
+        if (!isValidQuantity) {
             setShowQuantityErrorModal(true);
             return;
         }

@@ -1,15 +1,46 @@
 import React from 'react';
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import CommonButton from "../../components/common/button/CommonButton.tsx";
 import Layout from "../../components/layout/Layout.tsx";
 import DetailBox from "../../components/common/DetailBox.tsx";
+import BasicModal from "../../components/common/modal/BasicModal.tsx";
 
 const CouponRequestConfirm: React.FC = () => {
     const location = useLocation();
     const {vendor, request} = location.state;
 
-    const handleSubmit = () => {
+    const [showResultModal, setShowResultModal] = React.useState(false);
+    const [modalMessage, setModalMessage] = React.useState("");
 
+    const navigate = useNavigate();
+
+    const handleSubmit = async () => {
+        // try {
+        //     const response = await couponRequest;
+        //
+        //     if (response.success) {
+        //         setModalMessage("요청서 발행에 성공했습니다.");
+        //     } else {
+        //         setModalMessage("요청서 발행 중 오류가 발생했습니다.");
+        //     }
+        // } catch (error) {
+        //     setModalMessage("요청서 발행 중 오류가 발생했습니다." + error);
+        // } finally {
+        //     setShowResultModal(true);
+        // }
+        const success = true;
+
+        if (success) {
+            setModalMessage("요청서 발행에 성공했습니다.");
+        } else {
+            setModalMessage("요청서 발행 중 오류가 발생했습니다.");
+        }
+        setShowResultModal(true);
+    }
+
+    const handleConfirm = () => {
+        setShowResultModal(true);
+        navigate('/user/coupon/request/detail', {state: 1})
     }
 
     return (
@@ -21,14 +52,14 @@ const CouponRequestConfirm: React.FC = () => {
                 </div>
 
                 <DetailBox
-                    mode={"coupinfo"}
+                    mode={"default"}
                     title={"벤더 정보"}
-                    leftstring={["발행 단체명", "대표자 명", "연락처"]}
+                    leftstring={["발행 단체명", "대표자 명", "대표자 연락처"]}
                     rightstring={[vendor.organizationName, vendor.representativeName, vendor.contact]}
                 />
 
                 <DetailBox
-                    mode={"coupinfo"}
+                    mode={"default"}
                     title={"요청 상세"}
                     leftstring={[
                         "파트너 명",
@@ -54,6 +85,14 @@ const CouponRequestConfirm: React.FC = () => {
                     />
                 </div>
             </div>
+
+            <BasicModal
+                mode={"YesNo"}
+                isOpen={showResultModal}
+                title={modalMessage}
+                onClose={()=>navigate('/user/main')}
+                onConfirm={handleConfirm}
+            />
         </Layout>
     );
 };

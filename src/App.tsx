@@ -9,6 +9,7 @@ import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import CouponRequest from "./pages/vendor/CouponRequest.tsx";
 import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx";
 import CouponRequestList from "./pages/vendor/CouponRequestList.tsx";
+import CouponRequestDetail from "./pages/vendor/CouponRequestDetail.tsx";
 
 const App: React.FC = () => {
     return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
             <Route path="/user/coupon/request" element={<CouponRequest/>}/>
             <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
             <Route path="/user/coupon/request/list" element={<CouponRequestList/>}/>
+            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail/>}/>
         </Routes>
     );
 };
