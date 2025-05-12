@@ -13,6 +13,7 @@ const FindPW: React.FC = () => {
 
     const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false);
     const [phoneNum, setPhoneNum] = useState<string>("");
+    const [isVerified, setIsVerified] = useState<boolean>(false);
 
     const handleClose = () => {
         setIsAlertModalOpen(false)
@@ -25,6 +26,8 @@ const FindPW: React.FC = () => {
                 <PhoneAuth
                     phoneNum={phoneNum}
                     setPhoneNum={setPhoneNum}
+                    isVerified={isVerified}
+                    setIsVerified={setIsVerified}
                     onNext={() => setSearchParams({step: FindPWStep.RESET_PW})}
                 />
             )}

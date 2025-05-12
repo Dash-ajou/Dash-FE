@@ -14,7 +14,7 @@ const SubHeader = () => {
         : pageTitles[location.pathname] || "페이지 없음";
 
     return (
-        <header className="w-full flex items-center px-8 pt-6 pb-3">
+        <header className="w-full flex items-center px-6 pt-6 pb-3">
             <Icon name="arrowicon_line_left" onClick={() => navigate(-1)} />
             <h1 className="ml-4 text-xl font-bold text-black">{pageTitle}</h1>
         </header>

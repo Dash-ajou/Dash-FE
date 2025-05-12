@@ -44,9 +44,6 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, isVerified,
 
     const handleNext = () => {
         setPhoneNum(localPhoneNum);
-        if (isVerified) {
-           onNext();
-        }
         CheckAuthCode();
     }
 
