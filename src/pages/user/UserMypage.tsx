@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CommonButton from "../../components/common/button/CommonButton";
 import CouponCount from "../../components/unit/user-mypage/CouponCount";
 import {
@@ -11,6 +12,7 @@ import Layout from "../../components/layout/Layout";
 const UserMypage = () => {
     const [userData, setUserData] = useState<UserMyPageData | null>(null);
     const [userType, setUserType] = useState<"USER" | "PARTNER">("USER");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,6 +64,7 @@ const UserMypage = () => {
                         <CouponCount
                             type="used"
                             count={userData.coupon_status.used_coupons}
+                            onClick={() => navigate("/user/mypage/usedcoupon")}
                         />
                     </div>
                 </div>

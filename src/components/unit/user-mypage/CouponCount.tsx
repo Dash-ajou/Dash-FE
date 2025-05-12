@@ -3,9 +3,10 @@ import Icon from "../../common/icons/Icon";
 interface CouponCountProps {
     type: "available" | "used";
     count: number;
+    onClick?: () => void;
 }
 
-const CouponCount: React.FC<CouponCountProps> = ({ type, count }) => {
+const CouponCount: React.FC<CouponCountProps> = ({ type, count, onClick }) => {
     const getContent = () => {
         switch (type) {
             case "available":
@@ -32,7 +33,10 @@ const CouponCount: React.FC<CouponCountProps> = ({ type, count }) => {
     const { icon, message } = getContent();
 
     return (
-        <div className="flex flex-col bg-white rounded-xl shadow-custom-basic">
+        <div
+            className="flex flex-col bg-white rounded-xl shadow-custom-basic"
+            onClick={onClick}
+        >
             <div className="px-4 py-3">
                 <h1 className="text-sm text-black font-semibold pb-2">
                     {message}

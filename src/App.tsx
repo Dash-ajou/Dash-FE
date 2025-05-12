@@ -5,6 +5,7 @@ import UserMypage from "./pages/user/UserMypage";
 import UserGift from "./pages/user/UserGift.tsx";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
+import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
 import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
 import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
 
@@ -19,14 +20,9 @@ const App: React.FC = () => {
             <Route path="/user/accountinfo" element={<UserAccountInfo />} />
             <Route path="/partner/coupon/scan" element={<QRScanPage />} />
             <Route path="/partner/coupon/status/:couponNum" element={<></>} />
-            <Route
-                path="/user/coupon/published"
-                element={<UserCouponPublished />}
-            />
-            <Route
-                path="/user/coupon/published/detail"
-                element={<UserCouponPublishedDetail />}
-            />
+            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
         </Routes>
     );
 };
