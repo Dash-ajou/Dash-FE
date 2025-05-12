@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import CommonButton from "../../components/common/button/CommonButton.tsx";
-import DetailBox from "../../components/common/DetailBox.tsx";
-import CouponCount from "../../components/unit/user-mypage/CouponCount.tsx";
-import { fetchUserMyPage, UserMyPageData } from "../services/userMypageService";
+import { useNavigate } from "react-router-dom";
+import CommonButton from "../../components/common/button/CommonButton";
+import CouponCount from "../../components/unit/user-mypage/CouponCount";
+import {
+    fetchUserMyPage,
+    UserMyPageData,
+} from "../../services/userMypageService";
+import DetailBox from "../../components/common/DetailBox";
+import Layout from "../../components/layout/Layout";
 
 const UserMypage = () => {
     const [userData, setUserData] = useState<UserMyPageData | null>(null);
+    const [userType, setUserType] = useState<"USER" | "PARTNER">("USER");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,36 +28,57 @@ const UserMypage = () => {
         return <div className="text-center mt-10">불러오는 중</div>;
     }
 
+    const myInfoTitles = userData.menus.my_info.map((item) => item.title);
+    const myInfoUrls = userData.menus.my_info.map((item, idx) =>
+        idx === 0 ? "/user/accountinfo" : item.url
+    );
+
     return (
-        <div className="mx-7">
+        <Layout>
+            {/* TO-DO; 계정 타입 전환용 버튼, 삭제 필요 */}
+            <div className="flex justify-end mt-4">
+                <button
+                    className="text-sm text-blue-500 underline"
+                    onClick={() =>
+                        setUserType((prev) =>
+                            prev === "USER" ? "PARTNER" : "USER"
+                        )
+                    }
+                >
+                    현재 타입: {userType}
+                </button>
+            </div>
+
             <div className="text-black font-bold text-2xl mt-11 mb-4">
                 <p>{userData.general_name}님 안녕하세요</p>
             </div>
-            <div className="flex justify-center gap-3">
-                <div className="w-full">
-                    <CouponCount
-                        type="available"
-                        count={userData.coupon_status.usable_coupons}
-                    />
+            {userType === "USER" && (
+                <div className="flex justify-center gap-3">
+                    <div className="w-full">
+                        <CouponCount
+                            type="available"
+                            count={userData.coupon_status.usable_coupons}
+                        />
+                    </div>
+                    <div className="w-full">
+                        <CouponCount
+                            type="used"
+                            count={userData.coupon_status.used_coupons}
+                            onClick={() => navigate("/user/mypage/usedcoupon")}
+                        />
+                    </div>
                 </div>
-                <div className="w-full">
-                    <CouponCount
-                        type="used"
-                        count={userData.coupon_status.used_coupons}
-                    />
-                </div>
-            </div>
+            )}
+
             <div className="flex flex-col mt-7 gap-4">
                 <DetailBox
-                    mode="setting"
+                    mode="default"
                     title="내 정보"
-                    leftstring={userData.menus.my_info.map(
-                        (item) => item.title
-                    )}
-                    linkurl={userData.menus.my_info.map((item) => item.url)}
+                    leftstring={myInfoTitles}
+                    linkurl={myInfoUrls}
                 />
                 <DetailBox
-                    mode="setting"
+                    mode="default"
                     title="고객센터"
                     leftstring={userData.menus.customer_center.map(
                         (item) => item.title
@@ -76,7 +104,7 @@ const UserMypage = () => {
                     detail={{ label: "회원 탈퇴", position: "none" }}
                 />
             </div>
-        </div>
+        </Layout>
     );
 };
 

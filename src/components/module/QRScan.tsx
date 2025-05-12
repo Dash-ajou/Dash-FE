@@ -1,10 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Html5Qrcode, Html5QrcodeCameraScanConfig } from "html5-qrcode";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Html5Qrcode, Html5QrcodeCameraScanConfig} from "html5-qrcode";
+import SlideUpModal from "../common/modal/SlideUpModal.tsx";
+import InputField from "../common/InputField.tsx";
+import CommonButton from "../common/button/CommonButton.tsx";
 
-const QRScan: React.FC = () => {
+type QRScanProps = {
+    isPartner: boolean;
+    onClick: (data: string) => void;
+}
+
+const QRScan: React.FC<QRScanProps> = ({
+                                           isPartner,
+                                           onClick
+                                       }) => {
     const boxRef = useRef<HTMLDivElement>(null);
-    const [maskBoxPx, setMaskBoxPx] = useState({ x: 0, y: 0, width: 0, height: 0 });
-    const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+    const [maskBoxPx, setMaskBoxPx] = useState({x: 0, y: 0, width: 0, height: 0});
+    const [screenSize, setScreenSize] = useState({width: 0, height: 0});
+    const [scanned, setScanned] = useState(false);
+
+    const [couponNum, setCouponNum] = useState<string>("");
+
+    const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setCouponNum(event.target.value);
+    }, []);
 
     useEffect(() => {
         const html5QrCode = new Html5Qrcode("custom-qr-reader");
@@ -17,20 +35,27 @@ const QRScan: React.FC = () => {
 
             const config: Html5QrcodeCameraScanConfig = {
                 fps: 10,
-                qrbox: { width: 250, height: 250 },
+                qrbox: {width: 250, height: 250},
                 aspectRatio: 1.0,
             };
 
             html5QrCode
                 .start(
-                    { facingMode: "environment" },
+                    {facingMode: "environment"},
                     config,
-                    (decodedText) => {
-                        console.log("✅ QR 스캔 성공:", decodedText);
-                        alert(`QR 코드: ${decodedText}`);
+                    async (decodedText) => {
+                        if (!scanned) {
+                            setScanned(true);
+                            try {
+                                await html5QrCode.stop();
+                                await html5QrCode.clear();
+                            } catch (err) {
+                                console.error(err);
+                            }
+                            onClick(decodedText);
+                        }
                     },
-                    (errorMessage) => {
-                        console.log("스캔 실패:", errorMessage);
+                    () => {
                     }
                 )
                 .catch((err) => {
@@ -57,8 +82,8 @@ const QRScan: React.FC = () => {
                 const x = rawX - width / 2; // ← 여기 수정
                 const y = box.offsetTop;
 
-                setScreenSize({ width: vw, height: vh });
-                setMaskBoxPx({ x, y, width, height });
+                setScreenSize({width: vw, height: vh});
+                setMaskBoxPx({x, y, width, height});
             }
         };
 
@@ -66,6 +91,10 @@ const QRScan: React.FC = () => {
         window.addEventListener("resize", updateMaskBox);
         return () => window.removeEventListener("resize", updateMaskBox);
     }, []);
+
+    const handleClick = () => {
+        onClick(couponNum);
+    }
 
     return (
         <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -123,8 +152,36 @@ const QRScan: React.FC = () => {
 
             {/* 안내 문구 */}
             <p className="absolute bottom-24 w-full text-center text-white text-sm z-20">
-                QR코드를 스캔하세요
+                QR코드를 테두리 안에 위치시켜 주세요
             </p>
+
+            <SlideUpModal
+                isOpen={true}
+                isFixed={true}
+                height={"long"}
+                title={"수동 번호 입력"}
+            >
+                <div className="mt-8 gap-8 flex flex-col">
+                    <InputField
+                        dropdown={false}
+                        notice={{
+                            icon: "noticeicon_fill",
+                            detail: "QR코드 하단의 쿠폰번호를 입력해주세요",
+                            color: "black",
+                        }}
+                        value={couponNum}
+                        onInput={handleChange}
+                    />
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{label: (isPartner ? "쿠폰 조회" : "쿠폰 등록"), position: "none"}}
+                        onClick={handleClick}
+                    />
+                </div>
+            </SlideUpModal>
         </div>
     );
 };

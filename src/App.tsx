@@ -10,6 +10,10 @@ import UserMypage from "./pages/user/UserMypage.tsx";
 import UserGift from "./pages/user/UserGift.tsx";
 import Layout from "./components/layout/Layout";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
+import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
+import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
+import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
+import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
 
 const App: React.FC = () => {
     return (
@@ -18,42 +22,17 @@ const App: React.FC = () => {
             <Route path="/join" element={<Join/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/findpw" element={<FindPW/>}/>
-            <Route
-                path="/qrscan"
-                element={<QRScanPage/>}
-            />
-            <Route
-                path="/usermain"
-                element={
-                    <Layout>
-                        <UserMain />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usernotification"
-                element={
-                    <Layout>
-                        <UserNotification />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usermypage"
-                element={
-                    <Layout>
-                        <UserMypage />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/usergift"
-                element={
-                    <Layout>
-                        <UserGift />
-                    </Layout>
-                }
-            />
+            <Route path="/user/coupon/register" element={<QRScanPage />} />
+            <Route path="/user/main" element={<UserMain />} />
+            <Route path="/user/notification" element={<UserNotification />} />
+            <Route path="/user/mypage" element={<UserMypage />} />
+            <Route path="/user/gift" element={<UserGift />} />
+            <Route path="/user/accountinfo" element={<UserAccountInfo />} />
+            <Route path="/partner/coupon/scan" element={<QRScanPage />} />
+            <Route path="/partner/coupon/status/:couponNum" element={<></>} />
+            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
         </Routes>
     );
 };
