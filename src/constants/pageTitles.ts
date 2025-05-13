@@ -1,5 +1,7 @@
 const pageTitles: Record<string, string> = {
     "/join": "회원가입",
+    "/login": "로그인",
+    "/findpw": "비밀번호 재설정",
     "/user/coupon/register": "쿠폰 등록",
     "/user/coupon/published": "쿠폰 발행 목록",
     "/user/coupon/published/deatil": "발행된 쿠폰 통계",
