@@ -29,9 +29,7 @@ const UserMypage = () => {
     }
 
     const myInfoTitles = userData.menus.my_info.map((item) => item.title);
-    const myInfoUrls = userData.menus.my_info.map((item, idx) =>
-        idx === 0 ? "/user/accountinfo" : item.url
-    );
+    const myInfoUrls = userData.menus.my_info.map((item) => item.url);
 
     return (
         <Layout>
