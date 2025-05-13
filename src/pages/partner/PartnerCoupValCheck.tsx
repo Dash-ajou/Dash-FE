@@ -7,6 +7,11 @@ import {
     PartnerCouponValidationResponse,
 } from "../../services/partnerCouponValidationCheckService";
 import BasicModal from "../../components/common/modal/BasicModal";
+import CommonButton from "../../components/common/button/CommonButton";
+import {
+    fetchCouponUse,
+    fetchCouponCancel,
+} from "../../services/partnerCoupStatusChangeService";
 
 const PartnerCoupValCheck = () => {
     const { couponNum } = useParams<{ couponNum: string }>();
@@ -15,6 +20,12 @@ const PartnerCoupValCheck = () => {
     const [couponData, setCouponData] =
         useState<PartnerCouponValidationResponse | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
+
+    // ✅ 처리 확인용 모달 상태
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(
+        null
+    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,16 +52,14 @@ const PartnerCoupValCheck = () => {
 
     if (!couponData) {
         return (
-            <>
-                <Layout>
-                    <BasicModal
-                        mode="OnlyYes"
-                        isOpen={modalOpen}
-                        title="등록되지 않은 쿠폰입니다."
-                        onConfirm={handleConfirm}
-                    />
-                </Layout>
-            </>
+            <Layout>
+                <BasicModal
+                    mode="OnlyYes"
+                    isOpen={modalOpen}
+                    title="등록되지 않은 쿠폰입니다."
+                    onConfirm={handleConfirm}
+                />
+            </Layout>
         );
     }
 
@@ -86,11 +95,91 @@ const PartnerCoupValCheck = () => {
                             : [partner.business_name, product.product_name]
                     }
                 />
+
+                {/* ✅ 사용/철회 버튼 */}
+                <div className="w-full flex mt-[106px]">
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{
+                            label: isUsed ? "쿠폰 사용 철회" : "쿠폰 사용 처리",
+                            position: "none",
+                        }}
+                        onClick={() => {
+                            setConfirmAction(isUsed ? "cancel" : "use");
+                            setConfirmModalOpen(true);
+                        }}
+                    />
+                </div>
+
+                {/* ✅ 등록되지 않은 쿠폰 모달 */}
                 <BasicModal
                     mode="OnlyYes"
                     isOpen={modalOpen}
                     title="등록되지 않은 쿠폰입니다."
                     onConfirm={handleConfirm}
+                />
+
+                {/* ✅ 사용 처리/철회 확인 모달 */}
+                <BasicModal
+                    mode="YesNo"
+                    isOpen={confirmModalOpen}
+                    title={
+                        confirmAction === "cancel"
+                            ? "쿠폰 사용을 철회할까요?"
+                            : "쿠폰을 사용 처리할까요?"
+                    }
+                    onConfirm={async () => {
+                        try {
+                            if (!couponNum) throw new Error("쿠폰 번호 누락");
+
+                            if (confirmAction === "cancel") {
+                                if (!redeem?.payment_code || !redeem?.redeem_id)
+                                    throw new Error("필수 정보 누락");
+
+                                const result = await fetchCouponCancel(
+                                    redeem.payment_code,
+                                    redeem.redeem_id
+                                );
+                                console.log("[성공] 사용 철회 결과:", result);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                              ...prev,
+                                              status: "USABLE",
+                                              redeem: undefined,
+                                          }
+                                        : prev
+                                );
+                            } else if (confirmAction === "use") {
+                                const result = await fetchCouponUse(couponNum);
+                                console.log("[성공] 사용 처리 결과:", result);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                              ...prev,
+                                              status: "USED",
+                                              redeem: {
+                                                  redeem_id: result.id,
+                                                  used_at: result.used_at,
+                                                  payment_code: couponNum,
+                                              },
+                                          }
+                                        : prev
+                                );
+                            }
+                        } catch (e) {
+                            console.error("쿠폰 처리 실패:", e);
+                            alert("처리 중 오류가 발생했습니다.");
+                        } finally {
+                            setConfirmModalOpen(false);
+                        }
+                    }}
+                    onClose={() => setConfirmModalOpen(false)}
                 />
             </div>
         </Layout>
