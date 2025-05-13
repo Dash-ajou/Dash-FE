@@ -10,6 +10,10 @@ const pageTitles: Record<string, string> = {
     "/user/accountinfo": "계정 정보",
     "/user/mypage/usedcoupon": "사용 완료 쿠폰",
     "/user/gift": "선물함",
+    "/user/coupon/request": "쿠폰 발행 요청",
+    "/user/coupon/request/confirm": "요청서 최종 확인",
+    "/user/coupon/request/list":"쿠폰 요청 목록",
+    "/user/coupon/request/detail": "쿠폰 발행 요청 상세"
 };
 
 export default pageTitles;

@@ -5,7 +5,7 @@ import Icon from "../icons/Icon.tsx";
 type CommonButtonProps = {
     size: "mini" | "small" | "normal" | "large";
     isActive: boolean;
-    mode: "fill" | "line" | "text" | "ghost";
+    mode: "fill" | "line" | "text" | "ghost" | "textbold";
     color: "blue" | "red" | "gray" | "black";
     detail: {
         label: string;
@@ -59,6 +59,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         line: `border-2 border-${color}-500 text-${color}-500 bg-transparent`,
         text: `${color=="black" ? 'text-black' : `text-${color}-500`} underline bg-transparent`,
         ghost: `shadow-custom-basic bg-white text-${color}-500`,
+        textbold: `${color=="black" ? 'text-black' : `text-${color}-500`} font-bold bg-transparent`,
     };
 
     // Disabled styles
