@@ -8,6 +8,8 @@ const pageTitles: Record<string, string> = {
     "/user/main": "사용자 메인화면",
     "/user/notification": "알림함",
     "/user/mypage": "사용자 마이페이지",
+    "/mypage/update/phone": "전화번호 변경",
+    "/mypage/update/email": "이메일 변경",
     "/user/accountinfo": "계정 정보",
     "/user/mypage/usedcoupon": "사용 완료 쿠폰",
     "/user/gift": "선물함",

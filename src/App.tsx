@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Join from "./pages/both/Join.tsx";
 import Login from "./pages/both/Login.tsx";
 import FindPW from "./pages/both/FIndPW.tsx";
@@ -21,6 +21,8 @@ import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx";
 import PartnerMenuDetail from "./pages/partner/PartnerMenuDetail.tsx";
 import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
 import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
+import PhoneNumChange from "./pages/both/PhoneNumChange.tsx";
+import EmailChange from "./pages/both/EmailChange.tsx";
 import PartnerCoupValCheck from "./pages/partner/PartnerCoupValCheck.tsx";
 
 const App: React.FC = () => {
@@ -30,6 +32,8 @@ const App: React.FC = () => {
             <Route path="/join" element={<Join />} />
             <Route path="/login" element={<Login />} />
             <Route path="/findpw" element={<FindPW />} />
+            <Route path="/mypage/update/phone" element={<PhoneNumChange />} />
+            <Route path="/mypage/update/email" element={<EmailChange />} />
 
             <Route path="/user/main" element={<UserMain />} />
             <Route path="/user/notification" element={<UserNotification />} />

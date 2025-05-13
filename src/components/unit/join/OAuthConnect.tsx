@@ -30,7 +30,15 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({onNext}) => {
 
     return (
         <div className="flex flex-col justify-center gap-4 w-full">
-            <div className="text-black font-bold text-xl mt-16">이메일 등록이 필요해요 <br/>학교 계정이 있다면 연결해주세요</div>
+            {window.location.pathname === "/mypage/update/email" ? (
+                <div className="text-black font-bold text-xl mt-16">
+                    이메일을 수정할 수 있어요 <br />학교 계정을 다시 연결해주세요
+                </div>
+            ) : (
+                <div className="text-black font-bold text-xl mt-16">
+                    이메일 등록이 필요해요 <br />학교 계정이 있다면 연결해주세요
+                </div>
+            )}
 
             <div className="absolute bottom-[325px] px-6 left-0 right-0 w-full flex flex-col">
                 <div id="g_id_onload"
@@ -51,14 +59,16 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({onNext}) => {
                 >
                 </div>
 
-                <CommonButton
-                    size="mini"
-                    isActive={true}
-                    mode="text"
-                    color="gray"
-                    detail={{label: "건너뛰기", position: "none"}}
-                    onClick={handlePass}
-                />
+                {window.location.pathname !== "/mypage/update/email" && (
+                    <CommonButton
+                        size="mini"
+                        isActive={true}
+                        mode="text"
+                        color="gray"
+                        detail={{label: "건너뛰기", position: "none"}}
+                        onClick={handlePass}
+                    />
+                )}
 
                 <BasicModal
                     mode={"YesNo"}
