@@ -37,15 +37,13 @@ const PartnerOrgDetail = () => {
                 <DetailBox
                     mode="coupinfo"
                     title="발행 상세"
-                    leftstring={[
-                        "요청 상세",
-                        "요청 수량",
-                        "총 금액",
-                        "승인 일시",
-                    ]}
+                    requestList={detail.details.request_detail.map(
+                        (name, idx) => ({
+                            name,
+                            count: detail.details.request_count[idx] ?? 0,
+                        })
+                    )}
                     rightstring={[
-                        detail.details.request_detail,
-                        `${detail.details.request_count}EA`,
                         detail.details.total_price,
                         detail.details.approval_date.replace(/-/g, "/"),
                     ]}
