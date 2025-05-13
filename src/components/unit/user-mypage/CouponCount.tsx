@@ -34,8 +34,8 @@ const CouponCount: React.FC<CouponCountProps> = ({ type, count, onClick }) => {
 
     return (
         <div
-            onClick={onClick}
             className="flex flex-col bg-white rounded-xl shadow-custom-basic"
+            onClick={onClick}
         >
             <div className="px-4 py-3">
                 <h1 className="text-sm text-black font-semibold pb-2">

@@ -17,13 +17,11 @@ const App: React.FC = () => {
     return (
         <Routes>
             <Route path="/user/coupon/register" element={<QRScanPage />} />
-            <Route path="/user/coupon/register" element={<QRScanPage />} />
             <Route path="/user/main" element={<UserMain />} />
             <Route path="/user/notification" element={<UserNotification />} />
             <Route path="/user/mypage" element={<UserMypage />} />
             <Route path="/user/gift" element={<UserGift />} />
             <Route path="/user/accountinfo" element={<UserAccountInfo />} />
-            <Route path="/partner/coupon/scan" element={<QRScanPage />} />
             <Route path="/partner/coupon/scan" element={<QRScanPage />} />
             <Route path="/partner/coupon/status/:couponNum" element={<></>} />
             <Route
@@ -42,6 +40,9 @@ const App: React.FC = () => {
             <Route path="/partner/statistics" element={<PartnerStat />} />
             <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
             <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
+            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
         </Routes>
     );
 };
