@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Status from "./Status";
 import Icon from "./icons/Icon";
 
@@ -15,15 +15,15 @@ type DetailBoxProps = {
 };
 
 const DetailBox: React.FC<DetailBoxProps> = ({
-
-                                                 mode,
-                                                 title,
-                                                 leftstring = [],
-                                                 rightstring = [],
-                                                 linkurl = [],
-                                                 statusType,
-                                                 statusColor = "gray",
-                                             }) => {
+    mode,
+    title,
+    leftstring = [],
+    rightstring = [],
+    linkurl = [],
+    statusType,
+    statusColor = "gray",
+    requestList,
+}) => {
     const rowCount = Math.max(
         leftstring.length,
         rightstring.length,
@@ -44,12 +44,12 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                 )}
             </div>
 
-            <hr className="w-full border-t border-black h-[1px] mx-auto mb-4"/>
+            <hr className="w-full border-t border-black h-[1px] mx-auto mb-4" />
 
             {mode === "setting" ? (
                 <div className="flex flex-row justify-between pl-3">
                     <div className="flex flex-col gap-2.5 items-start">
-                        {Array.from({length: rowCount}).map((_, i) => (
+                        {Array.from({ length: rowCount }).map((_, i) => (
                             <div
                                 key={i}
                                 className="text-black text-base font-bold text-Main100"
@@ -60,7 +60,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                     </div>
 
                     <div className="flex flex-col gap-3.5 items-start">
-                        {Array.from({length: rowCount}).map((_, i) => {
+                        {Array.from({ length: rowCount }).map((_, i) => {
                             const value = rightstring[i] ?? "";
                             const isMissing = value.includes("없어요");
                             return (
@@ -78,7 +78,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                         })}
                     </div>
                     <div className="flex flex-col justify-between gap-1.5 items-start">
-                        {Array.from({length: rowCount}).map((_, i) => {
+                        {Array.from({ length: rowCount }).map((_, i) => {
                             const url = linkurl[i];
                             return (
                                 <div
@@ -96,7 +96,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                                             />
                                         </Link>
                                     ) : (
-                                        <div className="w-6 h-6"/>
+                                        <div className="w-6 h-6" />
                                     )}
                                 </div>
                             );
