@@ -15,12 +15,12 @@ const pageTitles: Record<string, string> = {
     "/user/coupon/request": "쿠폰 발행 요청",
     "/user/coupon/request/confirm": "요청서 최종 확인",
     "/user/coupon/request/list":"쿠폰 요청 목록",
-    "/user/coupon/request/detail": "쿠폰 발행 요청 상세"
+    "/user/coupon/request/detail": "쿠폰 발행 요청 상세",
     "/partner/main": "파트너 메인화면",
     "/partner/statistics": "통계 상세",
     "/partner/orgdetail": "단체별 상세조회",
     "/partner/menudetail": "메뉴별 상세조회",
-    "/partner/coupon/scan": "QR 인식", 
+    "/partner/coupon/scan": "QR 인식",
 };
 
 export default pageTitles;
