@@ -10,7 +10,15 @@ import UserMypage from "./pages/user/UserMypage.tsx";
 import UserGift from "./pages/user/UserGift.tsx";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
+import CouponRequest from "./pages/vendor/CouponRequest.tsx";
+import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx";
+import CouponRequestList from "./pages/vendor/CouponRequestList.tsx";
+import CouponRequestDetail from "./pages/vendor/CouponRequestDetail.tsx";
 import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
+import PartnerMain from "./pages/partner/PartnerMain.tsx";
+import PartnerStat from "./pages/partner/PartnerStat.tsx";
+import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx";
+import PartnerMenuDetail from "./pages/partner/PartnerMenuDetail.tsx";
 import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
 import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
 import PhoneNumChange from "./pages/both/PhoneNumChange.tsx";
@@ -22,18 +30,28 @@ const App: React.FC = () => {
             <Route path="/join" element={<Join/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/findpw" element={<FindPW/>}/>
-            <Route path="/user/coupon/register" element={<QRScanPage/>}/>
+            <Route path="/mypage/update/phone" element={<PhoneNumChange/>}/>
+
             <Route path="/user/main" element={<UserMain/>}/>
             <Route path="/user/notification" element={<UserNotification/>}/>
             <Route path="/user/mypage" element={<UserMypage/>}/>
-            <Route path="/mypage/update/phone" element={<PhoneNumChange/>}/>
+            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
             <Route path="/user/gift" element={<UserGift/>}/>
             <Route path="/user/accountinfo" element={<UserAccountInfo/>}/>
+            <Route path="/user/coupon/register" element={<QRScanPage/>}/>
+            <Route path="/user/coupon/request" element={<CouponRequest/>}/>
+            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
+            <Route path="/user/coupon/request/list" element={<CouponRequestList/>}/>
+            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail/>}/>
+            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
+
             <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
-            <Route path="/partner/coupon/status/:couponNum" element={<></>}/>
-            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon/>}/>
-            <Route path="/user/coupon/published" element={<UserCouponPublished/>}/>
-            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail/>}/>
+            <Route path="/partner/coupon/status/:couponNum" element={<></>} />
+            <Route path="/partner/main" element={<PartnerMain />} />
+            <Route path="/partner/statistics" element={<PartnerStat />} />
+            <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
+            <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
         </Routes>
     );
 };
