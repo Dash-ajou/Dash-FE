@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Join from "./pages/both/Join.tsx";
 import Login from "./pages/both/Login.tsx";
 import FindPW from "./pages/both/FIndPW.tsx";
@@ -24,6 +24,7 @@ import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.ts
 import PaymentInfo from "./pages/partner/PaymentInfo.tsx";
 import PhoneNumChange from "./pages/both/PhoneNumChange.tsx";
 import EmailChange from "./pages/both/EmailChange.tsx";
+import PartnerCoupValCheck from "./pages/partner/PartnerCoupValCheck.tsx";
 import PartnerAuth from "./pages/partner/PartnerAuth.tsx";
 import RequestView from "./pages/partner/RequestView.tsx";
 import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx";
