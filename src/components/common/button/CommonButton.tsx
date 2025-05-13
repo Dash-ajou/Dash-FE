@@ -4,7 +4,7 @@ import Icon from "../icons/Icon.tsx";
 
 type CommonButtonProps = {
     size: "mini" | "small" | "normal" | "large";
-    isActive: boolean;
+    isActive?: boolean;
     mode: "fill" | "line" | "text" | "ghost";
     color: "blue" | "red" | "gray" | "black";
     detail: {

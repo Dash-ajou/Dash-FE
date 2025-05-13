@@ -8,6 +8,7 @@ import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
 import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx";
 import UserCouponPublished from "./pages/user/UserCouponPublished.tsx";
 import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.tsx";
+import PaymentInfo from "./pages/partner/PaymentInfo.tsx";
 
 const App: React.FC = () => {
     return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
             <Route path="/user/coupon/published" element={<UserCouponPublished />} />
             <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
+            <Route path="/partner/request/payment" element={<PaymentInfo/>}/>
         </Routes>
     );
 };
