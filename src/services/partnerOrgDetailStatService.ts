@@ -6,8 +6,8 @@ export type PartnerOrgDetail = {
     head_name: string;
     head_contact: string;
     details: {
-        request_detail: string;
-        request_count: number;
+        request_detail: string[];
+        request_count: number[];
         total_price: string;
         approval_date: string;
     };
@@ -34,8 +34,12 @@ const MOCK_DETAILS: Record<number, PartnerOrgDetail> = {
         head_name: "김총학생",
         head_contact: "010-1234-5678",
         details: {
-            request_detail: "오리지널 타코야끼 10알",
-            request_count: 150,
+            request_detail: [
+                "오리지널 타코야끼 10알",
+                "오리지널 타코야끼 10알",
+                "오리지널 타코야끼 10알",
+            ],
+            request_count: [150, 150, 150],
             total_price: "400,000원",
             approval_date: "2025-01-04 14:35",
         },
@@ -46,8 +50,8 @@ const MOCK_DETAILS: Record<number, PartnerOrgDetail> = {
         head_name: "박소연",
         head_contact: "010-4321-8765",
         details: {
-            request_detail: "초코파이 50박스",
-            request_count: 200,
+            request_detail: ["초코파이 50박스"],
+            request_count: [200],
             total_price: "1,200,000원",
             approval_date: "2025-01-10 11:12",
         },
@@ -58,8 +62,8 @@ const MOCK_DETAILS: Record<number, PartnerOrgDetail> = {
         head_name: "이승엽",
         head_contact: "010-8888-9999",
         details: {
-            request_detail: "응원봉 300개",
-            request_count: 300,
+            request_detail: ["응원봉 300개"],
+            request_count: [300],
             total_price: "3,000,000원",
             approval_date: "2025-02-01 10:00",
         },
