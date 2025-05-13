@@ -9,6 +9,7 @@ export type StatisticsProps = {
     published: number;
     registered?: number;
     used: number;
+    onClick?: () => void;
 };
 
 const Statistics: React.FC<StatisticsProps> = ({
@@ -18,6 +19,7 @@ const Statistics: React.FC<StatisticsProps> = ({
     published,
     registered = 0,
     used,
+    onClick,
 }) => {
     const percentage = Math.round((used / published) * 100);
 
@@ -128,7 +130,10 @@ const Statistics: React.FC<StatisticsProps> = ({
     );
 
     const orgStat = (
-        <div className="flex flex-col items-center bg-white border rounded-xl shadow-custom-basic px-2">
+        <div
+            className="flex flex-col min-w-[150px] items-center bg-white border rounded-xl shadow-custom-basic px-2"
+            onClick={onClick}
+        >
             <p className="text-left mt-2 mb-1.5 text-[10px] text-black font-bold w-full">
                 {orgname}
             </p>
@@ -172,7 +177,7 @@ const Statistics: React.FC<StatisticsProps> = ({
     );
 
     const detailStat = (
-        <div className="flex items-center justify-center bg-white border rounded-xl shadow-custom-basic py-6">
+        <div className="flex items-center justify-center bg-white border rounded-xl shadow-custom-basic px-5 py-6">
             <div className="relative w-20 h-20">
                 <CircularProgressbar
                     value={percentage}
@@ -192,7 +197,7 @@ const Statistics: React.FC<StatisticsProps> = ({
                 </div>
             </div>
 
-            <div className="flex ml-6">
+            <div className="flex ml-4">
                 <div className="flex flex-col space-y-3 leading-tight text-xs text-black">
                     <div>
                         <span className="font-bold mr-3">발행매수</span>
@@ -208,7 +213,7 @@ const Statistics: React.FC<StatisticsProps> = ({
                     </div>
                 </div>
 
-                <div className="flex flex-col justify-end leading-tight text-xs text-black space-y-3 ml-5">
+                <div className="flex flex-col justify-end leading-tight text-xs text-black space-y-3 ml-3">
                     <div>
                         <span className=" font-bold mr-3">미등록매수</span>
                         <span className=" font-light">

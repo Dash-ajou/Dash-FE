@@ -11,9 +11,11 @@ type DetailBoxProps = {
     linkurl?: string[];
     statusType?: "used" | "unused";
     statusColor?: "red" | "green";
+    requestList?: { name: string; count: number }[];
 };
 
 const DetailBox: React.FC<DetailBoxProps> = ({
+
                                                  mode,
                                                  title,
                                                  leftstring = [],
@@ -101,7 +103,47 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                         })}
                     </div>
                 </div>
+            ) : mode === "coupinfo" && requestList?.length ? (
+                <div className="px-1 space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="w-[110px] text-base text-black font-semibold">
+                            요청 상세
+                        </div>
+                        <div className="flex-1 space-y-2.5">
+                            {requestList.map((item, idx) => (
+                                <div
+                                    key={idx}
+                                    className="flex justify-between text-sm font-light text-black"
+                                >
+                                    <span>{item.name}</span>
+                                    <span>{item.count}EA</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 총 금액 */}
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="w-[110px] text-base text-black font-semibold">
+                            총 금액
+                        </div>
+                        <div className="flex-1 text-sm text-black font-light">
+                            {rightstring?.[0] ?? ""}
+                        </div>
+                    </div>
+
+                    {/* 승인 일시 */}
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="w-[110px] text-base text-black font-semibold">
+                            승인 일시
+                        </div>
+                        <div className="flex-1 text-sm text-black font-light">
+                            {rightstring?.[1] ?? ""}
+                        </div>
+                    </div>
+                </div>
             ) : (
+                // 기본 default 렌더링
                 <div className="px-1 space-y-3">
                     {leftstring.map((left, index) => {
                         const right = rightstring?.[index] ?? "";
@@ -112,23 +154,22 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                                 key={index}
                                 className="flex items-start justify-between gap-3"
                             >
-                                {url ? (
-                                    <Link
-                                        to={url}
-                                        className="text-base text-black hover:underline"
-                                    >
-                                        {left}
-                                    </Link>
-                                ) : (
-                                    <span className="text-base text-black">
-                                        {left}
-                                    </span>
-                                )}
-                                <span className="text-black text-sm font-light text-left flex-1 whitespace-pre-line">
-                                    {Array.isArray(right)
-                                        ? right.map((line, i) => <div key={i}>{line}</div>)
-                                        : right}
-                                </span>
+                                <div className="w-[110px] text-base text-black font-semibold">
+                                    {url ? (
+                                        <Link
+                                            to={url}
+                                            className="hover:underline"
+                                        >
+                                            {left}
+                                        </Link>
+                                    ) : (
+                                        <span>{left}</span>
+                                    )}
+                                </div>
+
+                                <div className="flex-1 text-sm text-black font-light">
+                                    {right}
+                                </div>
                             </div>
                         );
                     })}
