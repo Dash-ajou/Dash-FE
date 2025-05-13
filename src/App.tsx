@@ -1,7 +1,12 @@
-import { Route, Routes } from "react-router-dom";
-import UserMain from "./pages/user/UserMain";
+import React from "react";
+import {Route, Routes} from "react-router-dom";
+import Join from "./pages/both/Join.tsx";
+import Login from "./pages/both/Login.tsx";
+import FindPW from "./pages/both/FIndPW.tsx";
+import Onboarding from "./pages/both/Onboarding.tsx";
+import UserMain from "./pages/user/UserMain.tsx";
 import UserNotification from "./pages/user/UserNotification";
-import UserMypage from "./pages/user/UserMypage";
+import UserMypage from "./pages/user/UserMypage.tsx";
 import UserGift from "./pages/user/UserGift.tsx";
 import QRScanPage from "./pages/partner/QRScanPage.tsx";
 import UserAccountInfo from "./pages/user/UserAccountInfo.tsx";
@@ -20,6 +25,11 @@ import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.ts
 const App: React.FC = () => {
     return (
         <Routes>
+            <Route path="/" element={<Onboarding/>}/>
+            <Route path="/join" element={<Join/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/findpw" element={<FindPW/>}/>
+
             <Route path="/user/main" element={<UserMain/>}/>
             <Route path="/user/notification" element={<UserNotification/>}/>
             <Route path="/user/mypage" element={<UserMypage/>}/>
@@ -39,9 +49,7 @@ const App: React.FC = () => {
             <Route path="/partner/main" element={<PartnerMain />} />
             <Route path="/partner/statistics" element={<PartnerStat />} />
             <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
-            <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
-        
-           
+            <Route path="/partner/menudetail" element={<PartnerMenuDetail />} /> 
         </Routes>
     );
 };
