@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import Layout from "../../components/layout/Layout.tsx";
 import InputField from "../../components/common/InputField.tsx";
 import SlideUpModal from "../../components/common/modal/SlideUpModal.tsx";
@@ -7,13 +8,39 @@ import DateSelector from "../../components/unit/partner-payment-detail/DateSelec
 import CommonButton from "../../components/common/button/CommonButton.tsx";
 import {ko} from "date-fns/locale";
 import TimeSelector from "../../components/unit/partner-payment-detail/TimeSelector.tsx";
+import BasicModal from "../../components/common/modal/BasicModal.tsx";
 
-// id랑 menu들의 개수, 메뉴명, 메뉴별 주문 개수
+interface ProductInfo {
+    menu_name: string;
+    count: number;
+}
+
+interface ProductWithPrice extends ProductInfo {
+    price: string;
+}
 
 const PaymentInfo: React.FC = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const {request_id, products} = location.state || {};
     const [isSlideUpModalOpen, setIsSlideUpModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [isDateSelector, setIsDateSelector] = useState(true)
+    const [menuItems, setMenuItems] = useState<ProductWithPrice[]>(
+        (products || []).map((p: ProductInfo) => ({menu_name: p.menu_name, count: Math.abs(p.count % 1000), price: ""}))
+    );
+    const [discount, setDiscount] = useState<string>("");
+    const [totalPrice, setTotalPrice] = useState<number>(0);
+    const [isCheckModalOpen, setIsCheckModalOpen] = useState<boolean>(false);
+
+    React.useEffect(() => {
+        const sum = menuItems.reduce((acc, item) => {
+            const price = parseInt(item.price, 10) || 0;
+            return acc + price * item.count;
+        }, 0);
+        const discountValue = parseInt(discount, 10) || 0;
+        setTotalPrice(sum - discountValue);
+    }, [menuItems, discount]);
 
     const handleDateChange = (date: Date) => {
         setSelectedDate(date);
@@ -24,9 +51,22 @@ const PaymentInfo: React.FC = () => {
         setIsDateSelector(true)
     }
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDiscount(event.target.value);
+    };
+
+    const handleNext = () => {
+        setIsCheckModalOpen(true)
+    }
+
+    const handleConfirm = () => {
+        //TODO - request_id 이용해서 결제정보 POST
+        navigate("/partner/request/approve");
+    }
+
     return (
         <Layout>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-8">
                 <div className="text-black font-bold text-xl mt-16">
                     결제 일시를 선택하고 <br/>메뉴 별 가격 및 할인 금액을 입력해주세요
                 </div>
@@ -84,28 +124,57 @@ const PaymentInfo: React.FC = () => {
                     }
                 </SlideUpModal>
 
-                <div className="flex flex-row gap-4">
-                    <InputField
-                        label="메뉴 별 가격을 입력해주세요"
-                        placeholder="메뉴명1" //TODO - state로 받아오기
-                        dropdown={false}
-                        value={menu.price}
-                    />
-                    <span>x {menu.count} EA</span>
+                <div className="flex flex-col w-full gap-4">
+                    <p className="text-black text-base">메뉴 별 가격을 입력해주세요</p>
+
+                    {menuItems.map((menu, index) => (
+                        <div key={index} className="flex flex-row gap-4 items-center">
+                            <InputField
+                                placeholder={menu.menu_name}
+                                dropdown={false}
+                                value={menu.price}
+                                onChange={(e) => {
+                                    const updatedItems = [...menuItems];
+                                    updatedItems[index].price = e.target.value;
+                                    setMenuItems(updatedItems);
+                                }}
+                            />
+                            <p className="text-black text-base whitespace-nowrap">x {menu.count} EA</p>
+                        </div>
+                    ))}
                 </div>
-                {/*메뉴 개수만큼 생성*/}
 
                 <InputField
                     label="할인 금액이 있다면 입력해주세요"
                     dropdown={false}
                     value={discount}
+                    onInput={handleChange}
                 />
 
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row justify-between text-black text-base font-bold">
                     <span>총 결제금액</span>
-                    <span>{totalPrice}</span>
+                    <span>{totalPrice.toLocaleString()}원</span>
+                </div>
+
+                <div className="flex w-full mt-12">
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{label: "계속하기", position: "none"}}
+                        onClick={handleNext}
+                    />
                 </div>
             </div>
+
+            <BasicModal
+                mode="YesNo"
+                isOpen={isCheckModalOpen}
+                title={`총 결제금액이 ${totalPrice.toLocaleString()}원이 맞으신가요?`}
+                onClose={() => setIsCheckModalOpen(false)}
+                onConfirm={handleConfirm}
+            />
         </Layout>
     )
 }

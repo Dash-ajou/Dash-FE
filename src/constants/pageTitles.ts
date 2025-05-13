@@ -22,6 +22,11 @@ const pageTitles: Record<string, string> = {
     "/partner/orgdetail": "단체별 상세조회",
     "/partner/menudetail": "메뉴별 상세조회",
     "/partner/coupon/scan": "QR 인식",
+    "/partner/request/auth": "본인 인증",
+    "/partner/request/list": "쿠폰 요청 목록",
+    "/partner/request/detail": "쿠폰 발행 요청 상세",
+    "/partner/request/payment": "결제 정보",
+    "/partner/request/approve": "요청 승인 완료",
 };
 
 export default pageTitles;

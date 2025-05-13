@@ -24,6 +24,9 @@ import UserCouponPublishedDetail from "./pages/user/UserCouponPublishedDetail.ts
 import PaymentInfo from "./pages/partner/PaymentInfo.tsx";
 import PhoneNumChange from "./pages/both/PhoneNumChange.tsx";
 import EmailChange from "./pages/both/EmailChange.tsx";
+import PartnerAuth from "./pages/partner/PartnerAuth.tsx";
+import RequestView from "./pages/partner/RequestView.tsx";
+import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx";
 
 const App: React.FC = () => {
     return (
@@ -55,7 +58,11 @@ const App: React.FC = () => {
             <Route path="/partner/statistics" element={<PartnerStat/>}/>
             <Route path="/partner/orgdetail" element={<PartnerOrgDetail/>}/>
             <Route path="/partner/menudetail" element={<PartnerMenuDetail/>}/>
+            <Route path="/partner/request/auth" element={<PartnerAuth/>}/>
+            <Route path="/partner/request/list" element={<CouponRequestList/>}/>
+            <Route path="/partner/request/detail" element={<RequestView/>}/>
             <Route path="/partner/request/payment" element={<PaymentInfo/>}/>
+            <Route path="/partner/request/approve" element={<RequestApproveFin/>}/>
         </Routes>
     );
 };
