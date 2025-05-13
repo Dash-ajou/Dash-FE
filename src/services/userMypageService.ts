@@ -47,11 +47,11 @@ export const fetchUserMyPage = async () => {
                 my_info: [
                     {
                         title: "계정 정보",
-                        url: "/general/account",
+                        url: "/user/accountinfo",
                     },
                     {
                         title: "비밀번호 변경하기",
-                        url: "/auth/password-reset/request",
+                        url: "/findpw",
                     },
                 ],
                 customer_center: [
