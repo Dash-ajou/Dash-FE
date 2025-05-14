@@ -6,22 +6,8 @@ const SubHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   const state = location.state as { businessName?: string } | null;
   const { pathname } = location;
-=======
-    const state = location.state as { businessName?: string } | null;
-
-    const isDetailPage = location.pathname == "/user/coupon/published/detail";
-    const isCouponStatusPage = location.pathname.startsWith(
-        "/partner/coupon/status"
-    );
-    const pageTitle = isDetailPage
-        ? state?.businessName || "쿠폰 통계"
-        : isCouponStatusPage
-        ? "쿠폰 상태"
-        : pageTitles[location.pathname] || "페이지 없음";
->>>>>>> 0d11cc1 (feat: 쿠폰 상태 조회 페이지 SubHeader 수정)
 
   if (pathname === "/user/coupon/published/detail") {
     return (
@@ -32,7 +18,9 @@ const SubHeader = () => {
     );
   }
 
-  const matchedTitleKey = Object.keys(pageTitles).find((key) => pathname.startsWith(key));
+  const matchedTitleKey = Object.keys(pageTitles)
+    .sort((a, b) => b.length - a.length)
+    .find((key) => pathname.startsWith(key));
 
   const pageTitle = matchedTitleKey ? pageTitles[matchedTitleKey] : "페이지 없음";
 
