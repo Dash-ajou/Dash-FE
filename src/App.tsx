@@ -30,6 +30,7 @@ import RequestView from "./pages/partner/RequestView.tsx";
 import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx";
 import PartnerMypage from "./pages/partner/PartnerMypage.tsx";
 import PartnerNotification from "./pages/partner/PartnerNotification.tsx";
+import PartnerUsedCoup from "./pages/partner/PartnerUsedCoup.tsx";
 
 const App: React.FC = () => {
   return (
@@ -68,6 +69,7 @@ const App: React.FC = () => {
       <Route path="/partner/request/detail" element={<RequestView />} />
       <Route path="/partner/request/payment" element={<PaymentInfo />} />
       <Route path="/partner/request/approve" element={<RequestApproveFin />} />
+      <Route path="/partner/usedcoupon" element={<PartnerUsedCoup />} />
     </Routes>
   );
 };

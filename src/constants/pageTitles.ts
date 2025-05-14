@@ -29,6 +29,7 @@ const pageTitles: Record<string, string> = {
   "/partner/request/detail": "쿠폰 발행 요청 상세",
   "/partner/request/payment": "결제 정보",
   "/partner/request/approve": "요청 승인 완료",
+  "/partner/usedcoupon": "사용 완료 쿠폰",
 };
 
 export default pageTitles;
