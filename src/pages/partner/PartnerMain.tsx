@@ -65,6 +65,7 @@ const PartnerMain = () => {
               position: "left",
               icon: "circlecheck_blue",
             }}
+            onClick={() => navigate("/partner/usedcoupon")}
           />
         </div>
         <div className="w-full h-0 outline outline-2 outline-offset-[-1px] outline-blue-500"></div>
