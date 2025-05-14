@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CommonButton from "../../components/common/button/CommonButton";
-import CouponCount from "../../components/unit/user-mypage/CouponCount";
 import {
     fetchUserMyPage,
     UserMyPageData,
@@ -9,9 +7,8 @@ import {
 import DetailBox from "../../components/common/DetailBox";
 import Layout from "../../components/layout/Layout";
 
-const UserMypage = () => {
+const PartnerMypage = () => {
     const [userData, setUserData] = useState<UserMyPageData | null>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,22 +28,6 @@ const UserMypage = () => {
         <Layout>
             <div className="text-black font-bold text-2xl mt-11 mb-4">
                 <p>{userData.general_name}님 안녕하세요</p>
-            </div>
-
-            <div className="flex justify-center gap-3">
-                <div className="w-full">
-                    <CouponCount
-                        type="available"
-                        count={userData.coupon_status.usable_coupons}
-                    />
-                </div>
-                <div className="w-full">
-                    <CouponCount
-                        type="used"
-                        count={userData.coupon_status.used_coupons}
-                        onClick={() => navigate("/user/mypage/usedcoupon")}
-                    />
-                </div>
             </div>
 
             <div className="flex flex-col mt-7 gap-4">
@@ -90,4 +71,4 @@ const UserMypage = () => {
     );
 };
 
-export default UserMypage;
+export default PartnerMypage;
