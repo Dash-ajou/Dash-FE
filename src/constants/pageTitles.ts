@@ -8,6 +8,8 @@ const pageTitles: Record<string, string> = {
     "/user/main": "사용자 메인화면",
     "/user/notification": "알림함",
     "/user/mypage": "사용자 마이페이지",
+    "/mypage/update/phone": "전화번호 변경",
+    "/mypage/update/email": "이메일 변경",
     "/user/accountinfo": "계정 정보",
     "/user/mypage/usedcoupon": "사용 완료 쿠폰",
     "/user/gift": "선물함",
@@ -20,6 +22,12 @@ const pageTitles: Record<string, string> = {
     "/partner/orgdetail": "단체별 상세조회",
     "/partner/menudetail": "메뉴별 상세조회",
     "/partner/coupon/scan": "QR 인식",
+    "/partner/coupon/status": "쿠폰 상태 관리",
+    "/partner/request/auth": "본인 인증",
+    "/partner/request/list": "쿠폰 요청 목록",
+    "/partner/request/detail": "쿠폰 발행 요청 상세",
+    "/partner/request/payment": "결제 정보",
+    "/partner/request/approve": "요청 승인 완료",
 };
 
 export default pageTitles;

@@ -38,9 +38,9 @@ const Block: React.FC<BlockProps> = ({
             style={type === "detail" ? { cursor: "pointer" } : {}}
         >
             <div>
-                <div className="font-bold text-lg text-black mb-3">{title}</div>
+                <div className="font-bold text-lg text-black">{title}</div>
                 {subtitle && (
-                    <div className="text-sm text-black mb-1.5">{subtitle}</div>
+                    <div className="text-sm text-black mt-3 mb-1.5">{subtitle}</div>
                 )}
                 {info && <div className="text-sm text-black ">{info}</div>}
             </div>

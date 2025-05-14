@@ -52,7 +52,7 @@ const QRScanPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (isSuccess) {
-            navigate("/usermain");
+            navigate("/user/main");
         } else {
             setAlarmModalOpen(false);
         }

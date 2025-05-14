@@ -2,7 +2,6 @@ import InputField from "../../common/InputField.tsx";
 import CommonButton from "../../common/button/CommonButton.tsx";
 import React, {useEffect, useState} from "react";
 import Status from "../../common/Status.tsx";
-import {useLocation} from "react-router-dom";
 
 type PhoneAuthProps = {
     phoneNum: string;
@@ -13,8 +12,6 @@ type PhoneAuthProps = {
 }
 
 const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, isVerified, setIsVerified, onNext}) => {
-    const location = useLocation();
-
     const [localPhoneNum, setLocalPhoneNum] = useState<string>(phoneNum);
     const [showNotice, setShowNotice] = useState<boolean>(false);
     const [isVerifyClicked, setIsVerifyClicked] = useState<boolean>(false);
@@ -81,15 +78,31 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({phoneNum, setPhoneNum, isVerified,
         }
     }
 
+    const getMessage = () => {
+        switch (window.location.pathname) {
+            case "/join":
+                return (
+                    <>
+                        온라인 쿠폰 관리 플랫폼 Dash <br />회원가입을 진행할게요
+                    </>
+                );
+            case "/partner/request/auth":
+                return (
+                    <>
+                        요청서를 확인하기 전 <br />본인인증을 진행해주세요
+                    </>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="flex flex-col justify-center gap-6 w-full">
             <div
                 className="text-black font-bold text-xl mt-16"
-                style={{
-                    visibility: location.pathname.startsWith("/join") ? "visible" : "hidden"
-                }}
             >
-                온라인 쿠폰 관리 플랫폼 Dash <br/>회원가입을 진행할게요
+                {getMessage()}
             </div>
 
             <div className="flex flex-row">

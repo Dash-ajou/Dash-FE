@@ -7,11 +7,26 @@ const SubHeader = () => {
     const navigate = useNavigate();
 
     const state = location.state as { businessName?: string } | null;
+    const { pathname } = location;
 
-    const isDetailPage = location.pathname == "/user/coupon/published/detail";
-    const pageTitle = isDetailPage
-        ? state?.businessName || "쿠폰 통계"
-        : pageTitles[location.pathname] || "페이지 없음";
+    if (pathname === "/user/coupon/published/detail") {
+        return (
+            <header className="w-full flex items-center px-6 pt-6 pb-3">
+                <Icon name="arrowicon_line_left" onClick={() => navigate(-1)} />
+                <h1 className="ml-4 text-xl font-bold text-black">
+                    {state?.businessName || "쿠폰 통계"}
+                </h1>
+            </header>
+        );
+    }
+
+    const matchedTitleKey = Object.keys(pageTitles).find((key) =>
+        pathname.startsWith(key)
+    );
+
+    const pageTitle = matchedTitleKey
+        ? pageTitles[matchedTitleKey]
+        : "페이지 없음";
 
     return (
         <header className="w-full flex items-center px-6 pt-6 pb-3">
