@@ -28,44 +28,48 @@ import PartnerCoupValCheck from "./pages/partner/PartnerCoupValCheck.tsx";
 import PartnerAuth from "./pages/partner/PartnerAuth.tsx";
 import RequestView from "./pages/partner/RequestView.tsx";
 import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx";
+import PartnerMypage from "./pages/partner/PartnerMypage.tsx";
+import PartnerNotification from "./pages/partner/PartnerNotification.tsx";
 
 const App: React.FC = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<Onboarding/>}/>
-            <Route path="/join" element={<Join/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/findpw" element={<FindPW/>}/>
-            <Route path="/mypage/update/phone" element={<PhoneNumChange/>}/>
-            <Route path="/mypage/update/email" element={<EmailChange/>}/>
+  return (
+    <Routes>
+      <Route path="/" element={<Onboarding />} />
+      <Route path="/join" element={<Join />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/findpw" element={<FindPW />} />
+      <Route path="/mypage/update/phone" element={<PhoneNumChange />} />
+      <Route path="/mypage/update/email" element={<EmailChange />} />
 
-            <Route path="/user/main" element={<UserMain/>}/>
-            <Route path="/user/notification" element={<UserNotification/>}/>
-            <Route path="/user/mypage" element={<UserMypage/>}/>
-            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon/>}/>
-            <Route path="/user/gift" element={<UserGift/>}/>
-            <Route path="/user/accountinfo" element={<UserAccountInfo/>}/>
-            <Route path="/user/coupon/register" element={<QRScanPage/>}/>
-            <Route path="/user/coupon/request" element={<CouponRequest/>}/>
-            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm/>}/>
-            <Route path="/user/coupon/request/list" element={<CouponRequestList/>}/>
-            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail/>}/>
-            <Route path="/user/coupon/published" element={<UserCouponPublished/>}/>
-            <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail/>}/>
+      <Route path="/user/main" element={<UserMain />} />
+      <Route path="/user/notification" element={<UserNotification />} />
+      <Route path="/user/mypage" element={<UserMypage />} />
+      <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+      <Route path="/user/gift" element={<UserGift />} />
+      <Route path="/user/accountinfo" element={<UserAccountInfo />} />
+      <Route path="/user/coupon/register" element={<QRScanPage />} />
+      <Route path="/user/coupon/request" element={<CouponRequest />} />
+      <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
+      <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
+      <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
+      <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+      <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
 
-            <Route path="/partner/coupon/scan" element={<QRScanPage/>}/>
-            <Route path="/partner/coupon/status/:couponNum" element={<></>}/>
-            <Route path="/partner/main" element={<PartnerMain/>}/>
-            <Route path="/partner/statistics" element={<PartnerStat/>}/>
-            <Route path="/partner/orgdetail" element={<PartnerOrgDetail/>}/>
-            <Route path="/partner/menudetail" element={<PartnerMenuDetail/>}/>
-            <Route path="/partner/request/auth" element={<PartnerAuth/>}/>
-            <Route path="/partner/request/list" element={<CouponRequestList/>}/>
-            <Route path="/partner/request/detail" element={<RequestView/>}/>
-            <Route path="/partner/request/payment" element={<PaymentInfo/>}/>
-            <Route path="/partner/request/approve" element={<RequestApproveFin/>}/>
-        </Routes>
-    );
+      <Route path="/partner/coupon/scan" element={<QRScanPage />} />
+      <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
+      <Route path="/partner/main" element={<PartnerMain />} />
+      <Route path="/partner/mypage" element={<PartnerMypage />} />
+      <Route path="/partner/notification" element={<PartnerNotification />} />
+      <Route path="/partner/statistics" element={<PartnerStat />} />
+      <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
+      <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
+      <Route path="/partner/request/auth" element={<PartnerAuth />} />
+      <Route path="/partner/request/list" element={<CouponRequestList />} />
+      <Route path="/partner/request/detail" element={<RequestView />} />
+      <Route path="/partner/request/payment" element={<PaymentInfo />} />
+      <Route path="/partner/request/approve" element={<RequestApproveFin />} />
+    </Routes>
+  );
 };
 
 export default App;
