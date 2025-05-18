@@ -2,40 +2,40 @@
 // import apiClient from "./apiClient";
 
 export type VendorInfo = {
-    general_id: number;
-    general_name: string;
-    general_email: string | null;
-    general_phone: string;
-    vendor_group_id: number;
-    department_id: number;
-    joined_at: string;
-    general_new_phone?: string;
-    general_verify_code?: string;
-    new_email?: string;
-    email_verify_code?: string;
-};
+    general_id: number
+    general_name: string
+    general_email: string | null
+    general_phone: string
+    vendor_group_id: number
+    department_id: number
+    joined_at: string
+    general_new_phone?: string
+    general_verify_code?: string
+    new_email?: string
+    email_verify_code?: string
+}
 
 export type ProductInfo = {
-    product_id: number;
-    partner_id: number;
-    product_name: string;
-    price: number;
-};
+    product_id: number
+    partner_id: number
+    product_name: string
+    price: number
+}
 
 export type UseCouponResponse = {
-    result: boolean;
-    id: number;
-    used_at: string;
-    vendor: VendorInfo;
-    product: ProductInfo;
-};
+    result: boolean
+    id: number
+    used_at: string
+    vendor: VendorInfo
+    product: ProductInfo
+}
 
 export type CancelCouponResponse = {
-    result: boolean;
-    id: number;
-    used_at: string;
-    canceled_at: string;
-};
+    result: boolean
+    id: number
+    used_at: string
+    canceled_at: string
+}
 
 export const fetchCouponUse = async (
     payment_code: string
@@ -56,7 +56,7 @@ export const fetchCouponUse = async (
     */
 
     if (payment_code === "used-123") {
-        throw new Error("이미 사용된 쿠폰입니다.");
+        throw new Error("이미 사용된 쿠폰입니다.")
     }
 
     return {
@@ -78,8 +78,8 @@ export const fetchCouponUse = async (
             product_name: "Bespoke Bronze Shirt",
             price: 660,
         },
-    };
-};
+    }
+}
 
 export const fetchCouponCancel = async (
     payment_code: string,
@@ -98,11 +98,12 @@ export const fetchCouponCancel = async (
 
     return response.data.data;
     */
+    console.log(payment_code) //TODO - 추후 삭제 build error 방지용
 
     return {
         result: true,
         id: redeem_id,
         used_at: "2025-05-13 15:30:00",
         canceled_at: "2025-05-13 16:45:00",
-    };
-};
+    }
+}
