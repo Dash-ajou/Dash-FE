@@ -1,50 +1,54 @@
-import React, {useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import Layout from "../../components/layout/Layout.tsx";
-import InputField from "../../components/common/InputField.tsx";
-import SlideUpModal from "../../components/common/modal/SlideUpModal.tsx";
-import {format} from "date-fns";
-import DateSelector from "../../components/unit/partner-payment-detail/DateSelector.tsx";
-import CommonButton from "../../components/common/button/CommonButton.tsx";
-import {ko} from "date-fns/locale";
-import TimeSelector from "../../components/unit/partner-payment-detail/TimeSelector.tsx";
-import BasicModal from "../../components/common/modal/BasicModal.tsx";
+import React, { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
+import Layout from "../../components/layout/Layout.tsx"
+import InputField from "../../components/common/InputField.tsx"
+import SlideUpModal from "../../components/common/modal/SlideUpModal.tsx"
+import { format } from "date-fns"
+import DateSelector from "../../components/unit/partner-payment-detail/DateSelector.tsx"
+import CommonButton from "../../components/common/button/CommonButton.tsx"
+import { ko } from "date-fns/locale"
+import TimeSelector from "../../components/unit/partner-payment-detail/TimeSelector.tsx"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
 
 interface ProductInfo {
-    menu_name: string;
-    count: number;
+    menu_name: string
+    count: number
 }
 
 interface ProductWithPrice extends ProductInfo {
-    price: string;
+    price: string
 }
 
 const PaymentInfo: React.FC = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const {request_id, products} = location.state || {};
-    const [isSlideUpModalOpen, setIsSlideUpModalOpen] = useState(false);
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { request_id, products } = location.state || {}
+    const [isSlideUpModalOpen, setIsSlideUpModalOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date())
     const [isDateSelector, setIsDateSelector] = useState(true)
     const [menuItems, setMenuItems] = useState<ProductWithPrice[]>(
-        (products || []).map((p: ProductInfo) => ({menu_name: p.menu_name, count: Math.abs(p.count % 1000), price: ""}))
-    );
-    const [discount, setDiscount] = useState<string>("");
-    const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [isCheckModalOpen, setIsCheckModalOpen] = useState<boolean>(false);
+        (products || []).map((p: ProductInfo) => ({
+            menu_name: p.menu_name,
+            count: Math.abs(p.count % 1000),
+            price: "",
+        }))
+    )
+    const [discount, setDiscount] = useState<string>("")
+    const [totalPrice, setTotalPrice] = useState<number>(0)
+    const [isCheckModalOpen, setIsCheckModalOpen] = useState<boolean>(false)
 
     React.useEffect(() => {
         const sum = menuItems.reduce((acc, item) => {
-            const price = parseInt(item.price, 10) || 0;
-            return acc + price * item.count;
-        }, 0);
-        const discountValue = parseInt(discount, 10) || 0;
-        setTotalPrice(sum - discountValue);
-    }, [menuItems, discount]);
+            const price = parseInt(item.price, 10) || 0
+            return acc + price * item.count
+        }, 0)
+        const discountValue = parseInt(discount, 10) || 0
+        setTotalPrice(sum - discountValue)
+    }, [menuItems, discount])
 
     const handleDateChange = (date: Date) => {
-        setSelectedDate(date);
-    };
+        setSelectedDate(date)
+    }
 
     const handleOpen = () => {
         setIsSlideUpModalOpen(true)
@@ -52,8 +56,8 @@ const PaymentInfo: React.FC = () => {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDiscount(event.target.value);
-    };
+        setDiscount(event.target.value)
+    }
 
     const handleNext = () => {
         setIsCheckModalOpen(true)
@@ -61,14 +65,16 @@ const PaymentInfo: React.FC = () => {
 
     const handleConfirm = () => {
         //TODO - request_id 이용해서 결제정보 POST
-        navigate("/partner/request/approve");
+        console.log(request_id) //TODO - 추후 삭제 build error 방지용
+        navigate("/partner/request/approve")
     }
 
     return (
         <Layout>
             <div className="flex flex-col gap-8">
                 <div className="text-black font-bold text-xl mt-16">
-                    결제 일시를 선택하고 <br/>메뉴 별 가격 및 할인 금액을 입력해주세요
+                    결제 일시를 선택하고 <br />
+                    메뉴 별 가격 및 할인 금액을 입력해주세요
                 </div>
 
                 <InputField
@@ -83,7 +89,7 @@ const PaymentInfo: React.FC = () => {
                     height="auto"
                     onClose={() => setIsSlideUpModalOpen(false)}
                 >
-                    {isDateSelector ?
+                    {isDateSelector ? (
                         <div className={`flex flex-col gap-8 ${isDateSelector ? "" : "hidden"}`}>
                             <DateSelector
                                 initialDate={selectedDate}
@@ -95,13 +101,17 @@ const PaymentInfo: React.FC = () => {
                                 mode="fill"
                                 color="blue"
                                 detail={{
-                                    label: selectedDate ? format(selectedDate, "yyyy년 MM월 dd일 (EEE) 선택", {locale: ko}) : "날짜 선택",
-                                    position: "none"
+                                    label: selectedDate
+                                        ? format(selectedDate, "yyyy년 MM월 dd일 (EEE) 선택", {
+                                              locale: ko,
+                                          })
+                                        : "날짜 선택",
+                                    position: "none",
                                 }}
                                 onClick={() => setIsDateSelector(false)}
                             />
                         </div>
-                        :
+                    ) : (
                         <div className={`flex flex-col gap-8 ${isDateSelector ? "hidden" : ""}`}>
                             <TimeSelector
                                 selectedDate={selectedDate}
@@ -115,13 +125,17 @@ const PaymentInfo: React.FC = () => {
                                 mode="fill"
                                 color="blue"
                                 detail={{
-                                    label: selectedDate ? format(selectedDate, "MM월 dd일 (EEE) aa h시 mm분 선택", {locale: ko}) : "시 선택",
-                                    position: "none"
+                                    label: selectedDate
+                                        ? format(selectedDate, "MM월 dd일 (EEE) aa h시 mm분 선택", {
+                                              locale: ko,
+                                          })
+                                        : "시 선택",
+                                    position: "none",
                                 }}
                                 onClick={() => setIsSlideUpModalOpen(false)}
                             />
                         </div>
-                    }
+                    )}
                 </SlideUpModal>
 
                 <div className="flex flex-col w-full gap-4">
@@ -134,12 +148,14 @@ const PaymentInfo: React.FC = () => {
                                 dropdown={false}
                                 value={menu.price}
                                 onChange={(e) => {
-                                    const updatedItems = [...menuItems];
-                                    updatedItems[index].price = e.target.value;
-                                    setMenuItems(updatedItems);
+                                    const updatedItems = [...menuItems]
+                                    updatedItems[index].price = e.target.value
+                                    setMenuItems(updatedItems)
                                 }}
                             />
-                            <p className="text-black text-base whitespace-nowrap">x {menu.count} EA</p>
+                            <p className="text-black text-base whitespace-nowrap">
+                                x {menu.count} EA
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -162,7 +178,7 @@ const PaymentInfo: React.FC = () => {
                         isActive={true}
                         mode="fill"
                         color="blue"
-                        detail={{label: "계속하기", position: "none"}}
+                        detail={{ label: "계속하기", position: "none" }}
                         onClick={handleNext}
                     />
                 </div>
@@ -179,4 +195,4 @@ const PaymentInfo: React.FC = () => {
     )
 }
 
-export default PaymentInfo;
+export default PaymentInfo
