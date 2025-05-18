@@ -8,15 +8,22 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const location = useLocation();
-  const isMainPage = ["/user-main", "/partner-main", "/user-mypage", "/partner-mypage"].includes(location.pathname);
+    const location = useLocation();
+    const isMainPage = [
+        "/user/main",
+        "/partner/main",
+        "/user/mypage",
+        "/partner/mypage",
+    ].includes(location.pathname);
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      {isMainPage ? <MainHeader /> : <SubHeader />}
-      <main className="flex-grow">{children}</main>
-    </div>
-  );
+    return (
+        <div className="min-h-screen flex flex-col overflow-y-auto">
+            {isMainPage ? <MainHeader /> : <SubHeader />}
+            <main className="px-6 overflow-y-auto h-[calc(100vh-60px)]">
+                {children}
+            </main>
+        </div>
+    );
 };
 
 export default Layout;

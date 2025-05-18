@@ -1,0 +1,189 @@
+import { useNavigate, useParams } from "react-router-dom";
+import DetailBox from "../../components/common/DetailBox";
+import Layout from "../../components/layout/Layout";
+import { useEffect, useState } from "react";
+import {
+    fetchPartnerCouponValidation,
+    PartnerCouponValidationResponse,
+} from "../../services/partnerCouponValidationCheckService";
+import BasicModal from "../../components/common/modal/BasicModal";
+import CommonButton from "../../components/common/button/CommonButton";
+import {
+    fetchCouponUse,
+    fetchCouponCancel,
+} from "../../services/partnerCoupStatusChangeService";
+
+const PartnerCoupValCheck = () => {
+    const { couponNum } = useParams<{ couponNum: string }>();
+    const navigate = useNavigate();
+
+    const [couponData, setCouponData] =
+        useState<PartnerCouponValidationResponse | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // ✅ 처리 확인용 모달 상태
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(
+        null
+    );
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (!couponNum) throw new Error("쿠폰 번호 누락");
+                const data = await fetchPartnerCouponValidation(couponNum);
+                if (
+                    data.type === "REGISTER_CODE" &&
+                    data.status === "REGISTERABLE"
+                ) {
+                    setModalOpen(true);
+                    return;
+                }
+                setCouponData(data);
+            } catch (err) {
+                console.error("쿠폰 조회 실패:", err);
+                setModalOpen(true);
+            }
+        };
+        fetchData();
+    }, [couponNum]);
+
+    const handleConfirm = () => navigate(-1);
+
+    if (!couponData) {
+        return (
+            <Layout>
+                <BasicModal
+                    mode="OnlyYes"
+                    isOpen={modalOpen}
+                    title="등록되지 않은 쿠폰입니다."
+                    onConfirm={handleConfirm}
+                />
+            </Layout>
+        );
+    }
+
+    const { partner, product, status, redeem } = couponData;
+    const isUsed = status === "USED";
+
+    return (
+        <Layout>
+            <div className="flex flex-col mt-[56px] px-5">
+                <DetailBox
+                    mode="coupinfo"
+                    title="쿠폰 정보"
+                    statusType={isUsed ? "used" : "unused"}
+                    statusColor={isUsed ? "green" : "red"}
+                    leftstring={
+                        isUsed
+                            ? [
+                                  "소속 단체명",
+                                  "요청 상세",
+                                  "사용 일시",
+                                  "결제 코드",
+                              ]
+                            : ["소속 단체명", "요청 상세"]
+                    }
+                    rightstring={
+                        isUsed
+                            ? [
+                                  partner.business_name,
+                                  product.product_name,
+                                  redeem?.used_at.replace(" ", " ") ?? "-",
+                                  redeem?.payment_code ?? "-",
+                              ]
+                            : [partner.business_name, product.product_name]
+                    }
+                />
+
+                {/* ✅ 사용/철회 버튼 */}
+                <div className="w-full flex mt-[106px]">
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{
+                            label: isUsed ? "쿠폰 사용 철회" : "쿠폰 사용 처리",
+                            position: "none",
+                        }}
+                        onClick={() => {
+                            setConfirmAction(isUsed ? "cancel" : "use");
+                            setConfirmModalOpen(true);
+                        }}
+                    />
+                </div>
+
+                {/* ✅ 등록되지 않은 쿠폰 모달 */}
+                <BasicModal
+                    mode="OnlyYes"
+                    isOpen={modalOpen}
+                    title="등록되지 않은 쿠폰입니다."
+                    onConfirm={handleConfirm}
+                />
+
+                {/* ✅ 사용 처리/철회 확인 모달 */}
+                <BasicModal
+                    mode="YesNo"
+                    isOpen={confirmModalOpen}
+                    title={
+                        confirmAction === "cancel"
+                            ? "쿠폰 사용을 철회할까요?"
+                            : "쿠폰을 사용 처리할까요?"
+                    }
+                    onConfirm={async () => {
+                        try {
+                            if (!couponNum) throw new Error("쿠폰 번호 누락");
+
+                            if (confirmAction === "cancel") {
+                                if (!redeem?.payment_code || !redeem?.redeem_id)
+                                    throw new Error("필수 정보 누락");
+
+                                const result = await fetchCouponCancel(
+                                    redeem.payment_code,
+                                    redeem.redeem_id
+                                );
+                                console.log("[성공] 사용 철회 결과:", result);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                              ...prev,
+                                              status: "USABLE",
+                                              redeem: undefined,
+                                          }
+                                        : prev
+                                );
+                            } else if (confirmAction === "use") {
+                                const result = await fetchCouponUse(couponNum);
+                                console.log("[성공] 사용 처리 결과:", result);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                              ...prev,
+                                              status: "USED",
+                                              redeem: {
+                                                  redeem_id: result.id,
+                                                  used_at: result.used_at,
+                                                  payment_code: couponNum,
+                                              },
+                                          }
+                                        : prev
+                                );
+                            }
+                        } catch (e) {
+                            console.error("쿠폰 처리 실패:", e);
+                            alert("처리 중 오류가 발생했습니다.");
+                        } finally {
+                            setConfirmModalOpen(false);
+                        }
+                    }}
+                    onClose={() => setConfirmModalOpen(false)}
+                />
+            </div>
+        </Layout>
+    );
+};
+
+export default PartnerCoupValCheck;

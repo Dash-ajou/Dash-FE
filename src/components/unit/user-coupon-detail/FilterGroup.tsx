@@ -2,10 +2,15 @@ import React from "react";
 import Filter from "./Filter.tsx";
 import CircleButton from "../../common/button/CircleButton.tsx";
 
-const FilterGroup: React.FC = () => {
+type Props = {
+    onDownloadClick?: () => void;
+    onFilterClick?: () => void;
+};
+
+const FilterGroup: React.FC<Props> = ({ onDownloadClick, onFilterClick }) => {
     return (
         <div className="flex gap-4">
-            <Filter/>
+            <Filter onFilterClick={onFilterClick} />
             <CircleButton
                 size="small"
                 fill="gray"
@@ -17,6 +22,7 @@ const FilterGroup: React.FC = () => {
                 size="small"
                 fill="gray"
                 icon="downloadicon_line"
+                onClick={onDownloadClick}
             />
         </div>
     );

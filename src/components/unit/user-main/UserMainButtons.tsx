@@ -1,13 +1,27 @@
-import React from "react";
 import MenuButton from "./MenuButton";
+import {useNavigate} from "react-router-dom";
 
 const UserMainButtons: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="flex justify-between items-center gap-4">
-            <MenuButton type="newcoup" onClick={() => console.log("쿠폰 등록 클릭됨")} />
-            <MenuButton type="gift" onClick={() => console.log("선물함 클릭됨")} />
-            <MenuButton type="couprequest" onClick={() => console.log("쿠폰 발행 요청 클릭됨")} />
-            <MenuButton type="couplist" onClick={() => console.log("쿠폰 배부 내역 클릭됨")} />
+            <MenuButton
+                type="newcoup"
+                onClick={() => navigate("/user/coupon/register")}
+            />
+            <MenuButton
+                type="gift"
+                onClick={() => navigate("/user/gift")}
+            />
+            <MenuButton
+                type="couprequest"
+                onClick={() => navigate("/user/coupon/request/list")}
+            />
+            <MenuButton
+                type="couplist"
+                onClick={() => navigate("/user/coupon/published")}
+            />
         </div>
     );
 };
