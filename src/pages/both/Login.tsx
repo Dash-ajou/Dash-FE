@@ -9,10 +9,9 @@ import { setUserInfo } from "../../store/userSlice.ts"
 import { login } from "../../services/authService.ts"
 import { setUserType } from "../../store/typeSlice.ts"
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-const dispatch = useDispatch()
-
 const Login: React.FC = () => {
+    const dispatch = useDispatch()
+
     const [phoneNum, setPhoneNum] = useState<string>("")
     const [showNotice, setShowNotice] = useState<boolean>(false)
     const [password, setPassword] = useState<string>("")
@@ -44,20 +43,20 @@ const Login: React.FC = () => {
                 const user = response.data
                 dispatch(
                     setUserInfo({
-                        name: user.user_name,
-                        email: user.user_email,
-                        phone: user.user_phone,
+                        name: user.userName,
+                        email: user.userEmail,
+                        phone: user.userPhone,
                     })
                 )
-                dispatch(setUserType(user.user_type))
+                dispatch(setUserType(user.userType))
 
                 setShowLoginFail(false)
-                if (user.user_type === "GENERAL") {
+                if (user.userType === "GENERAL") {
                     navigate("/user/main")
-                } else if (user.user_type === "PARTNER") {
+                } else if (user.userType === "PARTNER") {
                     navigate("/partner/main")
                 } else {
-                    navigate("/onboarding")
+                    navigate("/")
                 }
             } else {
                 setShowLoginFail(true)
