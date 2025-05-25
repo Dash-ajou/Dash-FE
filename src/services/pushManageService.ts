@@ -9,19 +9,26 @@ export interface Notification {
   readed: boolean;
 }
 
-export const fetchPushNotifications = async () => {
+export interface FetchPushNotificationParams {
+  is_readed?: boolean;
+  received_at_from?: string;
+  received_at_to?: string;
+}
+
+export const fetchPushNotifications = async (
+    params: FetchPushNotificationParams = {}
+): Promise<{ success: boolean; data: Notification[] }> => {
   try {
-    const { status, data } = await apiClient.get("/push/list");
-
-    console.log("🔍 API 응답 data:", data);
-
-    // ✅ `data.data.data`가 실제 배열인지 확인 후 반환
-    if (status === 200 && Array.isArray(data?.data?.data)) {
-      return { success: true, data: data.data };
+    const response = await apiClient.get<{ status: string; message: string; data: Notification[] }>(
+        "/push/list",
+        { params }
+    );
+    if (response.status === 200 && Array.isArray(response.data.data)){
+      return { success: true, data: response.data.data};
     }
   } catch (error) {
-    console.error("❌ 알림 데이터 불러오기 실패:", error);
+    console.error("알림 데이터 불러오기 실패:", error);
   }
-
-  return { success: false, data: [] }; // ✅ 실패 시 빈 배열 반환
+  return {success: false, data: []};
 };
+

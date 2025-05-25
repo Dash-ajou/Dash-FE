@@ -10,7 +10,5 @@ export const fetchCouponStatus = async () => {
   } catch (error) {
     console.error("쿠폰 데이터 불러오기 실패:", error);
   }
-
-  // ❗️ API 요청이 실패한 경우에도 항상 반환값을 제공
   return { success: false, data: null };
 };
