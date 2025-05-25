@@ -5,10 +5,14 @@ import CouponCount from "../../components/unit/user-mypage/CouponCount";
 import { fetchUserMyPage, UserMyPageData } from "../../services/userMypageService";
 import DetailBox from "../../components/common/DetailBox";
 import Layout from "../../components/layout/Layout";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const UserMypage = () => {
   const [userData, setUserData] = useState<UserMyPageData | null>(null);
   const navigate = useNavigate();
+
+  const userName = useSelector((state: RootState) => state.user.name);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +31,7 @@ const UserMypage = () => {
   return (
     <Layout>
       <div className="text-black font-bold text-2xl mt-11 mb-4">
-        <p>{userData.generalName}님 안녕하세요</p>
+        <p>{userName}님 안녕하세요</p>
       </div>
 
       <div className="flex justify-center gap-3">
