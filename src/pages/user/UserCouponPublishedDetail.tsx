@@ -5,7 +5,6 @@
 
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -13,7 +12,6 @@ import ListBlock from "../../components/common/ListBlock";
 import CommonButton from "../../components/common/button/CommonButton";
 import SlideUpModal from "../../components/common/modal/SlideUpModal";
 import BasicModal from "../../components/common/modal/BasicModal";
-
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService";
 
 const UserCouponPublishedDetail = () => {

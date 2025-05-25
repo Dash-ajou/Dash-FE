@@ -19,7 +19,7 @@ export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
   console.log("현재 document.cookie:", document.cookie);
 
   try {
-    const response = await apiClient.get("/api/partner/stats");
+    const response = await apiClient.get("/partner/stats");
 
     console.log("[fetchPartnerStats] 응답 수신:", response);
 
