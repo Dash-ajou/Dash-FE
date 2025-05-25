@@ -20,7 +20,7 @@ export interface ApiResponse<T> {
 export const fetchReceivedGifts = async (): Promise<ReceivedGift[]> => {
   try {
     const response: AxiosResponse<ApiResponse<ApiResponse<ReceivedGift[]>>> = await apiClient.get(
-      "/general/coupons/recieved",
+      "/general/coupons/received",
     );
     const outer = response.data;
     const inner = outer.data;
