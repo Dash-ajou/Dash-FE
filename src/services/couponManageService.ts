@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 export const fetchCouponStatus = async () => {
   try {
-    const result = await apiClient.get("/general/coupons/status");
+    const result = await apiClient.get("general/coupons/status");
 
     if (result.status === 200) {
       return { success: true, data: result.data.data };
