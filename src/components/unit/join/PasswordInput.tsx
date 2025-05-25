@@ -4,16 +4,10 @@ import CommonButton from "../../common/button/CommonButton.tsx"
 import Icon from "../../common/icons/Icon.tsx"
 
 type PasswordInputProps = {
-    onNext: () => void
-    setPassword: (pw: string) => void
-    setConfirmPassword: (pw: string) => void
+    onNext: (pw: string, verify_pw: string) => void
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({
-    onNext,
-    setPassword,
-    setConfirmPassword,
-}) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({ onNext }) => {
     const [localPassword, setLocalPassword] = useState<string>("")
     const [verifyPassword, setVerifyPassword] = useState<string>("")
     const [showPassword, setShowPassword] = useState({ first: false, second: false })
@@ -50,9 +44,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 
     const handleNext = () => {
         if (isValidPassword) {
-            setPassword(localPassword)
-            setConfirmPassword(verifyPassword)
-            onNext()
+            onNext(localPassword, verifyPassword)
         }
     }
 

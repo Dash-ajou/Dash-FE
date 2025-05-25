@@ -35,7 +35,7 @@ const colorStyles = {
 }
 
 const Status: React.FC<StatusProps> = ({ statusType, color, onClick, ...props }) => {
-    const [time, setTime] = useState<number>(180)
+    const [time, setTime] = useState<number>(300)
     const [isVerifyClicked, setIsVerifyClicked] = useState<boolean>(false)
 
     useEffect(() => {
