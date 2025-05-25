@@ -1,5 +1,4 @@
 import apiClient from "./apiClient.ts";
-import { store } from "../store/store";
 
 export interface UserAccountInfoData {
   general_name: string;
@@ -9,26 +8,20 @@ export interface UserAccountInfoData {
 
 export interface ApiResponse<T> {
   status: string;
-  message: string;
+  message: string | null;
   data: T;
 }
 
 export const fetchUserAccountInfo = async () => {
   try {
-    const response = await apiClient.get<ApiResponse<Omit<UserAccountInfoData, "general_name">>>(
+    const response = await apiClient.get<ApiResponse<ApiResponse<UserAccountInfoData>>>(
         "/general/account"
     );
 
-    if (response.status === 200 && response.data?.data) {
-      const globalName = store.getState().user.name;
+    const inner = response.data.data;
 
-      return {
-        success: true,
-        data: {
-          general_name: globalName,
-          ...response.data.data,
-        },
-      };
+    if (response.status === 200 && inner.status === "SUCCESS") {
+      return { success: true, data: inner.data };
     }
 
     return { success: false, data: null };
