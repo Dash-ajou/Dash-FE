@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import Toggle from "../common/Toggle";
-import Status from "../common/Status";
-import Icon from "../common/icons/Icon";
+import React, { useState } from "react"
+import Toggle from "../common/Toggle"
+import Status from "../common/Status"
+import Icon from "../common/icons/Icon"
 
-type BlockType = "button" | "toggle" | "detail";
+type BlockType = "button" | "toggle" | "detail"
 
 interface BlockProps {
-    type: BlockType;
-    title: string;
-    subtitle?: string;
-    info?: string;
-    action?: React.ReactNode;
-    statusType?: "approved" | "rejected" | "pending";
-    defaultToggle?: boolean;
+    type: BlockType
+    title: string
+    subtitle?: string
+    info?: string
+    action?: React.ReactNode
+    statusType?: "approved" | "rejected" | "pending"
+    defaultToggle?: boolean
+    onNext?: () => void
 }
 
 const Block: React.FC<BlockProps> = ({
@@ -23,13 +24,14 @@ const Block: React.FC<BlockProps> = ({
     action,
     statusType,
     defaultToggle,
+    onNext,
 }) => {
-    const [isToggleon, setIsToggleOn] = useState(defaultToggle ?? false);
+    const [isToggleon, setIsToggleOn] = useState(defaultToggle ?? false)
     const handleDetailClick = () => {
-        if (type === "detail") {
-            alert("페이지 이동 예정");
+        if (type === "detail" && onNext) {
+            onNext()
         }
-    };
+    }
 
     return (
         <div
@@ -39,9 +41,7 @@ const Block: React.FC<BlockProps> = ({
         >
             <div>
                 <div className="font-bold text-lg text-black">{title}</div>
-                {subtitle && (
-                    <div className="text-sm text-black mt-3 mb-1.5">{subtitle}</div>
-                )}
+                {subtitle && <div className="text-sm text-black mt-3 mb-1.5">{subtitle}</div>}
                 {info && <div className="text-sm text-black ">{info}</div>}
             </div>
 
@@ -70,8 +70,8 @@ const Block: React.FC<BlockProps> = ({
                                 statusType === "approved"
                                     ? "blue"
                                     : statusType === "rejected"
-                                    ? "red"
-                                    : "gray"
+                                      ? "red"
+                                      : "gray"
                             }
                         />
                         <div className="flex items-center justify-center rounded-full">
@@ -81,7 +81,7 @@ const Block: React.FC<BlockProps> = ({
                 ) : null}
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Block;
+export default Block
