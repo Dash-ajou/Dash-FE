@@ -1,38 +1,71 @@
-import React, {useState} from "react";
-import Layout from "../../components/layout/Layout.tsx";
-import InputField from "../../components/common/InputField.tsx";
-import CommonButton from "../../components/common/button/CommonButton.tsx";
-import {useNavigate} from "react-router-dom";
-import Icon from "../../components/common/icons/Icon.tsx";
+import React, { useState } from "react"
+import Layout from "../../components/layout/Layout.tsx"
+import InputField from "../../components/common/InputField.tsx"
+import CommonButton from "../../components/common/button/CommonButton.tsx"
+import { useNavigate } from "react-router-dom"
+import Icon from "../../components/common/icons/Icon.tsx"
+import { useDispatch } from "react-redux"
+import { setUserInfo } from "../../store/userSlice.ts"
+import { login } from "../../services/authService.ts"
+import { setUserType } from "../../store/typeSlice.ts"
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const dispatch = useDispatch()
 
 const Login: React.FC = () => {
-    const [phoneNum, setPhoneNum] = useState<string>("");
-    const [showNotice, setShowNotice] = useState<boolean>(false);
-    const [password, setPassword] = useState<string>("");
-    const [showLoginFail, setShowLoginFail] = useState<boolean>(false);
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [phoneNum, setPhoneNum] = useState<string>("")
+    const [showNotice, setShowNotice] = useState<boolean>(false)
+    const [password, setPassword] = useState<string>("")
+    const [showLoginFail, setShowLoginFail] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setPhoneNum(value);
+        const value = event.target.value
+        setPhoneNum(value)
 
         if (value.length > 0 && value.length !== 11) {
-            setShowNotice(true);
+            setShowNotice(true)
         } else {
-            setShowNotice(false);
+            setShowNotice(false)
         }
     }
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    };
+        setPassword(event.target.value)
+    }
 
-    const handleLogin = () => {
-        //로그인 요청
-        //로그인 실패 시
-        setShowLoginFail(true);
+    const handleLogin = async () => {
+        try {
+            const response = await login({ user_phone: phoneNum, user_password: password })
+
+            if (response.success) {
+                const user = response.data
+                dispatch(
+                    setUserInfo({
+                        name: user.user_name,
+                        email: user.user_email,
+                        phone: user.user_phone,
+                    })
+                )
+                dispatch(setUserType(user.user_type))
+
+                setShowLoginFail(false)
+                if (user.user_type === "GENERAL") {
+                    navigate("/user/main")
+                } else if (user.user_type === "PARTNER") {
+                    navigate("/partner/main")
+                } else {
+                    navigate("/onboarding")
+                }
+            } else {
+                setShowLoginFail(true)
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            setShowLoginFail(true)
+        }
     }
 
     return (
@@ -42,7 +75,11 @@ const Login: React.FC = () => {
                     <InputField
                         placeholder={"전화번호"}
                         dropdown={false}
-                        notice={showNotice ? {detail: "올바른 전화번호 형식이 아닙니다", color: "red"} : undefined}
+                        notice={
+                            showNotice
+                                ? { detail: "올바른 전화번호 형식이 아닙니다", color: "red" }
+                                : undefined
+                        }
                         value={phoneNum}
                         onInput={handlePhoneChange}
                     />
@@ -50,7 +87,11 @@ const Login: React.FC = () => {
                         <InputField
                             placeholder={"비밀번호"}
                             dropdown={false}
-                            notice={showLoginFail ? {detail: "비밀번호가 올바르지 않습니다", color: "red"} : undefined}
+                            notice={
+                                showLoginFail
+                                    ? { detail: "비밀번호가 올바르지 않습니다", color: "red" }
+                                    : undefined
+                            }
                             value={password}
                             onInput={handlePasswordChange}
                             type={showPassword ? "text" : "password"}
@@ -58,10 +99,10 @@ const Login: React.FC = () => {
 
                         <button
                             type="button"
-                            onClick={() => setShowPassword(prev => !prev)}
+                            onClick={() => setShowPassword((prev) => !prev)}
                             className="absolute right-3 top-6 transform -translate-y-1/2"
                         >
-                            <Icon name={showPassword ? "eye_close" : "eye_open"} size={24}/>
+                            <Icon name={showPassword ? "eye_close" : "eye_open"} size={24} />
                         </button>
                     </div>
                 </div>
@@ -72,7 +113,7 @@ const Login: React.FC = () => {
                         isActive={true}
                         mode="fill"
                         color="blue"
-                        detail={{label: "계속하기", position: "none"}}
+                        detail={{ label: "계속하기", position: "none" }}
                         onClick={handleLogin}
                     />
                 </div>
@@ -82,7 +123,7 @@ const Login: React.FC = () => {
                         isActive={true}
                         mode="text_no_line"
                         color="black"
-                        detail={{label: "도와주세요!", position: "none"}}
+                        detail={{ label: "도와주세요!", position: "none" }}
                         onClick={() => navigate("/findpw")}
                     />
                     <CommonButton
@@ -90,7 +131,7 @@ const Login: React.FC = () => {
                         isActive={true}
                         mode="text_no_line"
                         color="black"
-                        detail={{label: "새롭게 시작할래요!", position: "none"}}
+                        detail={{ label: "새롭게 시작할래요!", position: "none" }}
                         onClick={() => navigate("/join?step=roleSelect")}
                     />
                 </div>
@@ -99,4 +140,4 @@ const Login: React.FC = () => {
     )
 }
 
-export default Login;
+export default Login

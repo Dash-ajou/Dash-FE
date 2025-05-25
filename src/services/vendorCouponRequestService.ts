@@ -1,19 +1,17 @@
 import apiClient from "./apiClient.ts"
 
 export const couponRequest = async () => {
-    // try {
-    //     const response = await apiClient.post('/coupon/issue/request');
-    //
-    //     if (response.status === 201) {
-    //         return {success: true};
-    //     } else {
-    //         return {success: false};
-    //     }
-    // } catch (error) {
-    //     return {success: false, error};
-    // }
+    try {
+        const response = await apiClient.post("/coupon/issue/request")
 
-    return { success: true }
+        if (response.status === 201) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
 }
 
 export const couponRequestDetail = async (request_id: number) => {
