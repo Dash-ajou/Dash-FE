@@ -1,5 +1,3 @@
-// 쿠폰 발행내역 조회 API
-
 import apiClient from "./apiClient";
 
 export type Vendor = {
