@@ -17,7 +17,23 @@ const CouponRequestConfirm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await couponRequest()
+            const requestPayload = {
+                vendor: {
+                    vendor_name: vendor.organizationName,
+                    president_name: vendor.representativeName,
+                    president_phone: vendor.contact,
+                },
+                partner: {
+                    business_name: request.partnerName,
+                    owner_phone: request.partnerPhone,
+                },
+                products: request.menu.map((item: { menuId: number; quantity: number }) => ({
+                    product_id: item.menuId,
+                    count: item.quantity,
+                })),
+            }
+
+            const response = await couponRequest(requestPayload)
 
             if (response.success) {
                 setShowResultModal(true)
