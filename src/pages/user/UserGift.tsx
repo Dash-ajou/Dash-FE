@@ -4,7 +4,7 @@ import { fetchSentGifts, SentGift } from "../../services/userSentGiftService";
 import {
     fetchReceivedGifts,
     ReceivedGift,
-} from "../../services/userRecivedGiftService";
+} from "../../services/userReceivedGiftService";
 import ReceivedGiftTab from "../../components/unit/user-gift/ReceivedGiftTab";
 import SentGiftTab from "../../components/unit/user-gift/SentGiftTab";
 import Layout from "../../components/layout/Layout";
@@ -35,7 +35,7 @@ const UserGift = () => {
                 <Tabs tabs={["받은 선물함", "보낸 선물함"]}>
                     <ReceivedGiftTab
                         loading={loading}
-                        recivedGifts={recivedGifts}
+                        receivedGifts={recivedGifts}
                     />
                     <SentGiftTab loading={loading} sentGifts={sentGifts} />
                 </Tabs>
