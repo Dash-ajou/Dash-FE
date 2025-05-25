@@ -1,52 +1,46 @@
-//Account Domain > Partner Account API > 통계 조회 (메인 페이지)
-//import apiClient from "./apiClient";
-//TO-DO: mock데이터 삭제
+import apiClient from "./apiClient";
 
 export type MainVendorStat = {
-    vendor_name: string;
-    vendor_issued_count: number;
-    vendor_used_count: number;
+  vendor_name: string;
+  vendor_issued: number;
+  vendor_used: number;
 };
 
 export type MainPartnerStats = {
-    total_issued: number;
-    total_used: number;
-    total_remainder: number;
-    usage_rate: number;
-    detailed_stats: MainVendorStat[];
+  total_issued: number;
+  total_used: number;
+  total_remainder: number;
+  usage_rate: number;
+  detailed_stats: MainVendorStat[];
 };
 
 export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
-    return {
-        total_issued: 158,
-        total_used: 60,
-        total_remainder: 98,
-        usage_rate: 38,
-        detailed_stats: [
-            {
-                vendor_name: "아주대학교 총학생회",
-                vendor_issued_count: 150,
-                vendor_used_count: 10,
-            },
-            {
-                vendor_name: "아주대학교 사이버보안학과",
-                vendor_issued_count: 60,
-                vendor_used_count: 32,
-            },
-            {
-                vendor_name: "삼성 라이온즈",
-                vendor_issued_count: 80,
-                vendor_used_count: 31,
-            },
-        ],
-    };
+  console.log("[fetchPartnerStats] 요청 시작");
+  console.log("현재 document.cookie:", document.cookie);
 
-    // const response = await fetch("/api/partner/stats"); // 실제 API 엔드포인트
-    // const json = await response.json();
+  try {
+    const response = await apiClient.get("/api/partner/stats");
 
-    // if (json.status !== "SUCCESS") {
-    //     throw new Error("파트너 통계 데이터 로딩 실패");
-    // }
+    console.log("[fetchPartnerStats] 응답 수신:", response);
 
-    // return json.data as MainPartnerStats;
+    const { status, data } = response.data;
+
+    if (status !== "SUCCESS") {
+      console.error("[fetchPartnerStats] 응답 실패 상태:", status);
+      throw new Error("파트너 통계 데이터 로딩 실패");
+    }
+
+    if (!data || !Array.isArray(data.detailed_stats)) {
+      console.warn("[fetchPartnerStats] detailed_stats가 배열이 아님 또는 없음:", data);
+    } else if (data.detailed_stats.length === 0) {
+      console.warn("[fetchPartnerStats] detailed_stats가 빈 배열입니다");
+    } else {
+      console.log("[fetchPartnerStats] detailed_stats 정상:", data.detailed_stats);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("[fetchPartnerStats] 요청 중 에러 발생:", error);
+    throw error;
+  }
 };
