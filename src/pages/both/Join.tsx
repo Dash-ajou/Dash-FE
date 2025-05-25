@@ -1,44 +1,78 @@
-import React, {useEffect, useState} from "react";
-import Layout from "../../components/layout/Layout.tsx";
-import RoleSelect from "../../components/unit/join/RoleSelect.tsx";
-import {Role} from "../../constants/role.ts";
-import {useSearchParams} from "react-router-dom";
-import PartnerDetail from "../../components/unit/join/PartnerDetail.tsx";
-import PartnerForm from "../../components/unit/join/PartnerForm.tsx";
-import {JoinStep, PartnerInfo} from "../../types/JoinTypes.ts";
-import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx";
-import NameInfo from "../../components/unit/join/NameInfo.tsx";
-import OAuthConnect from "../../components/unit/join/OAuthConnect.tsx";
-import PasswordInput from "../../components/unit/join/PasswordInput.tsx";
-import JoinComplete from "../../components/unit/join/JoinComplete.tsx";
+import React, { useEffect, useState } from "react"
+import Layout from "../../components/layout/Layout.tsx"
+import RoleSelect from "../../components/unit/join/RoleSelect.tsx"
+import { Role } from "../../constants/role.ts"
+import { useSearchParams } from "react-router-dom"
+import PartnerDetail from "../../components/unit/join/PartnerDetail.tsx"
+import PartnerForm from "../../components/unit/join/PartnerForm.tsx"
+import { JoinStep, PartnerInfo } from "../../types/JoinTypes.ts"
+import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx"
+import NameInfo from "../../components/unit/join/NameInfo.tsx"
+import OAuthConnect from "../../components/unit/join/OAuthConnect.tsx"
+import PasswordInput from "../../components/unit/join/PasswordInput.tsx"
+import JoinComplete from "../../components/unit/join/JoinComplete.tsx"
+import { generalJoin, partnerJoin } from "../../services/authService.ts"
 
 const Join: React.FC = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const currentStep = searchParams.get("step") || JoinStep.ROLE_SELECT;
+    const [searchParams, setSearchParams] = useSearchParams()
+    const currentStep = searchParams.get("step") || JoinStep.ROLE_SELECT
 
     const [partnerInfo, setPartnerInfo] = useState<PartnerInfo>({
         storeName: "",
         address: "",
-    });
+    })
 
-    const [phoneNum, setPhoneNum] = useState<string>("");
-    const [userName, setUserName] = useState<string>("");
-    const [isVerified, setIsVerified] = useState<boolean>(false);
+    const [phoneNum, setPhoneNum] = useState<string>("")
+    const [userName, setUserName] = useState<string>("")
+    const [isVerified, setIsVerified] = useState<boolean>(false)
+    const [password, setPassword] = useState<string>("")
+    const [confirmPassword, setConfirmPassword] = useState<string>("")
+    const [role, setRole] = useState<(typeof Role)[keyof typeof Role] | null>(null)
 
     useEffect(() => {
         if (!searchParams.get("step")) {
-            setSearchParams({step: JoinStep.ROLE_SELECT});
+            setSearchParams({ step: JoinStep.ROLE_SELECT })
         }
-    }, []);
+    }, [])
 
-    const handleRoleSelect = (role: (typeof Role)[keyof typeof Role] | null) => {
+    const handleRoleSelect = (selectedRole: (typeof Role)[keyof typeof Role] | null) => {
+        setRole(selectedRole)
         setSearchParams({
-            step: role === Role.USER ? JoinStep.PHONE_AUTH : JoinStep.PARTNER_FORM,
-        });
-    };
+            step: selectedRole === Role.USER ? JoinStep.PHONE_AUTH : JoinStep.PARTNER_FORM,
+        })
+    }
 
-    const handleJoin = () => {
-        setSearchParams({step: JoinStep.COMPLETE})
+    const handleJoin = async () => {
+        if (role === Role.USER) {
+            const response = await generalJoin({
+                general_name: userName,
+                password,
+                password_confirm: confirmPassword,
+                user_type: "GENERAL",
+                general_phone: phoneNum,
+                //TODO - email
+            })
+            if (response.success) {
+                setSearchParams({ step: JoinStep.COMPLETE })
+            } else {
+                console.error(response.error)
+            }
+        } else if (role === Role.PARTNER) {
+            const response = await partnerJoin({
+                user_type: "PARTNER",
+                partner_name: partnerInfo.storeName,
+                partner_address: partnerInfo.address,
+                owner_name: userName,
+                owner_phone: phoneNum,
+                password,
+                password_confirm: confirmPassword,
+            })
+            if (response.success) {
+                setSearchParams({ step: JoinStep.COMPLETE })
+            } else {
+                console.error(response.error)
+            }
+        }
     }
 
     return (
@@ -46,21 +80,19 @@ const Join: React.FC = () => {
             {currentStep === JoinStep.ROLE_SELECT && (
                 <RoleSelect
                     onSelect={(role) => handleRoleSelect(role)}
-                    onPartnerInfo={() => setSearchParams({step: JoinStep.PARTNER_INFO})}
+                    onPartnerInfo={() => setSearchParams({ step: JoinStep.PARTNER_INFO })}
                 />
             )}
 
             {currentStep === JoinStep.PARTNER_INFO && (
-                <PartnerDetail
-                    onNext={() => setSearchParams({step: JoinStep.PARTNER_FORM})}
-                />
+                <PartnerDetail onNext={() => setSearchParams({ step: JoinStep.PARTNER_FORM })} />
             )}
 
             {currentStep === JoinStep.PARTNER_FORM && (
                 <PartnerForm
                     partnerInfo={partnerInfo}
                     setPartnerInfo={setPartnerInfo}
-                    onNext={() => setSearchParams({step: JoinStep.PHONE_AUTH})}
+                    onNext={() => setSearchParams({ step: JoinStep.PHONE_AUTH })}
                 />
             )}
 
@@ -70,7 +102,7 @@ const Join: React.FC = () => {
                     setPhoneNum={setPhoneNum}
                     isVerified={isVerified}
                     setIsVerified={setIsVerified}
-                    onNext={() => setSearchParams({step: JoinStep.NAME})}
+                    onNext={() => setSearchParams({ step: JoinStep.NAME })}
                 />
             )}
 
@@ -78,28 +110,25 @@ const Join: React.FC = () => {
                 <NameInfo
                     userName={userName}
                     setUserName={setUserName}
-                    onNext={() => setSearchParams({step: JoinStep.OAUTH_CONNECT})}
+                    onNext={() => setSearchParams({ step: JoinStep.OAUTH_CONNECT })}
                 />
             )}
 
             {currentStep === JoinStep.OAUTH_CONNECT && (
-                <OAuthConnect
-                    onNext={() => setSearchParams({step: JoinStep.PASSWORD_INPUT})}
-                />
+                <OAuthConnect onNext={() => setSearchParams({ step: JoinStep.PASSWORD_INPUT })} />
             )}
 
             {currentStep === JoinStep.PASSWORD_INPUT && (
                 <PasswordInput
                     onNext={handleJoin}
+                    setPassword={setPassword}
+                    setConfirmPassword={setConfirmPassword}
                 />
             )}
 
-            {currentStep === JoinStep.COMPLETE && (
-                <JoinComplete/>
-            )}
-
+            {currentStep === JoinStep.COMPLETE && <JoinComplete />}
         </Layout>
     )
 }
 
-export default Join;
+export default Join

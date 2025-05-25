@@ -1,26 +1,36 @@
-import React, {useState} from "react";
-import Layout from "../../components/layout/Layout.tsx";
-import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx";
-import BasicModal from "../../components/common/modal/BasicModal.tsx";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react"
+import Layout from "../../components/layout/Layout.tsx"
+import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
+import { useNavigate } from "react-router-dom"
+import { updatePhone } from "../../services/authService.ts"
 
 const PhoneNumChange: React.FC = () => {
-    const navigate = useNavigate();
-    const [phoneNum, setPhoneNum] = useState<string>("");
-    const [isVerified, setIsVerified] = useState<boolean>(false);
-    const [isAlarmOpen, setIsAlarmOpen] = useState<boolean>(false);
+    const navigate = useNavigate()
+    const [phoneNum, setPhoneNum] = useState<string>("")
+    const [isVerified, setIsVerified] = useState<boolean>(false)
+    const [isAlarmOpen, setIsAlarmOpen] = useState<boolean>(false)
+    const [verifyCode, setVerifyCode] = useState<string>("")
 
     const handleConfirm = () => {
-        setIsAlarmOpen(true);
+        setIsAlarmOpen(true)
     }
 
     const handleNo = () => {
-        navigate(-1);
+        navigate(-1)
     }
 
-    const handleYes = () => {
-        //TODO - patch API
-        navigate(-1);
+    const handleYes = async () => {
+        const result = await updatePhone({
+            general_new_phone: phoneNum,
+            general_verify_code: verifyCode,
+        })
+
+        if (result.success) {
+            navigate(-1)
+        } else {
+            alert("전화번호 변경에 실패했습니다.") // TODO
+        }
     }
 
     return (
@@ -31,6 +41,7 @@ const PhoneNumChange: React.FC = () => {
                 isVerified={isVerified}
                 setIsVerified={setIsVerified}
                 onNext={handleConfirm}
+                setVerifyCode={setVerifyCode}
             />
 
             <BasicModal
@@ -45,4 +56,4 @@ const PhoneNumChange: React.FC = () => {
     )
 }
 
-export default PhoneNumChange;
+export default PhoneNumChange

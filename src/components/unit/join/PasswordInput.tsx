@@ -1,42 +1,60 @@
-import React, {useCallback, useMemo, useState} from "react";
-import InputField from "../../common/InputField.tsx";
-import CommonButton from "../../common/button/CommonButton.tsx";
-import Icon from "../../common/icons/Icon.tsx";
+import React, { useCallback, useMemo, useState } from "react"
+import InputField from "../../common/InputField.tsx"
+import CommonButton from "../../common/button/CommonButton.tsx"
+import Icon from "../../common/icons/Icon.tsx"
 
 type PasswordInputProps = {
-    onNext: () => void;
+    onNext: () => void
+    setPassword: (pw: string) => void
+    setConfirmPassword: (pw: string) => void
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
-    const [password, setPassword] = useState<string>("");
-    const [verifyPassword, setVerifyPassword] = useState<string>("");
-    const [showPassword, setShowPassword] = useState({ first: false, second: false });
+const PasswordInput: React.FC<PasswordInputProps> = ({
+    onNext,
+    setPassword,
+    setConfirmPassword,
+}) => {
+    const [localPassword, setLocalPassword] = useState<string>("")
+    const [verifyPassword, setVerifyPassword] = useState<string>("")
+    const [showPassword, setShowPassword] = useState({ first: false, second: false })
 
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*]/.test(password);
-    const isValidPassword = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && password.length >= 8 && password.length <= 20;
+    const hasUpperCase = /[A-Z]/.test(localPassword)
+    const hasLowerCase = /[a-z]/.test(localPassword)
+    const hasNumber = /\d/.test(localPassword)
+    const hasSpecialChar = /[!@#$%^&*]/.test(localPassword)
+    const isValidPassword =
+        hasUpperCase &&
+        hasLowerCase &&
+        hasNumber &&
+        hasSpecialChar &&
+        localPassword.length >= 8 &&
+        localPassword.length <= 20
 
-    const isPasswordSame = useMemo(() => password === verifyPassword, [password, verifyPassword]);
-    const isPasswordValid = isValidPassword && isPasswordSame;
+    const isPasswordSame = useMemo(
+        () => localPassword === verifyPassword,
+        [localPassword, verifyPassword]
+    )
+    const isPasswordValid = isValidPassword && isPasswordSame
 
     const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    }, []);
+        setLocalPassword(event.target.value)
+    }, [])
 
     const handleAuthChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setVerifyPassword(event.target.value);
-    }, []);
+        setVerifyPassword(event.target.value)
+    }, [])
 
     const togglePasswordVisibility = useCallback((field: "first" | "second") => {
-        setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
-    }, []);
+        setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }))
+    }, [])
 
-    const handleNext = useCallback(() => {
-        // 회원가입 처리 로직
-        onNext();
-    }, [onNext]);
+    const handleNext = () => {
+        if (isValidPassword) {
+            setPassword(localPassword)
+            setConfirmPassword(verifyPassword)
+            onNext()
+        }
+    }
 
     return (
         <div className="flex flex-col justify-center gap-6 w-full">
@@ -46,7 +64,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
                 <InputField
                     placeholder={"영문 대소문자, 숫자, 특수문자를 포함한 8-20자"}
                     dropdown={false}
-                    value={password}
+                    value={localPassword}
                     onInput={handleChange}
                     type={showPassword.first ? "text" : "password"}
                 />
@@ -55,13 +73,21 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
                     onClick={() => togglePasswordVisibility("first")}
                     className="absolute right-3 top-6 transform -translate-y-1/2"
                 >
-                    <Icon name={showPassword.first ? "eye_close" : "eye_open"} size={24}/>
+                    <Icon name={showPassword.first ? "eye_close" : "eye_open"} size={24} />
                 </button>
                 <div className="text-sm">
-                    <span className={hasUpperCase ? "text-green-500" : "text-red-500"}>영문 대문자,</span>
-                    <span className={hasLowerCase ? "text-green-500" : "text-red-500"}> 영문 소문자,</span>
+                    <span className={hasUpperCase ? "text-green-500" : "text-red-500"}>
+                        영문 대문자,
+                    </span>
+                    <span className={hasLowerCase ? "text-green-500" : "text-red-500"}>
+                        {" "}
+                        영문 소문자,
+                    </span>
                     <span className={hasNumber ? "text-green-500" : "text-red-500"}> 숫자,</span>
-                    <span className={hasSpecialChar ? "text-green-500" : "text-red-500"}> 특수문자</span>
+                    <span className={hasSpecialChar ? "text-green-500" : "text-red-500"}>
+                        {" "}
+                        특수문자
+                    </span>
                 </div>
             </div>
 
@@ -69,7 +95,11 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
                 <InputField
                     label={"비밀번호를 다시 한번 입력해주세요"}
                     dropdown={false}
-                    notice={isPasswordSame ? undefined : {detail: "비밀번호가 일치하지 않습니다", color: "red"}}
+                    notice={
+                        isPasswordSame
+                            ? undefined
+                            : { detail: "비밀번호가 일치하지 않습니다", color: "red" }
+                    }
                     value={verifyPassword}
                     onInput={handleAuthChange}
                     type={showPassword.second ? "text" : "password"}
@@ -79,7 +109,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
                     onClick={() => togglePasswordVisibility("second")}
                     className="absolute right-3 top-12 transform -translate-y-1/2"
                 >
-                    <Icon name={showPassword.second ? "eye_close" : "eye_open"} size={24}/>
+                    <Icon name={showPassword.second ? "eye_close" : "eye_open"} size={24} />
                 </button>
             </div>
 
@@ -90,7 +120,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
                         isActive={true}
                         mode="fill"
                         color="blue"
-                        detail={{label: "완료하기", position: "none"}}
+                        detail={{ label: "완료하기", position: "none" }}
                         onClick={handleNext}
                     />
                 </div>
@@ -99,4 +129,4 @@ const PasswordInput: React.FC<PasswordInputProps> = ({onNext}) => {
     )
 }
 
-export default PasswordInput;
+export default PasswordInput

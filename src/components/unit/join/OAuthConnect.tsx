@@ -1,63 +1,62 @@
-import React, {useEffect, useState} from "react";
-import CommonButton from "../../common/button/CommonButton.tsx";
-import BasicModal from "../../common/modal/BasicModal.tsx";
-
-const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
-const REDIRECT_URI = "YOUR_REDIRECT_URI"; // 로그인 후 리디렉트될 URI
+import React, { useState } from "react"
+import CommonButton from "../../common/button/CommonButton.tsx"
+import BasicModal from "../../common/modal/BasicModal.tsx"
 
 type OAuthConnectProps = {
-    onNext: () => void;
+    onNext: () => void
 }
 
-const OAuthConnect: React.FC<OAuthConnectProps> = ({onNext}) => {
-    const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false);
+const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext }) => {
+    const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false)
 
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://accounts.google.com/gsi/client";
-        script.async = true;
-        script.defer = true;
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+    const handleGoogleLogin = () => {
+        window.location.href = `${import.meta.env.VITE_APP_API_URL}/auth/google`
+    }
 
     const handlePass = () => {
-        setIsAlertModalOpen(true);
+        setIsAlertModalOpen(true)
     }
 
     return (
         <div className="flex flex-col justify-center gap-4 w-full">
             {window.location.pathname === "/mypage/update/email" ? (
                 <div className="text-black font-bold text-xl mt-16">
-                    이메일을 수정할 수 있어요 <br />학교 계정을 다시 연결해주세요
+                    이메일을 수정할 수 있어요 <br />
+                    학교 계정을 다시 연결해주세요
                 </div>
             ) : (
                 <div className="text-black font-bold text-xl mt-16">
-                    이메일 등록이 필요해요 <br />학교 계정이 있다면 연결해주세요
+                    이메일 등록이 필요해요 <br />
+                    학교 계정이 있다면 연결해주세요
                 </div>
             )}
 
-            <div className="absolute bottom-[325px] px-6 left-0 right-0 w-full flex flex-col">
-                <div id="g_id_onload"
-                     data-client_id={CLIENT_ID}
-                     data-context="use"
-                     data-ux_mode="redirect"
-                     data-login_uri={REDIRECT_URI}
-                     data-auto_prompt="false">
-                </div>
-
-                <div className="g_id_signin h-10"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="continue_with"
-                     data-size="large"
-                     data-logo_alignment="left"
+            <div className="absolute bottom-[325px] left-0 right-0 w-full flex flex-col">
+                <button
+                    onClick={handleGoogleLogin}
+                    className="flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-md py-2 h-12 my-4 shadow-sm hover:bg-gray-50 w-full max-w-xs mx-auto"
                 >
-                </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5">
+                        <path
+                            fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                        />
+                        <path
+                            fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                        />
+                        <path
+                            fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                        />
+                        <path
+                            fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                        />
+                        <path fill="none" d="M0 0h48v48H0z" />
+                    </svg>
+                    <span className="text-sm font-medium text-gray-700">Google로 계속하기</span>
+                </button>
 
                 {window.location.pathname !== "/mypage/update/email" && (
                     <CommonButton
@@ -65,7 +64,7 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({onNext}) => {
                         isActive={true}
                         mode="text"
                         color="gray"
-                        detail={{label: "건너뛰기", position: "none"}}
+                        detail={{ label: "건너뛰기", position: "none" }}
                         onClick={handlePass}
                     />
                 )}
@@ -81,7 +80,6 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({onNext}) => {
             </div>
         </div>
     )
-
 }
 
-export default OAuthConnect;
+export default OAuthConnect
