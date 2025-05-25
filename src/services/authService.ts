@@ -34,7 +34,7 @@ export const generalJoin = async (data: {
     password_confirm: string
     user_type: string
     general_phone: string
-    // general_email: string TODO
+    general_email?: string
 }) => {
     try {
         const response = await apiClient.post("/signup/unified", data)
@@ -54,7 +54,7 @@ export const partnerJoin = async (data: {
     partner_address: string
     owner_name: string
     owner_phone: string
-    //owner_email: string TODO
+    owner_email?: string
     password: string
     password_confirm: string
 }) => {
