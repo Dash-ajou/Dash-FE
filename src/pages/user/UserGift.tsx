@@ -11,7 +11,7 @@ import Layout from "../../components/layout/Layout";
 
 const UserGift = () => {
     const [sentGifts, setSentGifts] = useState<SentGift[]>([]);
-    const [recivedGifts, setRecivedGifts] = useState<ReceivedGift[]>([]);
+    const [receivedGifts, setReceivedGifts] = useState<ReceivedGift[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const UserGift = () => {
                 fetchReceivedGifts(),
             ]);
             setSentGifts(sent);
-            setRecivedGifts(received);
+            setReceivedGifts(received);
             setLoading(false);
         };
 
@@ -35,7 +35,7 @@ const UserGift = () => {
                 <Tabs tabs={["받은 선물함", "보낸 선물함"]}>
                     <ReceivedGiftTab
                         loading={loading}
-                        receivedGifts={recivedGifts}
+                        receivedGifts={receivedGifts}
                     />
                     <SentGiftTab loading={loading} sentGifts={sentGifts} />
                 </Tabs>
@@ -45,3 +45,5 @@ const UserGift = () => {
 };
 
 export default UserGift;
+
+
