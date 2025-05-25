@@ -47,7 +47,7 @@ const App: React.FC = () => {
       <Route path="/user/mypage" element={<UserMypage />} />
       <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
       <Route path="/user/gift" element={<UserGift />} />
-      <Route path="/user/accountinfo" element={<UserAccountInfo />} />
+      <Route path="/general/account" element={<UserAccountInfo />} />
       <Route path="/user/coupon/register" element={<QRScanPage />} />
       <Route path="/user/coupon/request" element={<CouponRequest />} />
       <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
