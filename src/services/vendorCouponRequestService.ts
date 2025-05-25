@@ -20,7 +20,7 @@ export const couponRequest = async (data: {
     try {
         const response = await apiClient.post("/coupon/issue/request", data)
 
-        if (response.status === 201) {
+        if (response.status === 200) {
             return { success: true }
         } else {
             return { success: false }
