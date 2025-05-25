@@ -15,7 +15,7 @@ export const couponRequest = async (data: {
         product_name?: string
         count: number
         is_new?: boolean
-    }
+    }[]
 }) => {
     try {
         const response = await apiClient.post("/coupon/issue/request", data)
