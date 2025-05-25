@@ -12,7 +12,7 @@ import {
     fetchCouponUse,
     fetchCouponCancel,
 } from "../../services/partnerCoupStatusChangeService";
-
+//TO-DO: partnerCoupValidationCheckService.ts에서 응답형식 수정되면 수정할것
 const PartnerCoupValCheck = () => {
     const { couponNum } = useParams<{ couponNum: string }>();
     const navigate = useNavigate();
@@ -20,8 +20,6 @@ const PartnerCoupValCheck = () => {
     const [couponData, setCouponData] =
         useState<PartnerCouponValidationResponse | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
-
-    // ✅ 처리 확인용 모달 상태
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(
         null
@@ -87,16 +85,15 @@ const PartnerCoupValCheck = () => {
                     rightstring={
                         isUsed
                             ? [
-                                  partner.business_name,
+                                  partner.partner_name,
                                   product.product_name,
-                                  redeem?.used_at.replace(" ", " ") ?? "-",
+                                  redeem?.used_at ?? "-",
                                   redeem?.payment_code ?? "-",
                               ]
-                            : [partner.business_name, product.product_name]
+                            : [partner.partner_name, product.product_name]
                     }
                 />
 
-                {/* ✅ 사용/철회 버튼 */}
                 <div className="w-full flex mt-[106px]">
                     <CommonButton
                         size="large"
@@ -114,7 +111,6 @@ const PartnerCoupValCheck = () => {
                     />
                 </div>
 
-                {/* ✅ 등록되지 않은 쿠폰 모달 */}
                 <BasicModal
                     mode="OnlyYes"
                     isOpen={modalOpen}
@@ -122,7 +118,6 @@ const PartnerCoupValCheck = () => {
                     onConfirm={handleConfirm}
                 />
 
-                {/* ✅ 사용 처리/철회 확인 모달 */}
                 <BasicModal
                     mode="YesNo"
                     isOpen={confirmModalOpen}

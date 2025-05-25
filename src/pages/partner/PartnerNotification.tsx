@@ -14,7 +14,7 @@ const PartnerNotification = () => {
       console.log("로드된 알림:", success);
 
       if (success) {
-        setNotifications(data.data);
+        setNotifications(data);
       } else {
         setNotifications([]);
       }
@@ -30,7 +30,7 @@ const PartnerNotification = () => {
 
   const onReadNotification = (id: number) => {
     setNotifications((prev) =>
-      prev.map((notif) => (notif.notification_id === id ? { ...notif, readed: true } : notif))
+      prev.map((notif) => (notif.notification_id === id ? { ...notif, readed: true } : notif)),
     );
   };
 
