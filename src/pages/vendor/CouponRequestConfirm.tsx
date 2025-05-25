@@ -12,6 +12,7 @@ const CouponRequestConfirm: React.FC = () => {
 
     const [showResultModal, setShowResultModal] = useState(false)
     const [showFailResultModal, setShowFailResultModal] = useState<boolean>(false)
+    const [requestId, setRequestId] = useState(-1)
 
     const navigate = useNavigate()
 
@@ -38,6 +39,7 @@ const CouponRequestConfirm: React.FC = () => {
 
             if (response.success) {
                 setShowResultModal(true)
+                setRequestId(response.request_id)
             } else {
                 setShowFailResultModal(true)
             }
@@ -49,7 +51,7 @@ const CouponRequestConfirm: React.FC = () => {
 
     const handleConfirm = () => {
         setShowResultModal(true)
-        navigate("/user/coupon/request/detail", { state: 1 })
+        navigate("/user/coupon/request/detail", { state: requestId })
     }
 
     return (

@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
-import Layout from "../../components/layout/Layout.tsx";
-import Block from "../../components/module/Block.tsx";
-import {useNavigate, useLocation} from "react-router-dom";
-import {couponRequestList} from "../../services/vendorCouponRequestService";
-import Icon from "../../components/common/icons/Icon.tsx";
+import React, { useEffect, useState } from "react"
+import Layout from "../../components/layout/Layout.tsx"
+import Block from "../../components/module/Block.tsx"
+import { useNavigate, useLocation } from "react-router-dom"
+import { couponRequestList } from "../../services/vendorCouponRequestService"
+import Icon from "../../components/common/icons/Icon.tsx"
 
 const CouponRequestList: React.FC = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [requests, setRequests] = useState<any[]>([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [isUser, setIsUser] = useState<boolean>(true);
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [requests, setRequests] = useState<any[]>([])
+    const [searchTerm, setSearchTerm] = useState("")
+    const [isUser, setIsUser] = useState<boolean>(true) //TODO
 
     useEffect(() => {
         if (location.pathname === "/partner/request/list") {
@@ -20,22 +20,21 @@ const CouponRequestList: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await couponRequestList();
+            const response = await couponRequestList()
             if (response.success) {
-                setRequests(response.data.data);
+                setRequests(response.data.data)
             } else {
-                setRequests([]);
+                setRequests([])
             }
-        };
-        fetchData();
-    }, []);
+        }
+        fetchData()
+    }, [])
 
     return (
         <Layout>
             <div className="pb-24 h-full">
-                <div
-                    className="w-full px-4 py-2 mt-3 mb-8 bg-white rounded-md outline outline-1 outline-zinc-300 flex items-center gap-3">
-                    <Icon name="search_gray" size={18}/>
+                <div className="w-full px-4 py-2 mt-3 mb-8 bg-white rounded-md outline outline-1 outline-zinc-300 flex items-center gap-3">
+                    <Icon name="search_gray" size={18} />
                     <input
                         type="text"
                         placeholder={isUser ? "파트너명 검색" : "단체명 검색"}
@@ -46,22 +45,30 @@ const CouponRequestList: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    {Array.isArray(requests) && requests.map((item) => (
-                        <Block
-                            key={item.request_id}
-                            type={"detail"}
-                            title={isUser? item.partner.business_name : item.vendor.vendor_name}
-                            statusType={
-                                item.status === "REQUESTED"
-                                    ? "pending"
-                                    : item.status === "APPROVED"
-                                        ? "approved"
-                                        : item.status === "DENIED"
+                    {Array.isArray(requests) &&
+                        requests.map((item) => (
+                            <Block
+                                key={item.request_id}
+                                type={"detail"}
+                                title={
+                                    isUser ? item.partner.business_name : item.vendor.vendor_name
+                                }
+                                statusType={
+                                    item.status === "REQUESTED"
+                                        ? "pending"
+                                        : item.status === "APPROVED"
+                                          ? "approved"
+                                          : item.status === "DENIED"
                                             ? "rejected"
                                             : undefined
-                            }
-                        />
-                    ))}
+                                }
+                                onNext={() =>
+                                    navigate("/user/coupon/request/detail", {
+                                        state: item.request_id,
+                                    })
+                                }
+                            />
+                        ))}
                 </div>
             </div>
 
@@ -70,7 +77,7 @@ const CouponRequestList: React.FC = () => {
                     <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
                     <button
                         className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-blue-500 text-white text-3xl shadow-md z-20"
-                        onClick={() => navigate('/user/coupon/request')}
+                        onClick={() => navigate("/user/coupon/request")}
                     >
                         +
                     </button>
@@ -80,4 +87,4 @@ const CouponRequestList: React.FC = () => {
     )
 }
 
-export default CouponRequestList;
+export default CouponRequestList
