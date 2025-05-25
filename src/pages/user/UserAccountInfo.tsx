@@ -28,7 +28,7 @@ const UserAccountInfo = () => {
           title="계정 정보"
           leftstring={["이름", "이메일", "전화번호"]}
           rightstring={[
-            data.general_name,
+            data.general_name || "이름 없음",
             data.general_email,
             data.general_phone.replace(/\D/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
           ]}

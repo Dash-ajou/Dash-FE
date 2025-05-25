@@ -1,5 +1,5 @@
-//TO-DO: mock데이터 제거
 import apiClient from "./apiClient.ts";
+import { store } from "../store/store";
 
 export interface UserAccountInfoData {
   general_name: string;
@@ -15,24 +15,25 @@ export interface ApiResponse<T> {
 
 export const fetchUserAccountInfo = async () => {
   try {
-    // 실제 API 호출 주석 처리
-    const response = await apiClient.get<ApiResponse<UserAccountInfoData>>("/general/account");
-    console.log("user account info 응답:", response.data);
+    const response = await apiClient.get<ApiResponse<Omit<UserAccountInfoData, "general_name">>>(
+        "/general/account"
+    );
+
     if (response.status === 200 && response.data?.data) {
-      return { success: true, data: response.data.data };
+      const globalName = store.getState().user.name;
+
+      return {
+        success: true,
+        data: {
+          general_name: globalName,
+          ...response.data.data,
+        },
+      };
     }
 
-    //TO-DO: 이름은 전역변수에서
-    // const mockResponse: UserAccountInfoData = {
-    //     general_name: "김김김",
-    //     general_email: "등록된 이메일이 없습니다.",
-    //     general_phone: "01012345678",
-    // };
-
-    return { success: true, data: null };
+    return { success: false, data: null };
   } catch (error) {
     console.error("계정 정보 불러오기 실패", error);
+    return { success: false, data: null };
   }
-
-  return { success: false, data: null };
 };
