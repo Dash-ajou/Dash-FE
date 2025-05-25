@@ -25,8 +25,6 @@ const Join: React.FC = () => {
     const [phoneNum, setPhoneNum] = useState<string>("")
     const [userName, setUserName] = useState<string>("")
     const [isVerified, setIsVerified] = useState<boolean>(false)
-    const [password, setPassword] = useState<string>("")
-    const [confirmPassword, setConfirmPassword] = useState<string>("")
     const [role, setRole] = useState<(typeof Role)[keyof typeof Role] | null>(null)
 
     useEffect(() => {
@@ -42,7 +40,7 @@ const Join: React.FC = () => {
         })
     }
 
-    const handleJoin = async () => {
+    const handleJoin = async (password: string, confirmPassword: string) => {
         if (role === Role.USER) {
             const response = await generalJoin({
                 general_name: userName,
@@ -50,7 +48,7 @@ const Join: React.FC = () => {
                 password_confirm: confirmPassword,
                 user_type: "GENERAL",
                 general_phone: phoneNum,
-                //TODO - email
+                //TODO-email
             })
             if (response.success) {
                 setSearchParams({ step: JoinStep.COMPLETE })
@@ -59,7 +57,6 @@ const Join: React.FC = () => {
             }
         } else if (role === Role.PARTNER) {
             const response = await partnerJoin({
-                user_type: "PARTNER",
                 partner_name: partnerInfo.storeName,
                 partner_address: partnerInfo.address,
                 owner_name: userName,
@@ -70,6 +67,7 @@ const Join: React.FC = () => {
             if (response.success) {
                 setSearchParams({ step: JoinStep.COMPLETE })
             } else {
+                console.log(response.data.message)
                 console.error(response.error)
             }
         }
@@ -120,9 +118,9 @@ const Join: React.FC = () => {
 
             {currentStep === JoinStep.PASSWORD_INPUT && (
                 <PasswordInput
-                    onNext={handleJoin}
-                    setPassword={setPassword}
-                    setConfirmPassword={setConfirmPassword}
+                    onNext={(pw: string, confirmPw: string) => {
+                        handleJoin(pw, confirmPw)
+                    }}
                 />
             )}
 

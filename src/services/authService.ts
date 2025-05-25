@@ -50,7 +50,6 @@ export const generalJoin = async (data: {
 }
 
 export const partnerJoin = async (data: {
-    user_type: string
     partner_name: string
     partner_address: string
     owner_name: string
@@ -65,21 +64,21 @@ export const partnerJoin = async (data: {
         if (response.status === 201) {
             return { success: true }
         } else {
-            return { success: false }
+            return { success: false, data: response.data.message }
         }
     } catch (error) {
         return { success: false, error }
     }
 }
 
-export const PhoneVerifyRequest = async (data: { user_pone: string }) => {
+export const PhoneVerifyRequest = async (data: { user_phone: string }) => {
     try {
         const response = await apiClient.post("/auth/phone/request", data)
 
         if (response.status === 200) {
             return { success: true }
         } else {
-            return { sucess: false }
+            return { success: false }
         }
     } catch (error) {
         return { success: false, error }
@@ -88,7 +87,7 @@ export const PhoneVerifyRequest = async (data: { user_pone: string }) => {
 
 export const PhoneVerify = async (data: { user_phone: string; user_verify_code: string }) => {
     try {
-        const response = await apiClient.post("/general/account/phone", data)
+        const response = await apiClient.post("/auth/phone/verify", data)
 
         if (response.status === 200) {
             return { success: true }
@@ -117,7 +116,7 @@ export const updatePhone = async (data: {
     }
 }
 
-export const passwordReset_phoneVerifyRequest = async (data: { user_pone: string }) => {
+export const passwordReset_phoneVerifyRequest = async (data: { user_phone: string }) => {
     try {
         const response = await apiClient.post("/auth/password-reset/request", data)
 
@@ -133,7 +132,7 @@ export const passwordReset_phoneVerifyRequest = async (data: { user_pone: string
 
 export const passwordReset_phoneVerify = async (data: {
     user_phone: string
-    pw_verify_code: string
+    user_verify_code: string
 }) => {
     try {
         const response = await apiClient.post("/auth/password-reset/verify", data)
@@ -153,6 +152,7 @@ export const passwordReset = async (data: {
     new_password: string
     new_password_confirm: string
 }) => {
+    console.log(data)
     try {
         const response = await apiClient.post("/auth/password-reset/complete", data)
 

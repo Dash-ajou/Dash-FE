@@ -72,9 +72,9 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
     const handleAuth = async () => {
         let response
         if (window.location.pathname.startsWith("/findpw")) {
-            response = await passwordReset_phoneVerifyRequest({ user_pone: localPhoneNum })
+            response = await passwordReset_phoneVerifyRequest({ user_phone: localPhoneNum })
         } else {
-            response = await PhoneVerifyRequest({ user_pone: localPhoneNum })
+            response = await PhoneVerifyRequest({ user_phone: localPhoneNum })
         }
 
         if (response?.success) {
@@ -98,7 +98,7 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
         if (window.location.pathname.startsWith("/findpw")) {
             response = await passwordReset_phoneVerify({
                 user_phone: localPhoneNum,
-                pw_verify_code: authCode,
+                user_verify_code: authCode,
             })
         } else {
             response = await PhoneVerify({

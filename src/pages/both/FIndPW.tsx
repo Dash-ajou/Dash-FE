@@ -16,19 +16,17 @@ const FindPW: React.FC = () => {
     const [isFailAlertModalOpen, setIsFailAlertModalOepn] = useState<boolean>(false)
     const [phoneNum, setPhoneNum] = useState<string>("")
     const [isVerified, setIsVerified] = useState<boolean>(false)
-    const [password, setPassword] = useState<string>("")
-    const [confirmPassword, setConfirmPassword] = useState<string>("")
 
     const handleClose = () => {
         setIsAlertModalOpen(false)
         navigate("/")
     }
 
-    const handlePWReset = async () => {
+    const handlePWReset = async (pw: string, confirmPw: string) => {
         const response = await passwordReset({
             user_phone: phoneNum,
-            new_password: password,
-            new_password_confirm: confirmPassword,
+            new_password: pw,
+            new_password_confirm: confirmPw,
         })
 
         if (response.success) {
@@ -52,9 +50,9 @@ const FindPW: React.FC = () => {
 
             {currentStep === FindPWStep.RESET_PW && (
                 <PasswordInput
-                    onNext={handlePWReset}
-                    setPassword={setPassword}
-                    setConfirmPassword={setConfirmPassword}
+                    onNext={(pw: string, confirmPw: string) => {
+                        handlePWReset(pw, confirmPw)
+                    }}
                 />
             )}
 

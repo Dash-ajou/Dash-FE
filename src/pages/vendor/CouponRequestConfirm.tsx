@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
 import Layout from "../../components/layout/Layout.tsx"
@@ -10,8 +10,8 @@ const CouponRequestConfirm: React.FC = () => {
     const location = useLocation()
     const { vendor, request } = location.state
 
-    const [showResultModal, setShowResultModal] = React.useState(false)
-    const [modalMessage, setModalMessage] = React.useState("")
+    const [showResultModal, setShowResultModal] = useState(false)
+    const [showFailResultModal, setShowFailResultModal] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
@@ -20,14 +20,13 @@ const CouponRequestConfirm: React.FC = () => {
             const response = await couponRequest()
 
             if (response.success) {
-                setModalMessage("요청서 발행에 성공했습니다.")
+                setShowResultModal(true)
             } else {
-                setModalMessage("요청서 발행 중 오류가 발생했습니다.")
+                setShowFailResultModal(true)
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-            setModalMessage("요청서 발행 중 오류가 발생했습니다." + error)
-        } finally {
-            setShowResultModal(true)
+            setShowFailResultModal(true)
         }
     }
 
@@ -93,9 +92,16 @@ const CouponRequestConfirm: React.FC = () => {
             <BasicModal
                 mode={"YesNo"}
                 isOpen={showResultModal}
-                title={modalMessage}
+                title={"요청서 발행에 성공했습니다."}
                 onClose={() => navigate("/user/main")}
                 onConfirm={handleConfirm}
+            />
+
+            <BasicModal
+                mode={"OnlyYes"}
+                isOpen={showFailResultModal}
+                title={"요청서 발행 중 오류가 발생했습니다."}
+                onConfirm={() => setShowFailResultModal(false)}
             />
         </Layout>
     )
