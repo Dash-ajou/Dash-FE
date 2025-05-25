@@ -9,12 +9,16 @@ const UserAccountInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetchUserAccountInfo();
-      if (res.success) {
+      console.log("👉 API 응답:", res);
+      if (res.success && res.data) {
         setData(res.data);
+      } else {
+        console.warn("❌ API 실패 또는 데이터 없음");
       }
     };
     fetchData();
   }, []);
+
 
   if (!data) {
     return <div className="text-center mt-10">불러오는 중...</div>;
@@ -28,9 +32,9 @@ const UserAccountInfo = () => {
           title="계정 정보"
           leftstring={["이름", "이메일", "전화번호"]}
           rightstring={[
-            data.general_name || "이름 없음",
-            data.general_email,
-            data.general_phone.replace(/\D/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
+            data.general_name ?? "이름 없음",
+            data.general_email ?? "이메일 없음",
+            (data.general_phone ?? "").replace(/\D/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
           ]}
           linkurl={[
             "", // 이름은 클릭 불가
