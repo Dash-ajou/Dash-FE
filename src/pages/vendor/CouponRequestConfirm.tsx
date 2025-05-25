@@ -27,9 +27,10 @@ const CouponRequestConfirm: React.FC = () => {
                     business_name: request.partnerName,
                     owner_phone: request.partnerPhone,
                 },
-                products: request.menu.map((item: { menuId: number; quantity: number }) => ({
-                    product_id: item.menuId,
+                products: request.menu.map((item: { menuName: number; quantity: number }) => ({
+                    product_name: item.menuName,
                     count: item.quantity,
+                    is_new: true,
                 })),
             }
 

@@ -11,8 +11,10 @@ export const couponRequest = async (data: {
         owner_phone: string
     }
     products: {
-        product_id: number
+        product_id?: number
+        product_name?: string
         count: number
+        is_new?: boolean
     }
 }) => {
     try {
