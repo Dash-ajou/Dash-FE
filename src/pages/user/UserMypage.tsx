@@ -7,12 +7,26 @@ import DetailBox from "../../components/common/DetailBox";
 import Layout from "../../components/layout/Layout";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useDispatch } from "react-redux";
+import { logout } from "../../services/authService";
+import { resetUserInfo } from "../../store/userSlice";
 
 const UserMypage = () => {
   const [userData, setUserData] = useState<UserMyPageData | null>(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userName = useSelector((state: RootState) => state.user.name);
+
+  const handleLogOut = async () => {
+    const res = await logout();
+    if (res.success) {
+      dispatch(resetUserInfo());
+      navigate("/login");
+    } else {
+      alert("로그아웃에 실패했습니다.");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +83,7 @@ const UserMypage = () => {
           mode="text"
           color="black"
           detail={{ label: "로그아웃", position: "none" }}
+          onClick={handleLogOut}
         />
         <CommonButton
           size="mini"
