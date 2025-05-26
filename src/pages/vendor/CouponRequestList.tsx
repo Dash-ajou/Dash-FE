@@ -11,9 +11,9 @@ const CouponRequestList: React.FC = () => {
     const navigate = useNavigate()
     const [requests, setRequests] = useState<any[]>([])
     const [searchTerm, setSearchTerm] = useState("")
-    const isUser = useSelector((state: RootState) =>
-        state.type.userType === "" ? true : state.type.userType === "GENERAL"
-    )
+    const userType = useSelector((state: RootState) => state.type.userType)
+    const location = window.location
+    const isUser = userType === "" ? location.pathname.startsWith("/user/") : userType === "GENERAL"
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,11 +25,7 @@ const CouponRequestList: React.FC = () => {
             }
         }
         fetchData()
-    }, [])
-
-    useEffect(() => {
-        console.log(requests)
-    }, [requests])
+    }, [isUser])
 
     return (
         <Layout>
