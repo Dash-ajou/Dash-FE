@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import Block from "../../components/module/Block.tsx"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { couponRequestList } from "../../services/vendorCouponRequestService"
 import Icon from "../../components/common/icons/Icon.tsx"
+import { useSelector } from "react-redux"
+import { RootState } from "../../store/store.ts"
 
 const CouponRequestList: React.FC = () => {
     const navigate = useNavigate()
-    const location = useLocation()
     const [requests, setRequests] = useState<any[]>([])
     const [searchTerm, setSearchTerm] = useState("")
-    const [isUser, setIsUser] = useState<boolean>(true) //TODO
-
-    useEffect(() => {
-        if (location.pathname === "/partner/request/list") {
-            setIsUser(false)
-        }
-    }, [])
+    const isUser = useSelector((state: RootState) =>
+        state.type.userType === "" ? true : state.type.userType === "GENERAL"
+    )
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await couponRequestList()
             if (response.success) {
-                setRequests(response.data.data)
+                setRequests(response.data)
             } else {
                 setRequests([])
             }
         }
         fetchData()
     }, [])
+
+    useEffect(() => {
+        console.log(requests)
+    }, [requests])
 
     return (
         <Layout>
