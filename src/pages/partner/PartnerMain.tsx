@@ -35,7 +35,7 @@ const PartnerMain = () => {
     <Layout>
       <div className="mt-5" onClick={goToStatsPage}>
         {stats && (
-          <Statistics mode="totalstat" published={stats?.total_issued} used={stats?.total_used} />
+          <Statistics mode="totalstat" published={stats?.totalIssued} used={stats?.totalUsed} />
         )}
       </div>
       <div className="flex flex-col w-full mt-5">

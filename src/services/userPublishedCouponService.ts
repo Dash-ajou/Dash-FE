@@ -1,62 +1,66 @@
-import apiClient from "./apiClient"
+import apiClient from "./apiClient";
 
 export type Vendor = {
-    vendor_name: string
-    president_name: string
-    president_phone: string
-}
+  vendor_name: string;
+  president_name: string;
+  president_phone: string;
+};
 
 export type Partner = {
-    business_name: string
-    partner_phone: string
-}
+  business_name: string;
+  partner_phone: string;
+};
 
 export type PublishedCoupon = {
-    request_id: number
-    vendor: Vendor
-    partner: Partner
-    issue_id: number
-    status: "ENABLE" | "DISABLE"
-    issue_at: string
-    issue_count: number
-    used_count: number
-}
+  request_id: number;
+  vendor: Vendor;
+  partner: Partner;
+  issue_id: number;
+  status: "ENABLED" | "DISABLED";
+  issue_at: string;
+  issue_count: number;
+  used_count: number;
+};
 
 export type PublishedCouponResponse = {
-    page: number
-    size: number
-    count: number
-    data: PublishedCoupon[]
-}
+  page: number;
+  size: number;
+  count: number;
+  data: PublishedCoupon[];
+};
 
 type RequestParams = {
-    vendor_name?: string
-    president_name?: string
-    business_name?: string
-    include_completed?: boolean
-    status?: boolean
-    page?: number
-    size?: number
-}
+  vendor_name?: string;
+  president_name?: string;
+  business_name?: string;
+  include_completed?: boolean;
+  status?: boolean;
+  page?: number;
+  size?: number;
+  issue_id?: number;
+};
 
 export const fetchPublishedCoupon = async (
-    params: RequestParams = {}
+  params: RequestParams = {},
 ): Promise<PublishedCoupon[]> => {
-    try {
-        const response = await apiClient.get<{
-            status: string
-            message: string | null
-            data: PublishedCouponResponse
-        }>("/coupon/manage/list", { params })
+  try {
+    const response = await apiClient.get<{
+      status: string;
+      message: string | null;
+      data: PublishedCouponResponse;
+    }>("/coupon/manage/list", { params });
 
-        if (response.data.status !== "SUCCESS") {
-            console.warn("쿠폰 정보 응답 실패:", response.data.message)
-            return []
-        }
-
-        return response.data.data.data
-    } catch (error) {
-        console.error("쿠폰 정보 요청 실패:", error)
-        return []
+    if (response.data.status !== "SUCCESS") {
+      return [];
     }
-}
+
+    const coupons = response.data.data.data;
+    const validCoupons = coupons.filter(
+      (coupon) => coupon && coupon.partner && typeof coupon.partner.business_name === "string",
+    );
+
+    return validCoupons;
+  } catch (error) {
+    return [];
+  }
+};

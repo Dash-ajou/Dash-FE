@@ -8,7 +8,10 @@ import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import CommonButton from "../../components/common/button/CommonButton.tsx";
 import { useNavigate } from "react-router-dom";
-import { fetchCouponList } from "../../services/userCouponListService.ts";
+import {
+  fetchRegisteredCouponList,
+  RegisteredCouponItem,
+} from "../../services/userCouponListService.ts";
 import { QRData } from "../../types/QRData.ts";
 
 const UserMain = () => {
@@ -29,13 +32,14 @@ const UserMain = () => {
 
   useEffect(() => {
     const getCouponList = async () => {
-      const res = await fetchCouponList();
+      const res = await fetchRegisteredCouponList();
       if (res.success && res.data) {
-        const mappedData: QRData[] = res.data.map((item: any) => ({
+        const mappedData: QRData[] = res.data.map((item: RegisteredCouponItem) => ({
           title: item.couponName,
           partnername: item.partnerName,
           duedate: item.validUntil,
           qrimg: "none",
+          couponId: item.couponId,
         }));
         setQRData(mappedData);
       }

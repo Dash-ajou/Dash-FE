@@ -1,17 +1,22 @@
 import apiClient from "./apiClient";
 
 export type MainVendorStat = {
-  vendor_name: string;
-  vendor_issued: number;
-  vendor_used: number;
+  vendorId: number;
+  vendorName: string;
+  vendorIssued: number;
+  vendorUsed: number;
+  vendorUsageRate: {
+    source: string;
+    parsedValue: number;
+  };
 };
 
 export type MainPartnerStats = {
-  total_issued: number;
-  total_used: number;
-  total_remainder: number;
-  usage_rate: number;
-  detailed_stats: MainVendorStat[];
+  totalIssued: number;
+  totalUsed: number;
+  totalRemainder: number;
+  usageRate: number;
+  detailedStats: MainVendorStat[];
 };
 
 export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
@@ -30,15 +35,15 @@ export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
       throw new Error("파트너 통계 데이터 로딩 실패");
     }
 
-    if (!data || !Array.isArray(data.detailed_stats)) {
-      console.warn("[fetchPartnerStats] detailed_stats가 배열이 아님 또는 없음:", data);
-    } else if (data.detailed_stats.length === 0) {
-      console.warn("[fetchPartnerStats] detailed_stats가 빈 배열입니다");
+    if (!data.data || !Array.isArray(data.data.detailedStats)) {
+      console.warn("[fetchPartnerStats] detailedStats가 배열이 아님 또는 없음:", data.data);
+    } else if (data.data.detailedStats.length === 0) {
+      console.warn("[fetchPartnerStats] detailedStats가 빈 배열입니다");
     } else {
-      console.log("[fetchPartnerStats] detailed_stats 정상:", data.detailed_stats);
+      console.log("[fetchPartnerStats] detailedStats 정상:", data.data.detailedStats);
     }
 
-    return data;
+    return data.data;
   } catch (error) {
     console.error("[fetchPartnerStats] 요청 중 에러 발생:", error);
     throw error;
