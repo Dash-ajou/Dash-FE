@@ -16,6 +16,14 @@ const CouponRequestList: React.FC = () => {
     const isUser = userType === "" ? location.pathname.startsWith("/user/") : userType === "GENERAL"
 
     useEffect(() => {
+        const shouldFetch =
+            userType !== "" ||
+            (userType === "" &&
+                (location.pathname.startsWith("/user/") ||
+                    location.pathname.startsWith("/partner/")))
+
+        if (!shouldFetch) return
+
         const fetchData = async () => {
             const response = await couponRequestList()
             if (response.success) {
@@ -24,8 +32,9 @@ const CouponRequestList: React.FC = () => {
                 setRequests([])
             }
         }
+
         fetchData()
-    }, [isUser])
+    }, [userType, location.pathname])
 
     return (
         <Layout>
