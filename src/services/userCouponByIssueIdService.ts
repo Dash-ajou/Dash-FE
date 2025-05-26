@@ -1,4 +1,5 @@
 import apiClient from "./apiClient";
+import { AxiosError } from "axios";
 
 export type CouponStatus =
   | "REGISTERABLE"
@@ -36,41 +37,26 @@ export const fetchCouponByIssueID = async (
   params: CouponByIssueIDQuery = {},
 ): Promise<CouponByIssueID[]> => {
   try {
-    console.log("Making API request to:", `/coupon/manage/${issueId}/list`);
+    const url = `/coupon/manage/${issueId}/list`;
     const response = await apiClient.get<{
       apiVersion: string;
       clientVersion: string;
       status: string;
       message: string | null;
       data: CouponByIssueIDResponse;
-    }>(`/coupon/manage/${issueId}/list`, { params });
-
-    console.log("API Response:", response.data);
-    console.log("API Response data structure:", {
-      status: response.data.status,
-      message: response.data.message,
-      data: response.data.data,
-    });
+    }>(url, { params });
 
     if (response.data.status !== "SUCCESS") {
       throw new Error(response.data.message || "쿠폰 상세 정보를 불러오지 못했습니다.");
     }
 
-    // API 응답 구조에 맞게 데이터 접근
     const responseData = response.data.data;
-    console.log("Response data:", responseData);
-
     if (!responseData || !Array.isArray(responseData.data)) {
-      console.error("Invalid response structure:", responseData);
       return [];
     }
 
-    const couponData = responseData.data;
-    console.log("Extracted coupon data:", couponData);
-
-    return couponData;
+    return responseData.data;
   } catch (error) {
-    console.error("Failed to fetch coupon by issue ID:", error);
     return Promise.reject(error);
   }
 };

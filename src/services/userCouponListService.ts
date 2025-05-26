@@ -1,33 +1,30 @@
 import apiClient from "./apiClient";
 import { AxiosError } from "axios";
 
-export type CouponItem = {
+export type RegisteredCouponItem = {
   couponId: number;
   couponName: string;
   partnerName: string;
   validUntil: string;
 };
 
-export const fetchCouponList = async (): Promise<{
+export const fetchRegisteredCouponList = async (): Promise<{
   success: boolean;
-  data: CouponItem[] | null;
+  data: RegisteredCouponItem[] | null;
 }> => {
   try {
-    console.log("Fetching coupon list...");
     const response = await apiClient.get("/general/coupons");
-    console.log("Coupon list response:", response);
 
     if (response.status === 200 && Array.isArray(response.data.data.data)) {
-      console.log("Coupon data:", response.data.data.data);
+      const coupons = response.data.data.data;
       return {
         success: true,
-        data: response.data.data.data,
+        data: coupons,
       };
     }
   } catch (error) {
-    console.error("쿠폰 목록 조회 실패:", error);
     if (error instanceof AxiosError && error.response) {
-      console.error("Error response:", error.response);
+      // 에러 처리
     }
   }
 
