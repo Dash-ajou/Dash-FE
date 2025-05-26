@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import DetailBox from "../../components/common/DetailBox.tsx"
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
 import { couponRequestDetail } from "../../services/vendorCouponRequestService.ts"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
@@ -9,7 +9,8 @@ import BasicModal from "../../components/common/modal/BasicModal.tsx"
 const RequestView: React.FC = () => {
     const navigate = useNavigate()
 
-    const { request_id } = useParams<{ request_id: string }>()
+    const location = useLocation()
+    const request_id = location.state
     const [data, setData] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
