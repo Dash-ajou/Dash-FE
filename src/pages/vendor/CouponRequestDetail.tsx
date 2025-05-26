@@ -104,8 +104,8 @@ const CouponRequestDetail: React.FC = () => {
                         data.partner.business_name,
                         data.partner.owner_phone,
                         ...data.products.map(
-                            (item: { product_name: string; count: number }) =>
-                                `${item.product_name}  ${item.count}EA`
+                            (item: { productName: string; count: number }) =>
+                                `${item.productName}  ${item.count}EA`
                         ),
                     ]}
                 />
