@@ -51,9 +51,7 @@ const CouponRequestList: React.FC = () => {
                             <Block
                                 key={item.request_id}
                                 type={"detail"}
-                                title={
-                                    isUser ? item.partner.business_name : item.vendor.vendor_name
-                                }
+                                title={isUser ? item.partner.partnerName : item.vendor.name}
                                 statusType={
                                     item.status === "REQUESTED"
                                         ? "pending"
