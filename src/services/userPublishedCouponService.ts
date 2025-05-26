@@ -34,6 +34,7 @@ type RequestParams = {
     president_name?: string
     business_name?: string
     include_completed?: boolean
+    status?: boolean
     page?: number
     size?: number
 }
