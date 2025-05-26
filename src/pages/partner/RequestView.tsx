@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
 import { couponRequestDetail } from "../../services/vendorCouponRequestService.ts"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
+import { RequestSign } from "../../services/partnerRequestManage.ts"
 
 const RequestView: React.FC = () => {
     const navigate = useNavigate()
@@ -37,11 +38,13 @@ const RequestView: React.FC = () => {
     }, [request_id])
 
     const handleApprove = () => {
-        //TODO - 승인 로직
-        const productInfo = data.products.map((item: { productName: string; count: number }) => ({
-            menu_name: item.productName,
-            count: item.count,
-        }))
+        const productInfo = data.products.map(
+            (item: { productName: string; productId: number; count: number }) => ({
+                menu_name: item.productName,
+                menu_id: item.productId,
+                count: item.count,
+            })
+        )
 
         navigate("/partner/request/payment", {
             state: {
@@ -51,9 +54,15 @@ const RequestView: React.FC = () => {
         })
     }
 
-    const handleReject = () => {
-        //TODO - 반려 로직
-        navigate("/partner/request/list")
+    const handleReject = async () => {
+        try {
+            await RequestSign(request_id, { status: "DENIED" })
+        } catch (error) {
+            console.error("반려 처리 중 오류가 발생했습니다.", error)
+            //TODO - 에러처리
+        } finally {
+            navigate("/partner/request/list")
+        }
     }
 
     if ((loading && !data) || !data.products) {
@@ -92,24 +101,26 @@ const RequestView: React.FC = () => {
                 />
             </div>
 
-            <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[450px] bg-white px-6 py-4 shadow-md flex justify-center gap-4 z-10">
-                <CommonButton
-                    size="large"
-                    isActive={true}
-                    mode="fill"
-                    color="blue"
-                    detail={{ label: "승인", position: "left", icon: "checkicon_fill_white" }}
-                    onClick={() => setIsApprovedModalOpen(true)}
-                />
-                <CommonButton
-                    size="large"
-                    isActive={true}
-                    mode="line"
-                    color="blue"
-                    detail={{ label: "반려", position: "left", icon: "crossicon_fill" }}
-                    onClick={() => setIsRejectedModalOpen(true)}
-                />
-            </div>
+            {data.status === "REQUESTED" && (
+                <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[450px] bg-white px-6 py-4 shadow-md flex justify-center gap-4 z-10">
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="fill"
+                        color="blue"
+                        detail={{ label: "승인", position: "left", icon: "checkicon_fill_white" }}
+                        onClick={() => setIsApprovedModalOpen(true)}
+                    />
+                    <CommonButton
+                        size="large"
+                        isActive={true}
+                        mode="line"
+                        color="blue"
+                        detail={{ label: "반려", position: "left", icon: "crossicon_fill" }}
+                        onClick={() => setIsRejectedModalOpen(true)}
+                    />
+                </div>
+            )}
 
             <BasicModal
                 mode="YesNo"
