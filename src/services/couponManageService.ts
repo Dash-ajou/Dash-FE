@@ -5,7 +5,8 @@ export const fetchCouponStatus = async () => {
     const result = await apiClient.get("general/coupons/status");
 
     if (result.status === 200) {
-      return { success: true, data: result.data.data };
+      const {usable_count, used_count} = result.data.data.data;
+      return { success: true, data:{ usableCoupons: usable_count, usedCoupons:used_count },};
     }
   } catch (error) {
     console.error("쿠폰 데이터 불러오기 실패:", error);
