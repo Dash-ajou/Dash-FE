@@ -10,7 +10,6 @@ export type StatisticsProps = {
   registered?: number;
   used: number;
   onClick?: () => void;
-  isActive?: boolean;
 };
 
 const Statistics: React.FC<StatisticsProps> = ({
@@ -21,7 +20,6 @@ const Statistics: React.FC<StatisticsProps> = ({
   registered = 0,
   used,
   onClick,
-  isActive = true,
 }) => {
   const percentage = Math.round((used / published) * 100);
 
