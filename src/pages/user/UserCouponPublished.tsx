@@ -5,7 +5,6 @@ import Block from "../../components/module/Block";
 import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService";
 import { useNavigate } from "react-router-dom";
 import { formatDateYMD } from "../../utiles/date";
-import Statistics from "../../components/module/Statistics";
 
 const UserCouponPublished = () => {
   const [coupons, setCoupons] = useState<PublishedCoupon[]>([]);

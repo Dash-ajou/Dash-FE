@@ -13,7 +13,7 @@ import CommonButton from "../../components/common/button/CommonButton";
 import SlideUpModal from "../../components/common/modal/SlideUpModal";
 import BasicModal from "../../components/common/modal/BasicModal";
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService";
-import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService";
+import { fetchPublishedCoupon } from "../../services/userPublishedCouponService";
 
 const UserCouponPublishedDetail = () => {
   const location = useLocation();
@@ -21,7 +21,6 @@ const UserCouponPublishedDetail = () => {
   const { issueId } = location.state || {};
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
-  const [issueStatus, setIssueStatus] = useState<"ENABLED" | "DISABLED">("ENABLED");
   const [issueCount, setIssueCount] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -52,14 +51,12 @@ const UserCouponPublishedDetail = () => {
           setCouponList([]);
         }
 
-        // Fetch issue status and count
         const publishedCoupons = await fetchPublishedCoupon({
           issue_id: issueId,
-          size: 1000, // 충분히 큰 수로 설정하여 모든 쿠폰을 가져옴
+          size: 1000,
         });
         if (publishedCoupons.length > 0) {
-          console.log("Setting issue status:", publishedCoupons[0].status);
-          setIssueStatus(publishedCoupons[0].status);
+          console.log("Setting issue count:", publishedCoupons[0].issue_count);
           setIssueCount(publishedCoupons[0].issue_count);
         }
       } catch (err) {
@@ -110,7 +107,6 @@ const UserCouponPublishedDetail = () => {
               published={issueCount}
               registered={couponList?.filter((c) => c.status === "USABLE").length || 0}
               used={couponList?.filter((c) => c.status === "USED").length || 0}
-              isActive={issueStatus === "ENABLED"}
             />
           </div>
 
