@@ -58,9 +58,14 @@ const CouponRequestList: React.FC = () => {
                                             : undefined
                                 }
                                 onNext={() =>
-                                    navigate("/user/coupon/request/detail", {
-                                        state: item.request_id,
-                                    })
+                                    navigate(
+                                        isUser
+                                            ? "/user/coupon/request/detail"
+                                            : "/partner/request/detail",
+                                        {
+                                            state: item.request_id,
+                                        }
+                                    )
                                 }
                             />
                         ))}
