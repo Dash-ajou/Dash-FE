@@ -32,7 +32,7 @@ export const couponRequest = async (data: {
 
 export const couponRequestDetail = async (request_id: number) => {
     try {
-        const response = await apiClient.get(`/coupon/issue/${request_id}`)
+        const response = await apiClient.get(`/coupon/issue/spec/${request_id}`)
 
         if (response.status === 200) {
             return { success: true, data: response.data.data }
@@ -49,7 +49,7 @@ export const couponRequestList = async () => {
         const response = await apiClient.get("/coupon/issue/list")
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data }
+            return { success: true, data: response.data.data.data }
         } else {
             return { success: false }
         }
