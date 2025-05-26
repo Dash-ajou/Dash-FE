@@ -57,3 +57,17 @@ export const couponRequestList = async () => {
         return { success: false, error }
     }
 }
+
+export const RequestDelete = async (request_id: number) => {
+    try {
+        const response = await apiClient.delete(`/coupon/issue/${request_id}`)
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}

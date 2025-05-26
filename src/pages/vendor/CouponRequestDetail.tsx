@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import DetailBox from "../../components/common/DetailBox.tsx"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
-import { couponRequestDetail } from "../../services/vendorCouponRequestService.ts"
-import { useLocation } from "react-router-dom"
+import { couponRequestDetail, RequestDelete } from "../../services/vendorCouponRequestService.ts"
+import { useLocation, useNavigate } from "react-router-dom"
 import Icon from "../../components/common/icons/Icon.tsx"
 import iconRegistry from "../../components/common/icons/IconRegistry.tsx"
 
@@ -13,6 +13,7 @@ type ItemStatus = {
 }
 
 const CouponRequestDetail: React.FC = () => {
+    const navigate = useNavigate()
     const location = useLocation()
     const requestId = location.state
     const [data, setData] = useState<any>(null)
@@ -22,6 +23,19 @@ const CouponRequestDetail: React.FC = () => {
     })
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+
+    const handleDelete = async (requestId: number) => {
+        try {
+            const response = await RequestDelete(requestId)
+            if (response.success) {
+                navigate("/user/coupon/request/list")
+            } else {
+                alert("요청 철회에 실패했습니다.")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -123,7 +137,7 @@ const CouponRequestDetail: React.FC = () => {
                     mode="text"
                     color="black"
                     detail={{ label: "요청 철회하기", position: "none" }}
-                    //onClick={()}
+                    onClick={() => handleDelete}
                 />
             </div>
         </Layout>
