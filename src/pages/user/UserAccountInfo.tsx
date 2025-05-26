@@ -9,11 +9,8 @@ const UserAccountInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetchUserAccountInfo();
-      console.log("👉 API 응답:", res);
-      if (res.success && res.data) {
+      if (res.success) {
         setData(res.data);
-      } else {
-        console.warn("❌ API 실패 또는 데이터 없음");
       }
     };
     fetchData();
