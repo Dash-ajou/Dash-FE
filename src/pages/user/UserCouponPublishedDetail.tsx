@@ -4,7 +4,7 @@
 //TO-DO: 스크롤 수정
 
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -16,6 +16,7 @@ import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCoupon
 
 const UserCouponPublishedDetail = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { issueId } = location.state || {};
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
@@ -25,20 +26,35 @@ const UserCouponPublishedDetail = () => {
   const [selectedFilter, setSelectedFilter] = useState("전체");
 
   useEffect(() => {
-    const fetchCouponDetailByIssueId = async () => {
-      if (!issueId) return;
+    if (!issueId) {
+      console.log("No issueId found, redirecting to published list");
+      navigate("/user/coupon/published");
+      return;
+    }
 
+    const fetchCouponDetailByIssueId = async () => {
       try {
+        console.log("Fetching coupon detail for issueId:", issueId);
         const data = await fetchCouponByIssueID(issueId);
-        setCouponList(data.data);
+        console.log("Received coupon detail data:", data);
+
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("Setting coupon list with data:", data);
+          setCouponList(data);
+        } else {
+          console.log("No valid data received or empty array");
+          setCouponList([]);
+        }
       } catch (err) {
         console.error("쿠폰 상세 정보 조회 실패", err);
+        setCouponList([]);
       }
     };
     fetchCouponDetailByIssueId();
-  }, [issueId]);
+  }, [issueId, navigate]);
 
   const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
+    console.log("Converting status:", status);
     switch (status) {
       case "REGISTERABLE":
         return "Issued";
@@ -49,18 +65,23 @@ const UserCouponPublishedDetail = () => {
       case "EXPIRED":
         return "Used";
       default:
+        console.log("Unknown status:", status);
         return undefined;
     }
   };
 
-  const filteredCoupons = couponList.filter((coupon) => {
-    if (selectedFilter === "전체") return true;
-    if (selectedFilter === "사용완료")
-      return coupon.status === "USED" || coupon.status === "EXPIRED";
-    if (selectedFilter === "등록완료") return coupon.status === "USABLE";
-    if (selectedFilter === "미등록") return coupon.status === "REGISTERABLE";
-    return true;
-  });
+  const filteredCoupons =
+    couponList?.filter((coupon) => {
+      console.log("Filtering coupon:", coupon);
+      if (selectedFilter === "전체") return true;
+      if (selectedFilter === "사용완료")
+        return coupon.status === "USED" || coupon.status === "EXPIRED";
+      if (selectedFilter === "등록완료") return coupon.status === "USABLE";
+      if (selectedFilter === "미등록") return coupon.status === "REGISTERABLE";
+      return true;
+    }) || [];
+
+  console.log("Filtered coupons:", filteredCoupons);
 
   return (
     <>
@@ -69,9 +90,9 @@ const UserCouponPublishedDetail = () => {
           <div className=" mt-2 mb-12">
             <Statistics
               mode="detailstat"
-              published={couponList.length}
-              registered={couponList.filter((c) => c.status === "USABLE").length}
-              used={couponList.filter((c) => c.status === "USED").length}
+              published={couponList?.length || 0}
+              registered={couponList?.filter((c) => c.status === "USABLE").length || 0}
+              used={couponList?.filter((c) => c.status === "USED").length || 0}
             />
           </div>
 
@@ -91,11 +112,11 @@ const UserCouponPublishedDetail = () => {
             style={{ maxHeight: "calc(100vh - 415px)" }}>
             {filteredCoupons.map((coupon) => (
               <ListBlock
-                key={coupon.id}
+                key={coupon.coupon_id}
                 type="coupstatuslist"
-                coupnum={`#${coupon.id}`}
+                coupnum={`#${coupon.coupon_id}`}
                 coupstatus={statusToText(coupon.status)}
-                name={coupon.partner.business_name}
+                name={"알 수 없음"}
               />
             ))}
           </div>
