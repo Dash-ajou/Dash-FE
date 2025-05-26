@@ -9,9 +9,11 @@ import CommonButton from "../../components/common/button/CommonButton.tsx"
 import { ko } from "date-fns/locale"
 import TimeSelector from "../../components/unit/partner-payment-detail/TimeSelector.tsx"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
+import { RequestSign } from "../../services/partnerRequestManage.ts"
 
 interface ProductInfo {
     menu_name: string
+    menu_id: number
     count: number
 }
 
@@ -29,7 +31,8 @@ const PaymentInfo: React.FC = () => {
     const [menuItems, setMenuItems] = useState<ProductWithPrice[]>(
         (products || []).map((p: ProductInfo) => ({
             menu_name: p.menu_name,
-            count: Math.abs(p.count % 1000),
+            menu_id: p.menu_id,
+            count: p.count,
             price: "",
         }))
     )
@@ -63,10 +66,30 @@ const PaymentInfo: React.FC = () => {
         setIsCheckModalOpen(true)
     }
 
-    const handleConfirm = () => {
-        //TODO - request_id 이용해서 결제정보 POST
-        console.log(request_id) //TODO - 추후 삭제 build error 방지용
-        navigate("/partner/request/approve")
+    const handleConfirm = async () => {
+        try {
+            const paid_at = format(selectedDate, "yyyy-MM-dd HH:mm")
+            const prices = menuItems.map((item) => ({
+                product_id: item.menu_id,
+                price: parseInt(item.price, 10) || 0,
+            }))
+
+            const discountValue = parseInt(discount, 10) || 0
+
+            await RequestSign(request_id, {
+                status: "APPROVED",
+                payment: {
+                    paid_at,
+                    prices,
+                    discount: discountValue,
+                },
+            })
+        } catch (error) {
+            console.error("반려 처리 중 오류가 발생했습니다.", error)
+            //TODO - 에러처리
+        } finally {
+            navigate("/partner/request/list")
+        }
     }
 
     return (
