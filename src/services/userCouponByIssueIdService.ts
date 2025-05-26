@@ -1,5 +1,4 @@
 import apiClient from "./apiClient";
-import { PartnerInfo, ProductInfo } from "../types/CouponRedeemTypes.ts";
 
 export type CouponStatus =
   | "REGISTERABLE"
