@@ -52,7 +52,7 @@ const UserCouponPublished = () => {
         />
       </div>
 
-      <div className="px-2 flex flex-col gap-4">
+      <div className="py-1 px-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
         {filteredCoupons.length === 0 ? (
           <div className="text-center text-gray-500 py-4">
             {searchTerm ? "검색 결과가 없습니다." : "발행된 쿠폰이 없습니다."}
@@ -62,13 +62,8 @@ const UserCouponPublished = () => {
             <div
               key={coupon.issue_id}
               onClick={() =>
-                navigate("/user/coupon/published/detail", {
-                  state: {
-                    businessName: coupon.partner.business_name,
-                    issueId: coupon.issue_id,
-                  },
-                })
-              }>
+                  navigate(`/user/coupon/published/${coupon.issue_id}`) // state 제거
+                }>
               <Block
                 key={coupon.issue_id}
                 type="toggle"

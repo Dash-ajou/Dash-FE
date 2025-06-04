@@ -19,7 +19,7 @@ interface UsedCouponResponse {
   };
 }
 
-export interface UsedCouonQueryParams {
+export interface UsedCouponQueryParams {
   redeem_id?: number;
   user_name?: string;
   page?: number;
@@ -27,7 +27,7 @@ export interface UsedCouonQueryParams {
 }
 
 export const fetchPartnerUsedCoupon = async (
-    params: UsedCouonQueryParams = {}
+    params: UsedCouponQueryParams = {}
 ): Promise<UsedCoupon[]> => {
   const response = await apiClient.get<UsedCouponResponse>(
       '/coupon/payment/log/list',

@@ -54,7 +54,7 @@ const App: React.FC = () => {
       <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
       <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
       <Route path="/user/coupon/published" element={<UserCouponPublished />} />
-      <Route path="/user/coupon/published/detail" element={<UserCouponPublishedDetail />} />
+      <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
 
       <Route path="/partner/coupon/scan" element={<QRScanPage />} />
       <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
