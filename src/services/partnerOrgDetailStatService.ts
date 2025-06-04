@@ -1,15 +1,16 @@
 import apiClient from "./apiClient";
 
 export type PartnerOrgDetail = {
+    data: PartnerOrgDetail | PromiseLike<PartnerOrgDetail>;
     vendor_name: string;
     head_name: string;
     head_contact: string;
     details: {
-        request_detail: string[];
-        request_count: number[];
+        request_detail: string;
+        request_count: number;
         total_price: string;
         approval_date: string;
-    };
+    }[];
 };
 
 export const fetchPartnerOrgDetailStat = async (
@@ -23,7 +24,7 @@ export const fetchPartnerOrgDetailStat = async (
         throw new Error("발급 단체 상세 정보 로딩 실패");
     }
 
-    return response.data.data;
+    return response.data.data.data;
 };
 
 

@@ -27,9 +27,7 @@ const PartnerStat = () => {
           <Statistics mode="simplestat" published={stats.totalIssued} used={stats.totalUsed} />
         )}
       </div>
-      <div className="px-4">
-        <div className="w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
-      </div>
+          <div className="w-full h-0 mt-7 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
       <div className="px-4 py-5">
         <p className="font-bold text-black text-base">발행 단체별 사용현황</p>
       </div>
@@ -47,6 +45,23 @@ const PartnerStat = () => {
           />
         ))}
       </div>
+        <div className="w-full h-0 mt-7 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
+
+        <div className="px-4 py-5">
+            <p className="font-bold text-black text-base">메뉴별 사용현황</p>
+        </div>
+        <div className="flex py-1 gap-3 overflow-x-auto scrollbar-hide">
+            {stats?.menuUsage?.map((menu, index) => (
+                <Statistics
+                    key={index}
+                    mode="orgstat" // 기존 스타일 재사용
+                    orgname={menu.menuName}
+                    published={menu.menuIssued}
+                    used={menu.menuUsed}
+                />
+            ))}
+        </div>
+
     </Layout>
   );
 };
