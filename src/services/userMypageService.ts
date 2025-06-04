@@ -1,4 +1,3 @@
-// TO-DO: 이름은 전역변수에서 받아올 것
 import apiClient from "./apiClient";
 
 export interface CouponStatus {
@@ -22,6 +21,17 @@ export interface UserMyPageData {
   menus: Menus;
 }
 
+interface RawCouponStatus {
+  usable_coupons:number;
+  used_coupons: number;
+}
+
+interface RawUserMyPageData {
+  generalName: string;
+  couponStatus: RawCouponStatus;
+  menus: Menus;
+}
+
 export interface ApiResponse<T> {
   apiVersion?: string;
   clientVersion?: string;
@@ -33,12 +43,22 @@ export interface ApiResponse<T> {
 export const fetchUserMyPage = async () => {
   try {
     const response =
-      await apiClient.get<ApiResponse<ApiResponse<UserMyPageData>>>("/general/mypage");
+      await apiClient.get<ApiResponse<ApiResponse<RawUserMyPageData>>>("/general/mypage");
 
     if (response.data.status === "SUCCESS" && response.data.data.status === "SUCCESS") {
+      const rawData = response.data.data.data;
+
+      const mappedData: UserMyPageData = {
+      generalName: rawData.generalName,
+        couponStatus: {
+        usableCoupons: rawData.couponStatus.usable_coupons,
+          usedCoupons: rawData.couponStatus.used_coupons,
+        },
+        menus: rawData.menus,
+      };
       return {
         success: true,
-        data: response.data.data.data,
+        data: mappedData,
       };
     }
 
