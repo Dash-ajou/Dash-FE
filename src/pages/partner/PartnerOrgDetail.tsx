@@ -49,15 +49,13 @@ const PartnerOrgDetail = () => {
                 <DetailBox
                     mode="coupinfo"
                     title="발행 상세"
-                    requestList={detail.details.request_detail.map(
-                        (name, idx) => ({
-                            name,
-                            count: detail.details.request_count[idx] ?? 0,
-                        })
-                    )}
+                    requestList={detail.details.map((d) => ({
+                        name: d.request_detail,
+                        count: d.request_count,
+                    }))}
                     rightstring={[
-                        detail.details.total_price,
-                        detail.details.approval_date.replace(/-/g, "/"),
+                        detail.details[0].total_price,
+                        detail.details[0].approval_date.replace(/-/g,"/"),
                     ]}
                 />
             </div>

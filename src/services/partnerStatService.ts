@@ -1,5 +1,15 @@
 import apiClient from "./apiClient";
 
+export type MenuUsageStat = {
+  menuName: string;
+  menuIssued: number;
+  menuUsed: number;
+  menuUsageRage: {
+    source: string;
+    parsedValue: number;
+  };
+};
+
 export type MainVendorStat = {
   vendorId: number;
   vendorName: string;
@@ -17,6 +27,7 @@ export type MainPartnerStats = {
   totalRemainder: number;
   usageRate: number;
   detailedStats: MainVendorStat[];
+  menuUsage?: MenuUsageStat[];
 };
 
 export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
