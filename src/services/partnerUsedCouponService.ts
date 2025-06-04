@@ -30,7 +30,7 @@ export const fetchPartnerUsedCoupon = async (
     params: UsedCouonQueryParams = {}
 ): Promise<UsedCoupon[]> => {
   const response = await apiClient.get<UsedCouponResponse>(
-      '/coupon/redeem/log/list',
+      '/coupon/payment/log/list',
       { params }
   );
   if (response.data.status !== "SUCCESS"){

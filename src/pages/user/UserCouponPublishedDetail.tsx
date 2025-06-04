@@ -4,7 +4,7 @@
 //TO-DO: 스크롤 수정
 
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -13,32 +13,62 @@ import CommonButton from "../../components/common/button/CommonButton";
 import SlideUpModal from "../../components/common/modal/SlideUpModal";
 import BasicModal from "../../components/common/modal/BasicModal";
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService";
+import { fetchPublishedCoupon } from "../../services/userPublishedCouponService";
 
 const UserCouponPublishedDetail = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { issueId } = location.state || {};
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
+  const [issueCount, setIssueCount] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isBasicModalOpen, setIsBasicModalOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("전체");
 
   useEffect(() => {
-    const fetchCouponDetailByIssueId = async () => {
-      if (!issueId) return;
+    if (!issueId) {
+      console.log("No issueId found, redirecting to published list");
+      navigate("/user/coupon/published");
+      return;
+    }
 
+    const fetchData = async () => {
       try {
+        console.log("=== 발행된 쿠폰 상세 조회 시작 ===");
+        console.log("issueId 값:", issueId);
+        console.log("location.state:", location.state);
+
+        // Fetch coupon list
         const data = await fetchCouponByIssueID(issueId);
-        setCouponList(data.data);
+        console.log("Received coupon detail data:", data);
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("Setting coupon list with data:", data);
+          setCouponList(data);
+        } else {
+          console.log("No valid data received or empty array");
+          setCouponList([]);
+        }
+
+        const publishedCoupons = await fetchPublishedCoupon({
+          issue_id: issueId,
+          size: 1000,
+        });
+        if (publishedCoupons.length > 0) {
+          console.log("Setting issue count:", publishedCoupons[0].issue_count);
+          setIssueCount(publishedCoupons[0].issue_count);
+        }
       } catch (err) {
         console.error("쿠폰 상세 정보 조회 실패", err);
+        setCouponList([]);
       }
     };
-    fetchCouponDetailByIssueId();
-  }, [issueId]);
+    fetchData();
+  }, [issueId, navigate, location.state]);
 
   const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
+    console.log("Converting status:", status);
     switch (status) {
       case "REGISTERABLE":
         return "Issued";
@@ -49,18 +79,23 @@ const UserCouponPublishedDetail = () => {
       case "EXPIRED":
         return "Used";
       default:
+        console.log("Unknown status:", status);
         return undefined;
     }
   };
 
-  const filteredCoupons = couponList.filter((coupon) => {
-    if (selectedFilter === "전체") return true;
-    if (selectedFilter === "사용완료")
-      return coupon.status === "USED" || coupon.status === "EXPIRED";
-    if (selectedFilter === "등록완료") return coupon.status === "USABLE";
-    if (selectedFilter === "미등록") return coupon.status === "REGISTERABLE";
-    return true;
-  });
+  const filteredCoupons =
+    couponList?.filter((coupon) => {
+      console.log("Filtering coupon:", coupon);
+      if (selectedFilter === "전체") return true;
+      if (selectedFilter === "사용완료")
+        return coupon.status === "USED" || coupon.status === "EXPIRED";
+      if (selectedFilter === "등록완료") return coupon.status === "USABLE";
+      if (selectedFilter === "미등록") return coupon.status === "REGISTERABLE";
+      return true;
+    }) || [];
+
+  console.log("Filtered coupons:", filteredCoupons);
 
   return (
     <>
@@ -69,9 +104,9 @@ const UserCouponPublishedDetail = () => {
           <div className=" mt-2 mb-12">
             <Statistics
               mode="detailstat"
-              published={couponList.length}
-              registered={couponList.filter((c) => c.status === "USABLE").length}
-              used={couponList.filter((c) => c.status === "USED").length}
+              published={issueCount}
+              registered={couponList?.filter((c) => c.status === "USABLE").length || 0}
+              used={couponList?.filter((c) => c.status === "USED").length || 0}
             />
           </div>
 
@@ -91,11 +126,11 @@ const UserCouponPublishedDetail = () => {
             style={{ maxHeight: "calc(100vh - 415px)" }}>
             {filteredCoupons.map((coupon) => (
               <ListBlock
-                key={coupon.id}
+                key={coupon.coupon_id}
                 type="coupstatuslist"
-                coupnum={`#${coupon.id}`}
+                coupnum={`#${coupon.coupon_id}`}
                 coupstatus={statusToText(coupon.status)}
-                name={coupon.partner.business_name}
+                name={"알 수 없음"}
               />
             ))}
           </div>

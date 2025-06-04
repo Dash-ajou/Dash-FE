@@ -47,7 +47,7 @@ const App: React.FC = () => {
       <Route path="/user/mypage" element={<UserMypage />} />
       <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
       <Route path="/user/gift" element={<UserGift />} />
-      <Route path="/user/accountinfo" element={<UserAccountInfo />} />
+      <Route path="/general/account" element={<UserAccountInfo />} />
       <Route path="/user/coupon/register" element={<QRScanPage />} />
       <Route path="/user/coupon/request" element={<CouponRequest />} />
       <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
@@ -62,7 +62,7 @@ const App: React.FC = () => {
       <Route path="/partner/mypage" element={<PartnerMypage />} />
       <Route path="/partner/notification" element={<PartnerNotification />} />
       <Route path="/partner/statistics" element={<PartnerStat />} />
-      <Route path="/partner/orgdetail" element={<PartnerOrgDetail />} />
+      <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
       <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
       <Route path="/partner/request/auth" element={<PartnerAuth />} />
       <Route path="/partner/request/list" element={<CouponRequestList />} />

@@ -35,7 +35,7 @@ const PartnerMain = () => {
     <Layout>
       <div className="mt-5" onClick={goToStatsPage}>
         {stats && (
-          <Statistics mode="totalstat" published={stats?.total_issued} used={stats?.total_used} />
+          <Statistics mode="totalstat" published={stats?.totalIssued} used={stats?.totalUsed} />
         )}
       </div>
       <div className="flex flex-col w-full mt-5">
@@ -93,12 +93,20 @@ const PartnerMain = () => {
           </div>
           <div className="w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
           <div className="mt-4 pb-6 overflow-y-scroll h-[148px] pr-2 scrollbar-hide">
-            {/* TO-DO: API 연동 필요 */}
-            <ListBlock type="orgnamelist" orgname="아주대학교 총학생회" coupea={150} usedea={10} />
-            <ListBlock type="orgnamelist" orgname="아주대학교 총학생회" coupea={150} usedea={10} />
-            <ListBlock type="orgnamelist" orgname="아주대학교 총학생회" coupea={150} usedea={10} />
-            <ListBlock type="orgnamelist" orgname="아주대학교 총학생회" coupea={150} usedea={10} />
-            <ListBlock type="orgnamelist" orgname="아주대학교 총학생회" coupea={150} usedea={10} />
+            {stats?.detailedStats && stats.detailedStats.length > 0 ? (
+                stats.detailedStats.map((vendor) => (
+                    <ListBlock key={vendor.vendorId} type='orgnamelist' orgname={vendor.vendorName} coupea={vendor.vendorIssued} usedea={vendor.vendorUsed} onClick={() =>
+                        navigate("/partner/orgdetail", {
+                          state: {
+                            vendorId: vendor.vendorId,
+                            name: vendor.vendorName,
+                          },
+                        })
+                    }/>
+                ))
+            ): (
+                <div className="text-center text-gray-500 mt-4">발행 단체 정보가 없습니다.</div>
+            )}
             <div
               className="absolute bottom-0 left-0 w-full h-16 pointer-events-none z-10 rounded-b-xl"
               style={{

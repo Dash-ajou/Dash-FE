@@ -16,7 +16,7 @@ export type PublishedCoupon = {
   vendor: Vendor;
   partner: Partner;
   issue_id: number;
-  status: "ENABLE" | "DISABLE";
+  status: "ENABLED" | "DISABLED";
   issue_at: string;
   issue_count: number;
   used_count: number;
@@ -34,8 +34,10 @@ type RequestParams = {
   president_name?: string;
   business_name?: string;
   include_completed?: boolean;
+  status?: boolean;
   page?: number;
   size?: number;
+  issue_id?: number;
 };
 
 export const fetchPublishedCoupon = async (
@@ -48,14 +50,17 @@ export const fetchPublishedCoupon = async (
       data: PublishedCouponResponse;
     }>("/coupon/manage/list", { params });
 
-    if (response.data.status !== "SUCCEED") {
-      console.warn("쿠폰 정보 응답 실패:", response.data.message);
+    if (response.data.status !== "SUCCESS") {
       return [];
     }
 
-    return response.data.data.data;
+    const coupons = response.data.data.data;
+    const validCoupons = coupons.filter(
+      (coupon) => coupon && coupon.partner && typeof coupon.partner.business_name === "string",
+    );
+
+    return validCoupons;
   } catch (error) {
-    console.error("쿠폰 정보 요청 실패:", error);
     return [];
   }
 };

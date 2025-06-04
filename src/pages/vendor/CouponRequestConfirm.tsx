@@ -12,15 +12,34 @@ const CouponRequestConfirm: React.FC = () => {
 
     const [showResultModal, setShowResultModal] = useState(false)
     const [showFailResultModal, setShowFailResultModal] = useState<boolean>(false)
+    const [requestId, setRequestId] = useState(-1)
 
     const navigate = useNavigate()
 
     const handleSubmit = async () => {
         try {
-            const response = await couponRequest()
+            const requestPayload = {
+                vendor: {
+                    vendor_name: vendor.organizationName,
+                    president_name: vendor.representativeName,
+                    president_phone: vendor.contact,
+                },
+                partner: {
+                    business_name: request.partnerName,
+                    owner_phone: request.partnerPhone,
+                },
+                products: request.menu.map((item: { menuName: number; quantity: number }) => ({
+                    product_name: item.menuName,
+                    count: item.quantity,
+                    is_new: true,
+                })),
+            }
+
+            const response = await couponRequest(requestPayload)
 
             if (response.success) {
                 setShowResultModal(true)
+                setRequestId(response.request_id)
             } else {
                 setShowFailResultModal(true)
             }
@@ -32,7 +51,7 @@ const CouponRequestConfirm: React.FC = () => {
 
     const handleConfirm = () => {
         setShowResultModal(true)
-        navigate("/user/coupon/request/detail", { state: 1 })
+        navigate("/user/coupon/request/detail", { state: requestId })
     }
 
     return (

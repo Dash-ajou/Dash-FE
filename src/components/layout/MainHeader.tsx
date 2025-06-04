@@ -1,24 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import Icon from "../common/icons/Icon";
+import { useNavigate } from "react-router-dom"
+import Icon from "../common/icons/Icon"
 
 const MainHeader = () => {
-    const navigate = useNavigate();
-    const { pathname } = location;
-    const isPartnerPage = pathname.startsWith("/partner");
+    const navigate = useNavigate()
+    const { pathname } = location
+    const isPartnerPage = pathname.startsWith("/partner")
 
     const handleLogoClick = () => {
-        navigate(isPartnerPage ? "/partner/main" : "/user/main");
-    };
+        navigate(isPartnerPage ? "/partner/main" : "/user/main")
+    }
 
     const handleNotificationClick = () => {
-        navigate(
-            isPartnerPage ? "/partner/notification" : "/user/notifiaction"
-        );
-    };
+        navigate(isPartnerPage ? "/partner/notification" : "/user/notification")
+    }
 
     const handleMyPageClick = () => {
-        navigate(isPartnerPage ? "/partner/mypage" : "/user/mypage");
-    };
+        navigate(isPartnerPage ? "/partner/mypage" : "/user/mypage")
+    }
 
     return (
         <header className="w-full flex justify-between items-center bg-white pt-4">
@@ -40,7 +38,7 @@ const MainHeader = () => {
                 />
             </div>
         </header>
-    );
-};
+    )
+}
 
-export default MainHeader;
+export default MainHeader

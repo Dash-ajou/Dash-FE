@@ -11,15 +11,17 @@ export const couponRequest = async (data: {
         owner_phone: string
     }
     products: {
-        product_id: number
+        product_id?: number
+        product_name?: string
         count: number
-    }
+        is_new?: boolean
+    }[]
 }) => {
     try {
         const response = await apiClient.post("/coupon/issue/request", data)
 
-        if (response.status === 201) {
-            return { success: true }
+        if (response.status === 200) {
+            return { success: true, request_id: response.data.data.request_id }
         } else {
             return { success: false }
         }
@@ -30,7 +32,7 @@ export const couponRequest = async (data: {
 
 export const couponRequestDetail = async (request_id: number) => {
     try {
-        const response = await apiClient.get(`/coupon/issue/${request_id}`)
+        const response = await apiClient.get(`/coupon/issue/spec/${request_id}`)
 
         if (response.status === 200) {
             return { success: true, data: response.data.data }
@@ -47,7 +49,21 @@ export const couponRequestList = async () => {
         const response = await apiClient.get("/coupon/issue/list")
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data }
+            return { success: true, data: response.data.data.data }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const RequestDelete = async (request_id: number) => {
+    try {
+        const response = await apiClient.delete(`/coupon/issue/${request_id}`)
+
+        if (response.status === 200) {
+            return { success: true }
         } else {
             return { success: false }
         }

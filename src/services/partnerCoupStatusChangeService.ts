@@ -24,7 +24,7 @@ export const fetchCouponUse = async (
     formData.append("payment_code", payment_code);
     // formData.append("scan_img", scan_img);
 
-    const response = await apiClient.post("/coupon/redeem/use", formData);
+    const response = await apiClient.post("/coupon/payment/use", formData);
 
     if (response.data.status !== "SUCCEED") {
         throw new Error("쿠폰 사용 처리 실패");
@@ -36,7 +36,7 @@ export const fetchCouponCancel = async (
     payment_code: string,
     redeem_id: number
 ): Promise<CancelCouponResponse> => {
-    const response = await apiClient.post("/coupon/redeem/cancel", {
+    const response = await apiClient.post("/coupon/payment/cancel", {
         payment_code,
         redeem_id,
     });
