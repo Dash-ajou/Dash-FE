@@ -42,12 +42,7 @@ const PartnerStat = () => {
             published={vendor.vendorIssued}
             used={vendor.vendorUsed}
             onClick={() =>
-              navigate("/partner/orgdetail", {
-                state: {
-                  vendorId: vendor.vendorId,
-                  name: vendor.vendorName,
-                },
-              })
+              navigate(`/partner/orgdetail/${vendor.vendorId}`)
             }
           />
         ))}
