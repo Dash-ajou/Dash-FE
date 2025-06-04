@@ -18,7 +18,7 @@ export const fetchPartnerCouponValidation = async (coupon_number: string) => {
   const formData = new URLSearchParams();
   formData.append("code", coupon_number);
 
-  const response = await apiClient.post("/coupon/redeem/validate", formData, {
+  const response = await apiClient.post("/coupon/payment/validate", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
