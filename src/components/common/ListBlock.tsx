@@ -10,6 +10,7 @@ type ListBlockProps = {
   coupea?: number;
   usedea?: number;
   menuname?: string;
+  onClick?: () => void;
 };
 
 const ListBlock: React.FC<ListBlockProps> = ({
@@ -22,6 +23,7 @@ const ListBlock: React.FC<ListBlockProps> = ({
   coupea,
   usedea,
   menuname,
+    onClick,
 }) => {
   // 쿠폰 상태별 텍스트 설정
   const coupstatuslist = () => {
@@ -56,7 +58,7 @@ const ListBlock: React.FC<ListBlockProps> = ({
   return (
     <div
       className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
-                        ${type === "orgnamelist" ? "bg-gray-200" : "bg-blue-50"}`}>
+                        ${type === "orgnamelist" ? "bg-gray-200" : "bg-blue-50"}`} onClick={onClick}>
       <span className={type === "datetimelist" ? "flex flex-wrap text-base font-medium" : ""}>
         {type === "orgnamelist" ? orgname : type === "datetimelist" ? menuname : coupnum}
       </span>
