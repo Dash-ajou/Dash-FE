@@ -4,7 +4,7 @@
 //TO-DO: 스크롤 수정
 
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -16,9 +16,10 @@ import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCoupon
 import { fetchPublishedCoupon } from "../../services/userPublishedCouponService";
 
 const UserCouponPublishedDetail = () => {
-  const location = useLocation();
+  const { issueId } = useParams<{ issueId: string }>();
   const navigate = useNavigate();
-  const { issueId } = location.state || {};
+
+  const numericIssueId = Number(issueId);
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
   const [issueCount, setIssueCount] = useState<number>(0);
@@ -28,7 +29,7 @@ const UserCouponPublishedDetail = () => {
   const [selectedFilter, setSelectedFilter] = useState("전체");
 
   useEffect(() => {
-    if (!issueId) {
+    if (!numericIssueId) {
       console.log("No issueId found, redirecting to published list");
       navigate("/user/coupon/published");
       return;
@@ -36,27 +37,14 @@ const UserCouponPublishedDetail = () => {
 
     const fetchData = async () => {
       try {
-        console.log("=== 발행된 쿠폰 상세 조회 시작 ===");
-        console.log("issueId 값:", issueId);
-        console.log("location.state:", location.state);
-
-        // Fetch coupon list
-        const data = await fetchCouponByIssueID(issueId);
-        console.log("Received coupon detail data:", data);
-        if (Array.isArray(data) && data.length > 0) {
-          console.log("Setting coupon list with data:", data);
-          setCouponList(data);
-        } else {
-          console.log("No valid data received or empty array");
-          setCouponList([]);
-        }
+        const data = await fetchCouponByIssueID(numericIssueId);
+        setCouponList(Array.isArray(data) ? data : []);
 
         const publishedCoupons = await fetchPublishedCoupon({
-          issue_id: issueId,
+          issue_id: numericIssueId,
           size: 1000,
         });
         if (publishedCoupons.length > 0) {
-          console.log("Setting issue count:", publishedCoupons[0].issue_count);
           setIssueCount(publishedCoupons[0].issue_count);
         }
       } catch (err) {
@@ -65,7 +53,7 @@ const UserCouponPublishedDetail = () => {
       }
     };
     fetchData();
-  }, [issueId, navigate, location.state]);
+  }, [numericIssueId, navigate]);
 
   const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
     console.log("Converting status:", status);
