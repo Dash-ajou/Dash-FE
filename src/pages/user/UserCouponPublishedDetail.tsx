@@ -3,8 +3,9 @@
 //TO-DO: 필터 기능 연동 필요
 //TO-DO: 스크롤 수정
 
+import { useMemo } from 'react'
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -13,77 +14,77 @@ import CommonButton from "../../components/common/button/CommonButton";
 import SlideUpModal from "../../components/common/modal/SlideUpModal";
 import BasicModal from "../../components/common/modal/BasicModal";
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService";
-import { fetchPublishedCoupon } from "../../services/userPublishedCouponService";
+import { fetchPublishedCoupon, PublishedCoupon } from '../../services/userPublishedCouponService'
 
 const UserCouponPublishedDetail = () => {
   const { issueId } = useParams<{ issueId: string }>();
-  const navigate = useNavigate();
-
+  // const navigate = useNavigate();
   const numericIssueId = Number(issueId);
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
-  const [issueCount, setIssueCount] = useState<number>(0);
+  const [publishedCoupon, setPublishedCoupon] = useState<PublishedCoupon | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isBasicModalOpen, setIsBasicModalOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("전체");
 
   useEffect(() => {
-    if (!numericIssueId) {
-      console.log("No issueId found, redirecting to published list");
-      navigate("/user/coupon/published");
-      return;
-    }
+    let isMounted = true;
 
     const fetchData = async () => {
       try {
-        const data = await fetchCouponByIssueID(numericIssueId);
-        setCouponList(Array.isArray(data) ? data : []);
+        const coupons = await fetchCouponByIssueID(numericIssueId);
+        console.log("🚀 쿠폰 개수", coupons.length);
 
-        const publishedCoupons = await fetchPublishedCoupon({
-          issue_id: numericIssueId,
-          size: 1000,
-        });
-        if (publishedCoupons.length > 0) {
-          setIssueCount(publishedCoupons[0].issue_count);
-        }
+        if (isMounted) setCouponList(coupons);
+
+        const publishedList = await fetchPublishedCoupon({ issue_id: numericIssueId });
+        const matched = publishedList.find(p => p.issue_id === numericIssueId);
+        if (matched) setPublishedCoupon(matched);
+
       } catch (err) {
         console.error("쿠폰 상세 정보 조회 실패", err);
-        setCouponList([]);
       }
     };
+
     fetchData();
-  }, [numericIssueId, navigate]);
 
-  const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
-    console.log("Converting status:", status);
-    switch (status) {
-      case "REGISTERABLE":
-        return "Issued";
-      case "USABLE":
-        return "Registered";
-      case "USED":
-        return "Used";
-      case "EXPIRED":
-        return "Used";
-      default:
-        console.log("Unknown status:", status);
-        return undefined;
-    }
-  };
+    return () => {
+      isMounted = false;
+    };
+  }, [numericIssueId]);
 
-  const filteredCoupons =
-    couponList?.filter((coupon) => {
-      console.log("Filtering coupon:", coupon);
+
+  const statistics = useMemo(() => {
+    const issued = couponList.length;
+    const registered = couponList.filter((c) => c.status === "USABLE").length;
+    const unregistered = couponList.filter((c) => c.status === "REGISTERABLE").length;
+    const used = couponList.filter((c) => c.status === "USED" || c.status === "EXPIRED").length;
+    const published = publishedCoupon?.issue_count || issued;
+    const remaining = published - used;
+
+    return { published, registered, unregistered, used, remaining };
+  }, [couponList, publishedCoupon]);
+
+  const filteredCoupons = useMemo(() => {
+    return couponList.filter((coupon) => {
       if (selectedFilter === "전체") return true;
-      if (selectedFilter === "사용완료")
-        return coupon.status === "USED" || coupon.status === "EXPIRED";
+      if (selectedFilter === "사용완료") return coupon.status === "USED" || coupon.status === "EXPIRED";
       if (selectedFilter === "등록완료") return coupon.status === "USABLE";
       if (selectedFilter === "미등록") return coupon.status === "REGISTERABLE";
       return true;
-    }) || [];
+    });
+  }, [couponList, selectedFilter]);
 
-  console.log("Filtered coupons:", filteredCoupons);
+  const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
+    switch (status) {
+      case "REGISTERABLE": return "Issued";
+      case "USABLE": return "Registered";
+      case "USED":
+      case "EXPIRED": return "Used";
+      default: return undefined;
+    }
+  };
 
   return (
     <>
@@ -92,9 +93,9 @@ const UserCouponPublishedDetail = () => {
           <div className=" mt-2 mb-12">
             <Statistics
               mode="detailstat"
-              published={issueCount}
-              registered={couponList?.filter((c) => c.status === "USABLE").length || 0}
-              used={couponList?.filter((c) => c.status === "USED").length || 0}
+              published={statistics.published}
+              registered={statistics.registered}
+              used={statistics.used}
             />
           </div>
 
