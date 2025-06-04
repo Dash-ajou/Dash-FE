@@ -1,25 +1,37 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom"; // useLocation 대신 useParams 임포트
 import Layout from "../../components/layout/Layout";
 import DetailBox from "../../components/common/DetailBox";
 import { fetchPartnerOrgDetailStat } from "../../services/partnerOrgDetailStatService";
 import type { PartnerOrgDetail } from "../../services/partnerOrgDetailStatService";
 
 const PartnerOrgDetail = () => {
-    const location = useLocation();
-    const { vendor_id } = location.state || {};
+    const { vendorId: vendorIdParam } = useParams<{ vendorId: string }>(); // URL에서 vendorId를 문자열로 가져옴
     const [detail, setDetail] = useState<PartnerOrgDetail | null>(null);
 
+    const vendorId = vendorIdParam ? parseInt(vendorIdParam, 10) : undefined;
+
     useEffect(() => {
-        if (!vendor_id) return;
+        if (vendorId === undefined || isNaN(vendorId)) {
+            console.error("Invalid vendorId received:", vendorIdParam);
+            return;
+        }
+
         const loadDetail = async () => {
-            const res = await fetchPartnerOrgDetailStat(vendor_id);
-            setDetail(res);
+            try {
+                const res = await fetchPartnerOrgDetailStat(vendorId);
+                setDetail(res);
+            } catch (error) {
+                console.error("Failed to load partner organization detail:", error);
+                setDetail(null);
+            }
         };
         loadDetail();
-    }, [vendor_id]);
+    }, [vendorId]);
 
-    if (!detail) return null;
+    if (!detail) {
+        return <div className="text-center mt-10">상세 정보를 불러오는 중입니다...</div>;
+    }
 
     return (
         <Layout>
