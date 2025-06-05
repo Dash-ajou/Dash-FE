@@ -1,16 +1,17 @@
 export type VendorInfo = {
-    organizationName: string;
-    representativeName: string;
-    representativeContact: string;
+    organizationName: string
+    representativeName: string
+    representativeContact: string
 }
 
 type MenuDetail = {
-    menuName: string;
-    quantity: string;
+    menuName: string
+    menuId?: number
+    quantity: string
 }
 
 export type RequestDetail = {
-    storeName: string;
-    partnerPhone: string;
-    menu: MenuDetail[];
+    storeName: string
+    partnerPhone: string
+    menu: MenuDetail[]
 }

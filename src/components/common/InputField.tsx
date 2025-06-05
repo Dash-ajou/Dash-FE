@@ -1,58 +1,63 @@
-import React, {ChangeEventHandler, useCallback, useEffect, useState} from 'react';
-import IconRegistry from "./icons/IconRegistry.tsx";
-import Icon from "./icons/Icon.tsx";
+import React, { ChangeEventHandler, useCallback, useEffect, useState } from "react"
+import IconRegistry from "./icons/IconRegistry.tsx"
+import Icon from "./icons/Icon.tsx"
+
+type SuggestionItem = { id: number; name: string }
 
 type InputFieldProps = {
-    label?: string;
+    label?: string
     notice?: {
-        icon?: keyof typeof IconRegistry;
-        detail: string;
-        color?: string;
-    };
-    placeholder?: string;
-    dropdown: boolean;
-    viewonly?: boolean;
-    fetchSuggestions?: (query: string) => Promise<string[]>;
-    value: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+        icon?: keyof typeof IconRegistry
+        detail: string
+        color?: string
+    }
+    placeholder?: string
+    dropdown: boolean
+    viewonly?: boolean
+    fetchSuggestions?: (query: string) => Promise<SuggestionItem[]>
+    value: string
+    onSelectSuggestion?: (item: SuggestionItem) => void
+} & React.InputHTMLAttributes<HTMLInputElement>
 
 const InputField: React.FC<InputFieldProps> = ({
-                                                   label,
-                                                   notice,
-                                                   placeholder,
-                                                   dropdown,
-                                                   viewonly,
-                                                   fetchSuggestions,
-                                                   value,
-                                                   ...props
-                                               }) => {
-    const [inputValue, setInputValue] = useState(value || "");
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [showDropdown, setShowDropdown] = useState(false);
+    label,
+    notice,
+    placeholder,
+    dropdown,
+    viewonly,
+    fetchSuggestions,
+    value,
+    onSelectSuggestion,
+    ...props
+}) => {
+    const [inputValue, setInputValue] = useState(value || "")
+    const [suggestions, setSuggestions] = useState<SuggestionItem[]>([])
+    const [showDropdown, setShowDropdown] = useState(false)
 
     useEffect(() => {
-        if (dropdown) setShowDropdown(true);
-    }, [inputValue]);
+        if (dropdown) setShowDropdown(true)
+    }, [inputValue])
 
     useEffect(() => {
-        setInputValue(value || "");
-    }, [value]);
+        setInputValue(value || "")
+    }, [value])
 
     useEffect(() => {
         if (dropdown && fetchSuggestions && inputValue.trim()) {
-            fetchSuggestions(inputValue).then(setSuggestions);
+            fetchSuggestions(inputValue).then(setSuggestions)
         } else {
-            setSuggestions([]);
+            setSuggestions([])
         }
-    }, [inputValue, dropdown, fetchSuggestions]);
+    }, [inputValue, dropdown, fetchSuggestions])
 
     const onTagBlur = useCallback(() => {
         setTimeout(() => setShowDropdown(false), 200)
-    }, []);
+    }, [])
 
     const onValueChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setInputValue(e.currentTarget.value);
-        if (props?.onChange) props.onChange(e);
+        setInputValue(e.currentTarget.value)
+        if (dropdown) setShowDropdown(true)
+        if (props?.onChange) props.onChange(e)
     }
 
     return (
@@ -62,9 +67,11 @@ const InputField: React.FC<InputFieldProps> = ({
             <div className="relative">
                 <input
                     className={`w-full border-b border-black py-2 px-3 text-base text-black focus:outline-none ${
-                        viewonly ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none" : "bg-white"
+                        viewonly
+                            ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none"
+                            : "bg-white"
                     }`}
-                    {...(placeholder ? {placeholder} : {})}
+                    {...(placeholder ? { placeholder } : {})}
                     readOnly={viewonly}
                     value={inputValue}
                     onChange={onValueChange}
@@ -79,11 +86,14 @@ const InputField: React.FC<InputFieldProps> = ({
                                 key={index}
                                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-black"
                                 onMouseDown={() => {
-                                    setInputValue(item);
-                                    setShowDropdown(false);
+                                    setInputValue(item.name)
+                                    setShowDropdown(false)
+                                    if (onSelectSuggestion) {
+                                        onSelectSuggestion(item)
+                                    }
                                 }}
                             >
-                                {item}
+                                {item.name}
                             </li>
                         ))}
                     </ul>
@@ -94,15 +104,18 @@ const InputField: React.FC<InputFieldProps> = ({
                 <div className="flex items-center mt-2">
                     {notice.icon && (
                         <span className="mr-2">
-                            <Icon name={notice.icon} size={16}/>
+                            <Icon name={notice.icon} size={16} />
                         </span>
                     )}
                     <span
-                        className={`text-sm ${notice.color == "black" ? 'text-black' : `text-${notice.color}-500`}`}>{notice.detail}</span>
+                        className={`text-sm ${notice.color == "black" ? "text-black" : `text-${notice.color}-500`}`}
+                    >
+                        {notice.detail}
+                    </span>
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default InputField;
+export default InputField
