@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CommonButton from "../../components/common/button/CommonButton"
 import DetailBox from "../../components/common/DetailBox"
@@ -7,14 +6,29 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 import { useDispatch } from "react-redux"
 import { logout, partnerWithdraw } from "../../services/authService"
-import { resetUserInfo } from "../../store/userSlice" // 파트너 정보 리셋 액션이 필요하다면 추가
-
-import { fetchPartnerMyPage, PartnerMyPageData } from "../../services/partnerMyPageService"
+import { resetUserInfo } from "../../store/userSlice"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
+import { useState } from "react" // 파트너 정보 리셋 액션이 필요하다면 추가
 
 const PartnerMypage = () => {
-    const [partnerData, setPartnerData] = useState<PartnerMyPageData | null>(null)
+    const menus = {
+        customerCenter: [
+            // { title: "공지사항", url: "/support/notice" },
+            // { title: "FAQ", url: "/support/faq" },
+            // { title: "문의하기", url: "/support/contact" },
+            { title: "공지사항", onClick: () => setIsDevNoticeModalOpen(true) },
+            { title: "FAQ", onClick: () => setIsDevNoticeModalOpen(true) },
+            { title: "문의하기", onClick: () => setIsDevNoticeModalOpen(true) },
+        ],
+        myInfo: [
+            { title: "계정 정보", url: "/general/account" },
+            { title: "비밀번호 변경하기", url: "/findpw" },
+        ],
+    }
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
 
     const partnerNameFromRedux = useSelector((state: RootState) => state.user.name)
 
@@ -38,50 +52,25 @@ const PartnerMypage = () => {
         }
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetchPartnerMyPage()
-            if (res.success && res.data) {
-                // res.data가 null이 아닐 때만 설정
-                setPartnerData(res.data)
-            } else {
-                console.error("파트너 마이페이지 데이터 로드 실패")
-                navigate("/login")
-            }
-        }
-        fetchData()
-    }, [])
-
-    if (!partnerData) {
-        return <div className="text-center mt-10">불러오는 중</div>
-    }
-
-    const myInfoSection = partnerData.menus.find((menu) => menu.section === "내 정보")
-    const customerCenterSection = partnerData.menus.find((menu) => menu.section === "고객센터")
-
     return (
         <Layout>
             <div className="text-black font-bold text-2xl mt-11 mb-4">
-                <p>{partnerData.ownerName || partnerNameFromRedux}님 안녕하세요</p>
+                <p>{partnerNameFromRedux}님 안녕하세요</p>
             </div>
 
             <div className="flex flex-col mt-7 gap-4">
-                {myInfoSection && (
-                    <DetailBox
-                        mode="default"
-                        title={myInfoSection.section} // "내 정보"
-                        leftstring={myInfoSection.items.map((item) => item.title)}
-                        linkurl={myInfoSection.items.map((item) => item.url)}
-                    />
-                )}
-                {customerCenterSection && (
-                    <DetailBox
-                        mode="default"
-                        title={customerCenterSection.section} // "고객센터"
-                        leftstring={customerCenterSection.items.map((item) => item.title)}
-                        linkurl={customerCenterSection.items.map((item) => item.url)}
-                    />
-                )}
+                <DetailBox
+                    mode="default"
+                    title="내 정보"
+                    leftstring={menus.myInfo.map((item) => item.title)}
+                    linkurl={menus.myInfo.map((item) => item.url)}
+                />
+                <DetailBox
+                    mode="default"
+                    title="고객센터"
+                    leftstring={menus.customerCenter.map((item) => item.title)}
+                    onClicks={menus.customerCenter.map((item) => item.onClick)}
+                />
             </div>
 
             <div className="flex flex-col items-center justify-center mt-7">
@@ -102,6 +91,13 @@ const PartnerMypage = () => {
                     onClick={handleWithdraw}
                 />
             </div>
+
+            <BasicModal
+                mode={"OnlyYes"}
+                isOpen={isDevNoticeModalOpen}
+                title={"아직 개발중입니다."}
+                onConfirm={() => setIsDevNoticeModalOpen(false)}
+            />
         </Layout>
     )
 }

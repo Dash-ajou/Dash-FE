@@ -100,12 +100,29 @@ export const PhoneVerify = async (data: { user_phone: string; user_verify_code: 
     }
 }
 
-export const updatePhone = async (data: {
+export const userUpdatePhone = async (data: {
     general_new_phone: string
     general_verify_code: string
 }) => {
     try {
         const response = await apiClient.patch("/general/account/phone", data)
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const partnerUpdatePhone = async (data: {
+    owner_new_phone: string
+    owner_verify_code: string
+}) => {
+    try {
+        const response = await apiClient.patch("/partner/account/phone", data)
 
         if (response.status === 200) {
             return { success: true }

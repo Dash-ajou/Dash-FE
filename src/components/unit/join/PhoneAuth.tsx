@@ -3,11 +3,15 @@ import CommonButton from "../../common/button/CommonButton.tsx"
 import React, { useEffect, useState } from "react"
 import Status from "../../common/Status.tsx"
 import {
+    partnerUpdatePhone,
     passwordReset_phoneVerify,
     passwordReset_phoneVerifyRequest,
     PhoneVerify,
     PhoneVerifyRequest,
+    userUpdatePhone,
 } from "../../../services/authService.ts"
+import { useSelector } from "react-redux"
+import { RootState } from "../../../store/store.ts"
 
 type PhoneAuthProps = {
     phoneNum: string
@@ -32,6 +36,8 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
     const [authCode, setAuthCode] = useState<string>("")
     const [showAuthNotice, setShowAuthNotice] = useState<boolean>(false)
     const [isCodeSixDigits, setIsCodeSixDigits] = useState<boolean>(false)
+
+    const userType = useSelector((state: RootState) => state.type.userType) || ""
 
     useEffect(() => {
         const handleBeforeUnload = () => {
@@ -100,6 +106,17 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
                 user_phone: localPhoneNum,
                 user_verify_code: authCode,
             })
+        } else if (window.location.pathname.startsWith("/mypage/update/phone")) {
+            if (userType === "GENERAL") {
+                response = await userUpdatePhone({
+                    general_new_phone: localPhoneNum,
+                    general_verify_code: authCode,
+                })
+            } else
+                response = await partnerUpdatePhone({
+                    owner_new_phone: localPhoneNum,
+                    owner_verify_code: authCode,
+                })
         } else {
             response = await PhoneVerify({
                 user_phone: localPhoneNum,
