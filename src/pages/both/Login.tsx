@@ -43,17 +43,17 @@ const Login: React.FC = () => {
                 const user = response.data
                 dispatch(
                     setUserInfo({
-                        name: user.userName,
-                        email: user.userEmail,
-                        phone: user.userPhone,
+                        name: user.user_name,
+                        email: user.user_email,
+                        phone: user.user_phone,
                     })
                 )
-                dispatch(setUserType(user.userType))
+                dispatch(setUserType(user.user_type))
 
                 setShowLoginFail(false)
-                if (user.userType === "GENERAL") {
+                if (user.user_type === "GENERAL") {
                     navigate("/user/main")
-                } else if (user.userType === "PARTNER") {
+                } else if (user.user_type === "PARTNER") {
                     navigate("/partner/main")
                 } else {
                     navigate("/")
