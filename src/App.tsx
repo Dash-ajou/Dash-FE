@@ -49,7 +49,7 @@ const App: React.FC = () => {
                     dispatch(
                         setUserInfo({
                             name: res.data.name,
-                            email: res.data.email,
+                            email: res.data.email || "",
                             phone: res.data.phone,
                         })
                     )
@@ -82,22 +82,22 @@ const App: React.FC = () => {
             <Route path="/user/coupon/published" element={<UserCouponPublished />} />
             <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
 
-      <Route path="/partner/coupon/scan" element={<QRScanPage />} />
-      <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
-      <Route path="/partner/main" element={<PartnerMain />} />
-      <Route path="/partner/mypage" element={<PartnerMypage />} />
-      <Route path="/partner/notification" element={<PartnerNotification />} />
-      <Route path="/partner/statistics" element={<PartnerStat />} />
-      <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
-      <Route path="/partner/menudetail/:menuName" element={<PartnerMenuDetail/>}/>
-      <Route path="/partner/request/auth" element={<PartnerAuth />} />
-      <Route path="/partner/request/list" element={<CouponRequestList />} />
-      <Route path="/partner/request/detail" element={<RequestView />} />
-      <Route path="/partner/request/payment" element={<PaymentInfo />} />
-      <Route path="/partner/request/approve" element={<RequestApproveFin />} />
-      <Route path="/partner/usedcoupon" element={<PartnerUsedCoup />} />
-    </Routes>
-  );
-};
+            <Route path="/partner/coupon/scan" element={<QRScanPage />} />
+            <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
+            <Route path="/partner/main" element={<PartnerMain />} />
+            <Route path="/partner/mypage" element={<PartnerMypage />} />
+            <Route path="/partner/notification" element={<PartnerNotification />} />
+            <Route path="/partner/statistics" element={<PartnerStat />} />
+            <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
+            <Route path="/partner/menudetail/:menuName" element={<PartnerMenuDetail />} />
+            <Route path="/partner/request/auth" element={<PartnerAuth />} />
+            <Route path="/partner/request/list" element={<CouponRequestList />} />
+            <Route path="/partner/request/detail" element={<RequestView />} />
+            <Route path="/partner/request/payment" element={<PaymentInfo />} />
+            <Route path="/partner/request/approve" element={<RequestApproveFin />} />
+            <Route path="/partner/usedcoupon" element={<PartnerUsedCoup />} />
+        </Routes>
+    )
+}
 
 export default App
