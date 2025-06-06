@@ -5,6 +5,7 @@ const pageTitles: Record<string, string> = {
   "/user/coupon/register": "쿠폰 등록",
   "/user/coupon/published": "쿠폰 발행 목록",
   "/user/coupon/published/deatil": "발행된 쿠폰 통계",
+  "/user/coupon/published/:issueId/cancel": "쿠폰 발행 철회",
   "/user/main": "사용자 메인화면",
   "/user/notification": "알림함",
   "/user/mypage": "사용자 마이페이지",

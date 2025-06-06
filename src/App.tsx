@@ -36,6 +36,7 @@ import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
+import UserCouponCancel from './pages/user/UserCouponCancel.tsx'
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
@@ -68,19 +69,20 @@ const App: React.FC = () => {
             <Route path="/mypage/update/phone" element={<PhoneNumChange />} />
             <Route path="/mypage/update/email" element={<EmailChange />} />
 
-            <Route path="/user/main" element={<UserMain />} />
-            <Route path="/user/notification" element={<UserNotification />} />
-            <Route path="/user/mypage" element={<UserMypage />} />
-            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
-            <Route path="/user/gift" element={<UserGift />} />
-            <Route path="/general/account" element={<UserAccountInfo />} />
-            <Route path="/user/coupon/register" element={<QRScanPage />} />
-            <Route path="/user/coupon/request" element={<CouponRequest />} />
-            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
-            <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
-            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
-            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
-            <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
+      <Route path="/user/main" element={<UserMain />} />
+      <Route path="/user/notification" element={<UserNotification />} />
+      <Route path="/user/mypage" element={<UserMypage />} />
+      <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+      <Route path="/user/gift" element={<UserGift />} />
+      <Route path="/general/account" element={<UserAccountInfo />} />
+      <Route path="/user/coupon/register" element={<QRScanPage />} />
+      <Route path="/user/coupon/request" element={<CouponRequest />} />
+      <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
+      <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
+      <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
+      <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+      <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
+        <Route path="/user/coupon/published/:issueId/cancel" element={<UserCouponCancel />}/>
 
       <Route path="/partner/coupon/scan" element={<QRScanPage />} />
       <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
