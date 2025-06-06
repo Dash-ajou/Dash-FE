@@ -1,81 +1,160 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import InputField from "../../common/InputField.tsx";
-import CommonButton from "../../common/button/CommonButton.tsx";
-import {RequestDetail} from "../../../types/CouponRequestTypes.ts";
-import BasicModal from "../../common/modal/BasicModal.tsx";
+import React, { useCallback, useEffect, useState } from "react"
+import InputField from "../../common/InputField.tsx"
+import CommonButton from "../../common/button/CommonButton.tsx"
+import { RequestDetail } from "../../../types/CouponRequestTypes.ts"
+import BasicModal from "../../common/modal/BasicModal.tsx"
+import { SearchItem, SearchPartner } from "../../../services/vendorCouponRequestService.ts"
 
 type RequestDetailFormProps = {
-    requestDetail: RequestDetail;
-    setRequestDetail: (info: RequestDetail) => void;
-    onPrev: () => void;
-    setShouldProceedNext: (data: boolean) => void;
+    requestDetail: RequestDetail
+    setRequestDetail: (info: RequestDetail) => void
+    onPrev: () => void
+    setShouldProceedNext: (data: boolean) => void
 }
 
-const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, setRequestDetail, onPrev, setShouldProceedNext}) => {
+type partnerType = {
+    partner_id: number
+    partner_name: string
+}
+
+type productType = {
+    product_id: number
+    product_name: string
+}
+
+const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
+    requestDetail,
+    setRequestDetail,
+    onPrev,
+    setShouldProceedNext,
+}) => {
     const [localRequestDetail, setLocalRequestDetail] = useState<RequestDetail>({
         ...requestDetail,
-        menu: requestDetail.menu.length > 0 ? requestDetail.menu : [{menuName: "", quantity: ""}]
-    });
-    const [isButtonActive, setIsButtonActive] = useState(false);
-    const [showQuantityErrorModal, setShowQuantityErrorModal] = useState(false);
+        menu:
+            requestDetail.menu.length > 0
+                ? requestDetail.menu
+                : [
+                      {
+                          menuName: "",
+                          menuId: undefined,
+                          quantity: "",
+                          is_new: true,
+                      },
+                  ],
+    })
+    const [isButtonActive, setIsButtonActive] = useState(false)
+    const [showQuantityErrorModal, setShowQuantityErrorModal] = useState(false)
+    const [partnerId, setPartnerId] = useState<number>(-1)
 
     const checkAllFieldsFilled = useCallback(() => {
         const isValid =
             localRequestDetail.storeName.trim() !== "" &&
             localRequestDetail.partnerPhone.trim() !== "" &&
-            localRequestDetail.menu.every(item => item.menuName.trim() !== "" && item.quantity.trim() !== "");
+            localRequestDetail.menu.every(
+                (item) => item.menuName.trim() !== "" && item.quantity.trim() !== ""
+            )
 
-        setIsButtonActive(isValid);
-    }, [localRequestDetail]);
+        setIsButtonActive(isValid)
+    }, [localRequestDetail])
 
     useEffect(() => {
-        checkAllFieldsFilled();
-    }, [localRequestDetail]);
+        checkAllFieldsFilled()
+    }, [localRequestDetail])
 
     const handleMenuChange = (index: number, field: "menuName" | "quantity", value: string) => {
-        const updatedMenu = [...localRequestDetail.menu];
-        updatedMenu[index][field] = value;
-        setLocalRequestDetail({...localRequestDetail, menu: updatedMenu});
-    };
+        const updatedMenu = [...localRequestDetail.menu]
+        updatedMenu[index][field] = value
+        if (field === "menuName") {
+            updatedMenu[index].is_new = true
+            updatedMenu[index].menuId = undefined
+        }
+        setLocalRequestDetail({ ...localRequestDetail, menu: updatedMenu })
+    }
 
     const addMenu = () => {
         setLocalRequestDetail({
             ...localRequestDetail,
-            menu: [...localRequestDetail.menu, {menuName: "", quantity: ""}]
-        });
-    };
+            menu: [
+                ...localRequestDetail.menu,
+                { menuName: "", menuId: undefined, quantity: "", is_new: true },
+            ],
+        })
+    }
 
     const removeMenu = (index: number) => {
-        const updatedMenu = localRequestDetail.menu.filter((_, i) => i !== index);
-        setLocalRequestDetail({...localRequestDetail, menu: updatedMenu});
-    };
+        const updatedMenu = localRequestDetail.menu.filter((_, i) => i !== index)
+        setLocalRequestDetail({ ...localRequestDetail, menu: updatedMenu })
+    }
 
     const handleChange = (field: keyof RequestDetail, value: string) => {
         if (localRequestDetail[field] !== value) {
-            const updatedInfo = {...localRequestDetail, [field]: value};
-            setLocalRequestDetail(updatedInfo);
+            const updatedInfo = { ...localRequestDetail, [field]: value }
+            setLocalRequestDetail(updatedInfo)
         }
-    };
+    }
 
-    const handleSave = useCallback((direction: "prev" | "next") => {
-        const isValidQuantity = localRequestDetail.menu.every(item => {
-            const trimmed = item.quantity.trim();
-            if (direction === "prev") {
-                return trimmed === "" || /^\d+$/.test(trimmed);
-            } else {
-                return /^\d+$/.test(trimmed);
+    const handleSave = useCallback(
+        (direction: "prev" | "next") => {
+            const isValidQuantity = localRequestDetail.menu.every((item) => {
+                const trimmed = item.quantity.trim()
+                if (direction === "prev") {
+                    return trimmed === "" || /^\d+$/.test(trimmed)
+                } else {
+                    return /^\d+$/.test(trimmed)
+                }
+            })
+
+            if (!isValidQuantity) {
+                setShowQuantityErrorModal(true)
+                return
             }
-        });
 
-        if (!isValidQuantity) {
-            setShowQuantityErrorModal(true);
-            return;
+            setRequestDetail(localRequestDetail)
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            direction === "next" ? setShouldProceedNext(true) : onPrev()
+        },
+        [localRequestDetail, setShouldProceedNext, onPrev]
+    )
+
+    const fetchSuggestions = async (query: string) => {
+        if (!query.trim()) return []
+        const response = await SearchPartner(query)
+        if (response.success && Array.isArray(response.data)) {
+            return response.data.map((item: partnerType) => ({
+                id: item.partner_id,
+                name: item.partner_name,
+            }))
         }
+        return []
+    }
 
-        setRequestDetail(localRequestDetail);
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        direction === "next" ? setShouldProceedNext(true) : onPrev();
-    }, [localRequestDetail, setShouldProceedNext, onPrev]);
+    const fetchItemSuggestions = async (query: string) => {
+        if (!query.trim()) return []
+        const response = await SearchItem(query, partnerId)
+        if (response.success && Array.isArray(response.data)) {
+            return response.data.map((item: productType) => ({
+                id: item.product_id,
+                name: item.product_name,
+            }))
+        }
+        return []
+    }
+
+    const handleSelectSuggestion = (item: { id: number; name: string }) => {
+        setLocalRequestDetail({ ...localRequestDetail, storeName: item.name })
+        setPartnerId(item.id)
+    }
+
+    const handleItemSelectSuggestion = (index: number, item: { id: number; name: string }) => {
+        const updatedMenu = [...localRequestDetail.menu]
+        updatedMenu[index] = {
+            ...updatedMenu[index],
+            menuName: item.name,
+            menuId: item.id,
+            is_new: false,
+        }
+        setLocalRequestDetail({ ...localRequestDetail, menu: updatedMenu })
+    }
 
     return (
         <div className="flex flex-col gap-4">
@@ -84,6 +163,8 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                 dropdown={true}
                 value={localRequestDetail.storeName}
                 onInput={(e) => handleChange("storeName", e.currentTarget.value)}
+                fetchSuggestions={fetchSuggestions}
+                onSelectSuggestion={handleSelectSuggestion}
             />
 
             <InputField
@@ -99,7 +180,11 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                             label="요청 상세 (메뉴명)"
                             dropdown={true}
                             value={item.menuName}
-                            onInput={(e) => handleMenuChange(index, "menuName", e.currentTarget.value)}
+                            onInput={(e) =>
+                                handleMenuChange(index, "menuName", e.currentTarget.value)
+                            }
+                            fetchSuggestions={fetchItemSuggestions}
+                            onSelectSuggestion={(item) => handleItemSelectSuggestion(index, item)}
                         />
                     </div>
                     <div className="flex-[1]">
@@ -107,7 +192,9 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                             label="수량"
                             dropdown={false}
                             value={item.quantity}
-                            onInput={(e) => handleMenuChange(index, "quantity", e.currentTarget.value)}
+                            onInput={(e) =>
+                                handleMenuChange(index, "quantity", e.currentTarget.value)
+                            }
                         />
                     </div>
                     {localRequestDetail.menu.length > 1 && (
@@ -116,7 +203,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                             isActive={true}
                             mode="textbold"
                             color="red"
-                            detail={{label: "−", position: "none"}}
+                            detail={{ label: "−", position: "none" }}
                             onClick={() => removeMenu(index)}
                         />
                     )}
@@ -128,7 +215,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                     isActive={true}
                     mode="textbold"
                     color="blue"
-                    detail={{label: "+ 메뉴 추가", position: "none"}}
+                    detail={{ label: "+ 메뉴 추가", position: "none" }}
                     onClick={addMenu}
                 />
             </div>
@@ -139,7 +226,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                     isActive={true}
                     mode="fill"
                     color="blue"
-                    detail={{label: "이전", position: "left", icon: "arrowicon_line_left_white"}}
+                    detail={{ label: "이전", position: "left", icon: "arrowicon_line_left_white" }}
                     onClick={() => handleSave("prev")}
                 />
                 {isButtonActive ? (
@@ -148,7 +235,11 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                         isActive={true}
                         mode="fill"
                         color="blue"
-                        detail={{label: "다음", position: "right", icon: "arrowicon_line_right_white"}}
+                        detail={{
+                            label: "다음",
+                            position: "right",
+                            icon: "arrowicon_line_right_white",
+                        }}
                         onClick={() => handleSave("next")}
                     />
                 ) : (
@@ -160,10 +251,10 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({requestDetail, set
                 mode={"OnlyYes"}
                 isOpen={showQuantityErrorModal}
                 title={"수량 필드에는 숫자만 입력해주세요"}
-                onConfirm={()=>setShowQuantityErrorModal(false)}
+                onConfirm={() => setShowQuantityErrorModal(false)}
             />
         </div>
     )
-};
+}
 
-export default RequestDetailForm;
+export default RequestDetailForm
