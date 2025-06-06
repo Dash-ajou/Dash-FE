@@ -8,7 +8,7 @@ import Layout from "../../components/layout/Layout"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 import { useDispatch } from "react-redux"
-import { logout } from "../../services/authService"
+import { logout, userWithdraw } from "../../services/authService"
 import { resetUserInfo } from "../../store/userSlice"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
 
@@ -42,6 +42,16 @@ const UserMypage = () => {
             navigate("/login")
         } else {
             alert("로그아웃에 실패했습니다.")
+        }
+    }
+
+    const handleWithdraw = async () => {
+        const res = await userWithdraw()
+        if (res.success) {
+            dispatch(resetUserInfo())
+            navigate("/")
+        } else {
+            alert("회원탈퇴에 실패했습니다.")
         }
     }
 
@@ -108,6 +118,7 @@ const UserMypage = () => {
                     mode="text"
                     color="red"
                     detail={{ label: "회원 탈퇴", position: "none" }}
+                    onClick={handleWithdraw}
                 />
             </div>
 

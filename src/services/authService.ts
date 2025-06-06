@@ -193,3 +193,31 @@ export const getUserInfo = async () => {
         return { success: false, error }
     }
 }
+
+export const userWithdraw = async () => {
+    try {
+        const response = await apiClient.delete("/general/account/delete")
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const partnerWithdraw = async () => {
+    try {
+        const response = await apiClient.delete("/partner/account/delete")
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
