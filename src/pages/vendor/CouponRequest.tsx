@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from "react";
-import CouponTabs from "../../components/unit/user-coupon-request/CouponTabs.tsx";
-import VendorInfoForm from "../../components/unit/user-coupon-request/VendorInfoForm.tsx";
-import RequestDetailForm from "../../components/unit/user-coupon-request/RequestDetailForm.tsx";
-import Layout from "../../components/layout/Layout.tsx";
-import {VendorInfo, RequestDetail} from "../../types/CouponRequestTypes.ts";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import CouponTabs from "../../components/unit/user-coupon-request/CouponTabs.tsx"
+import VendorInfoForm from "../../components/unit/user-coupon-request/VendorInfoForm.tsx"
+import RequestDetailForm from "../../components/unit/user-coupon-request/RequestDetailForm.tsx"
+import Layout from "../../components/layout/Layout.tsx"
+import { VendorInfo, RequestDetail } from "../../types/CouponRequestTypes.ts"
+import { useNavigate } from "react-router-dom"
 
 const CouponRequest: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<number>(0); // 0: 벤더정보, 1: 요청상세
-    const [isVendorInfoCompleted, setIsVendorInfoCompleted] = useState(false);
-    const [shouldProceedNext, setShouldProceedNext] = useState(false);
+    const [activeTab, setActiveTab] = useState<number>(0) // 0: 벤더정보, 1: 요청상세
+    const [isVendorInfoCompleted, setIsVendorInfoCompleted] = useState(false)
+    const [shouldProceedNext, setShouldProceedNext] = useState(false)
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const [vendorInfo, setVendorInfo] = useState<VendorInfo>({
         organizationName: "",
@@ -22,19 +22,19 @@ const CouponRequest: React.FC = () => {
     const [requestDetail, setRequestDetail] = useState<RequestDetail>({
         storeName: "",
         partnerPhone: "",
-        menu: [{menuName: "", quantity: ""}],
+        menu: [{ menuName: "", menuId: undefined, quantity: "", is_new: true }],
     })
 
     useEffect(() => {
         if (shouldProceedNext) {
-            handleNext();
-            setShouldProceedNext(false);
+            handleNext()
+            setShouldProceedNext(false)
         }
-    }, [requestDetail]);
+    }, [requestDetail])
 
     const handleTabChange = (tab: number) => {
-        setActiveTab(tab);
-    };
+        setActiveTab(tab)
+    }
 
     const handleNext = () => {
         navigate("/user/coupon/request/confirm", {
@@ -48,9 +48,9 @@ const CouponRequest: React.FC = () => {
                     partnerName: requestDetail.storeName,
                     partnerPhone: requestDetail.partnerPhone,
                     menu: [...requestDetail.menu],
-                }
-            }
-        });
+                },
+            },
+        })
     }
 
     return (
@@ -62,7 +62,7 @@ const CouponRequest: React.FC = () => {
             </div>
 
             <CouponTabs
-                tabs={[{label: "벤더 정보"}, {label: "요청 상세"}]}
+                tabs={[{ label: "벤더 정보" }, { label: "요청 상세" }]}
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
                 completedTabs={isVendorInfoCompleted ? [0] : []}
@@ -73,7 +73,7 @@ const CouponRequest: React.FC = () => {
                     vendorInfo={vendorInfo}
                     setVendorInfo={setVendorInfo}
                     onNext={() => {
-                        setIsVendorInfoCompleted(true);
+                        setIsVendorInfoCompleted(true)
                         setActiveTab(1)
                     }}
                 />
@@ -88,7 +88,7 @@ const CouponRequest: React.FC = () => {
                 />
             )}
         </Layout>
-    );
-};
+    )
+}
 
-export default CouponRequest;
+export default CouponRequest
