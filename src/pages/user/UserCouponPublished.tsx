@@ -5,6 +5,7 @@ import Block from "../../components/module/Block";
 import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService";
 import { useNavigate } from "react-router-dom";
 import { formatDateYMD } from "../../utiles/date";
+import { updateCouponStatus } from '../../services/vendorCouponStatusUpdateService.ts'
 
 const UserCouponPublished = () => {
   const [coupons, setCoupons] = useState<PublishedCoupon[]>([]);
@@ -24,14 +25,26 @@ const UserCouponPublished = () => {
     loadCoupons();
   }, []);
 
-  const handleToggleChange = (issueId: number, isOn: boolean) => {
-    console.log("Toggle changed:", { issueId, isOn });
-    setCoupons((prevCoupons) =>
-      prevCoupons.map((coupon) =>
-        coupon.issue_id === issueId ? { ...coupon, status: isOn ? "ENABLED" : "DISABLED" } : coupon,
-      ),
-    );
+    const handleToggleChange = async (issueId: number, isOn: boolean) => {
+    const requestStatus = isOn ? "ENABLE" : "DISABLE"; // 서버에 보낼 값
+    const newClientStatus = isOn ? "ENABLED" : "DISABLED"; // 프론트에 저장할 값
+
+    try {
+      const response = await updateCouponStatus({ issueId: `${issueId}`, status: requestStatus });
+      console.log("Status updated:", response);
+
+      setCoupons((prevCoupons) =>
+          prevCoupons.map((coupon) =>
+              coupon.issue_id === issueId
+                  ? { ...coupon, status: newClientStatus }
+                  : coupon
+          )
+      );
+    } catch (error) {
+      console.error("쿠폰 상태 변경 실패:", error);
+    }
   };
+
 
   const filteredCoupons = coupons
     .filter((coupon) => coupon && coupon.partner && coupon.partner.business_name)
