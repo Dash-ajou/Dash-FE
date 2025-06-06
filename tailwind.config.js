@@ -28,6 +28,7 @@ module.exports = {
                     600: "#b5271f", // 어두운 빨간색 // 코드 필요
                 },
                 gray: {
+                    100: "#FBFBFB", //ORGNAME LIST에서 필요
                     200: "#EEEEEE", //ServiceColor 05
                     300: "#CCCCCC", // ServiceColor 04
                     400: "#9D9D9D", // ServiceColor 03

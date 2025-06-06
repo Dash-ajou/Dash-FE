@@ -25,7 +25,6 @@ const ListBlock: React.FC<ListBlockProps> = ({
   menuname,
     onClick,
 }) => {
-  // 쿠폰 상태별 텍스트 설정
   const coupstatuslist = () => {
     switch (coupstatus) {
       case "Issued":
@@ -39,7 +38,6 @@ const ListBlock: React.FC<ListBlockProps> = ({
     }
   };
 
-  // 표시할 내용 결정
   const getContent = () => {
     switch (type) {
       case "coupstatuslist":
@@ -58,10 +56,23 @@ const ListBlock: React.FC<ListBlockProps> = ({
   return (
     <div
       className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
-                        ${type === "orgnamelist" ? "bg-gray-200" : "bg-blue-50"}`} onClick={onClick}>
-      <span className={type === "datetimelist" ? "flex flex-wrap text-base font-medium" : ""}>
-        {type === "orgnamelist" ? orgname : type === "datetimelist" ? menuname : coupnum}
-      </span>
+                        ${type === "orgnamelist" ? "bg-gray-100 text-base" : "bg-blue-50"}`} onClick={onClick}>
+      <span
+          className={
+            type === "orgnamelist"
+                ? "text-base font-bold"
+                : type === "datetimelist"
+                    ? "flex flex-wrap text-base font-medium"
+                    : ""
+          }
+      >
+  {type === "orgnamelist"
+      ? orgname
+      : type === "datetimelist"
+          ? menuname
+          : coupnum}
+</span>
+
 
       <span>{getContent()}</span>
     </div>
