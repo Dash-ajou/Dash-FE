@@ -96,7 +96,7 @@ const PartnerMain = () => {
             {stats?.detailedStats && stats.detailedStats.length > 0 ? (
                 stats.detailedStats.map((vendor) => (
                     <ListBlock key={vendor.vendorId} type='orgnamelist' orgname={vendor.vendorName} coupea={vendor.vendorIssued} usedea={vendor.vendorUsed} onClick={() =>
-                        navigate("/partner/orgdetail", {
+                        navigate(`/partner/orgdetail/${vendor.vendorId}`, {
                           state: {
                             vendorId: vendor.vendorId,
                             name: vendor.vendorName,
