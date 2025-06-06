@@ -5,7 +5,7 @@
 
 import { useMemo } from 'react'
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom'
 import Layout from "../../components/layout/Layout";
 import Statistics from "../../components/module/Statistics";
 import FilterGroup from "../../components/unit/user-coupon-detail/FilterGroup";
@@ -20,6 +20,7 @@ import { cancelCouponRequest } from '../../services/VendorCouponCancleRequestSer
 const UserCouponPublishedDetail = () => {
   const { issueId } = useParams<{ issueId: string }>();
   const numericIssueId = Number(issueId);
+  const navigate = useNavigate();
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
   const [publishedCoupon, setPublishedCoupon] = useState<PublishedCoupon | null>(null);
@@ -162,23 +163,21 @@ const UserCouponPublishedDetail = () => {
         onConfirm={async () => {
           if (basicModalConfig.mode === "YesNo") {
             try {
-              await cancelCouponRequest(numericIssueId);
+              const response = await cancelCouponRequest(numericIssueId);
+              if (response.status === "SUCCEED") {
+                navigate(`/user/coupon/published/${numericIssueId}/cancel`);
+              } else {
+                throw new Error("쿠폰 철회 요청 실패");
+              }
+            } catch (err) {
+              console.log("쿠폰 철회 요청 실패:", err);
               setBasicModalConfig({
                 mode: "OnlyYes",
                 title: "쿠폰 철회가 완료되었습니다.",
               });
-              setIsBasicModalOpen(false);
-              window.location.reload();
-            } catch (err) {
-              console.log("쿠폰 철회 실패:", err);
-              setBasicModalConfig({
-                mode: "OnlyYes",
-                title: "쿠폰 철회에 실패했습니다. 다시 시도해 주세요.",
-              });
-            }
+              }
             } else {
             setIsBasicModalOpen(false);
-            window.location.reload();
           }
         }}
       />
