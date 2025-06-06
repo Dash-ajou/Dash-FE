@@ -31,18 +31,11 @@ export type MainPartnerStats = {
 };
 
 export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
-  console.log("[fetchPartnerStats] 요청 시작");
-  console.log("현재 document.cookie:", document.cookie);
-
   try {
     const response = await apiClient.get("/partner/stats");
-
-    console.log("[fetchPartnerStats] 응답 수신:", response);
-
     const { status, data } = response.data;
 
     if (status !== "SUCCESS") {
-      console.error("[fetchPartnerStats] 응답 실패 상태:", status);
       throw new Error("파트너 통계 데이터 로딩 실패");
     }
 

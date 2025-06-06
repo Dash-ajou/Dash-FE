@@ -8,6 +8,7 @@ type PushButtonProps = {
     sender_type: string;
     received_at: string;
     readed: boolean;
+    tag: "COUPON_EXPIRE_WARNING" | "COUPON_RECEIVED" | "COUPON_USED" | "REQUEST_RECEIVED" | "REQUEST_ISSUED";
   };
   onRead: (id: number) => void;
 };
@@ -18,13 +19,43 @@ const PushButton: React.FC<PushButtonProps> = ({ notification, onRead }) => {
   const [currentX, setCurrentX] = useState(0);
   const [isSlid, setIsSlid] = useState(false);
 
-  // 터치 시작
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (read) return;
-    setStartX(e.touches[0].clientX); //터치 시작 지점 저장
+  const getIconName = () => {
+    switch (notification.tag) {
+      case "COUPON_EXPIRE_WARNING":
+        return "clockicon_line";
+      case "COUPON_RECEIVED":
+        return "gifticon";
+      case "COUPON_USED":
+      case "REQUEST_ISSUED":
+      case "REQUEST_RECEIVED":
+        return "checkicon_line_black";
+      default:
+        return "checkicon_line_black";
+    }
   };
 
-  // 터치 이동
+  const getIconMessage = () => {
+    switch(notification.tag){
+      case "COUPON_EXPIRE_WARNING":
+      return "쿠폰 만료가 임박했어요";
+      case "COUPON_RECEIVED":
+        return "쿠폰을 선물받았어요";
+      case "COUPON_USED":
+        return "쿠폰 사용이 완료되었어요";
+      case "REQUEST_ISSUED":
+        return "쿠폰 발행 요청이 도착했어요";
+      case "REQUEST_RECEIVED":
+        return "발행 요청이 수락되었어요";
+      default:
+        return "bellicon_fill";
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (read) return;
+    setStartX(e.touches[0].clientX);
+  };
+
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (read || startX === null) return;
     const deltaX = e.touches[0].clientX - startX; //이동 거리 계산
@@ -33,11 +64,9 @@ const PushButton: React.FC<PushButtonProps> = ({ notification, onRead }) => {
     }
   };
 
-  // 터치 종료
   const handleTouchEnd = () => {
     if (read) return;
     if (currentX < -50) {
-      // -50px 이상 이동하면 슬라이드 완료
       setIsSlid(true);
     } else {
       setCurrentX(0);
@@ -45,7 +74,7 @@ const PushButton: React.FC<PushButtonProps> = ({ notification, onRead }) => {
     setStartX(null);
   };
 
-  // 읽음 버튼 클릭 시 처리
+  //TO-DO: 읽음처리 로직
   const handleReadClick = () => {
     setRead(true); //읽음 처리
     setIsSlid(false);
@@ -67,16 +96,23 @@ const PushButton: React.FC<PushButtonProps> = ({ notification, onRead }) => {
         onTouchEnd={handleTouchEnd}
       >
         <div className="flex flex-col w-full">
-          <div className="flex items-center">
-            <Icon name="bellicon_fill" />
-            <div className="font-semibold text-base ml-2">
-              {notification.message}
+          <div className="flex items-start gap-2">
+            <Icon name={getIconName()} />
+            <div className="flex flex-col">
+              <div className="font-semibold text-sm">
+                {notification.message || "(내용 없음)"}
+              </div>
+              <div className="text-xs text-gray-500">
+                {getIconMessage()}
+              </div>
+              <div className="text-xs text-gray-600 mt-1">
+                {new Date(notification.received_at).toLocaleString()}
+              </div>
             </div>
           </div>
-          <div className="text-xs text-gray-600">
-            {new Date(notification.received_at).toLocaleString()}
-          </div>
+
         </div>
+
       </div>
 
       {!read && isSlid && (

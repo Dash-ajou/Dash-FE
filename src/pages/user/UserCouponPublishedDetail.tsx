@@ -15,10 +15,10 @@ import SlideUpModal from "../../components/common/modal/SlideUpModal";
 import BasicModal from "../../components/common/modal/BasicModal";
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService";
 import { fetchPublishedCoupon, PublishedCoupon } from '../../services/userPublishedCouponService'
+import { cancelCouponRequest } from '../../services/VendorCouponCancleRequestService.ts'
 
 const UserCouponPublishedDetail = () => {
   const { issueId } = useParams<{ issueId: string }>();
-  // const navigate = useNavigate();
   const numericIssueId = Number(issueId);
 
   const [couponList, setCouponList] = useState<CouponByIssueID[]>([]);
@@ -27,6 +27,7 @@ const UserCouponPublishedDetail = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isBasicModalOpen, setIsBasicModalOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("전체");
+  const [basicModalConfig, setBasicModalConfig] = useState ({ mode: "YesNo", title: "미등록 쿠폰을 철회할까요?",});
 
   useEffect(() => {
     let isMounted = true;
@@ -34,8 +35,6 @@ const UserCouponPublishedDetail = () => {
     const fetchData = async () => {
       try {
         const coupons = await fetchCouponByIssueID(numericIssueId);
-        console.log("🚀 쿠폰 개수", coupons.length);
-
         if (isMounted) setCouponList(coupons);
 
         const publishedList = await fetchPublishedCoupon({ issue_id: numericIssueId });
@@ -138,19 +137,49 @@ const UserCouponPublishedDetail = () => {
               position: "left",
               icon: "trashicon_white",
             }}
-            onClick={() => setIsBasicModalOpen(true)}
+            onClick={() => {
+              if (publishedCoupon?.status === "ENABLED") {
+                  setIsBasicModalOpen(true);
+                  setBasicModalConfig({ mode: "OnlyYes", title: "먼저 쿠폰을 일시정지 처리해 주세요."});
+            } else {
+                setIsBasicModalOpen(true);
+                setBasicModalConfig({
+                  mode: "YesNo",
+                  title: "미등록 쿠폰을 철회할까요?"
+                });
+              }
+            }
+            }
           />
         </div>
       </div>
 
       <BasicModal
-        mode="YesNo"
+        mode={basicModalConfig.mode as "YesNo" | "OnlyYes"}
         isOpen={isBasicModalOpen}
-        title="미등록 쿠폰을 철회할까요?"
+        title={basicModalConfig.title}
         onClose={() => setIsBasicModalOpen(false)}
-        onConfirm={() => {
-          // TO-DO: 철회 로직 추가
-          setIsBasicModalOpen(false);
+        onConfirm={async () => {
+          if (basicModalConfig.mode === "YesNo") {
+            try {
+              await cancelCouponRequest(numericIssueId);
+              setBasicModalConfig({
+                mode: "OnlyYes",
+                title: "쿠폰 철회가 완료되었습니다.",
+              });
+              setIsBasicModalOpen(false);
+              window.location.reload();
+            } catch (err) {
+              console.log("쿠폰 철회 실패:", err);
+              setBasicModalConfig({
+                mode: "OnlyYes",
+                title: "쿠폰 철회에 실패했습니다. 다시 시도해 주세요.",
+              });
+            }
+            } else {
+            setIsBasicModalOpen(false);
+            window.location.reload();
+          }
         }}
       />
 
