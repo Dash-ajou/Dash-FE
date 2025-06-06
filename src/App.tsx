@@ -63,7 +63,7 @@ const App: React.FC = () => {
       <Route path="/partner/notification" element={<PartnerNotification />} />
       <Route path="/partner/statistics" element={<PartnerStat />} />
       <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
-      <Route path="/partner/menudetail" element={<PartnerMenuDetail />} />
+      <Route path="/partner/menudetail/:menuName" element={<PartnerMenuDetail/>}/>
       <Route path="/partner/request/auth" element={<PartnerAuth />} />
       <Route path="/partner/request/list" element={<CouponRequestList />} />
       <Route path="/partner/request/detail" element={<RequestView />} />

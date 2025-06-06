@@ -20,12 +20,16 @@ export const fetchPartnerMenuDetailStat = async (
   const response = await apiClient.get<{
     status: string;
     message: string;
-    data: PartnerMenuDetailStat;
+    data: {
+      data: PartnerMenuDetailStat;
+      message: string;
+      status: string;
+    };
   }>(`/partner/stats/menu/${encodeURIComponent(menu_name)}/vendors`);
 
   if (response.data.status !== "SUCCESS") {
     throw new Error("메뉴별 벤더 목록 조회 실패");
   }
 
-  return response.data.data;
+  return response.data.data.data;
 };

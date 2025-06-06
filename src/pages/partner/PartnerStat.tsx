@@ -54,10 +54,11 @@ const PartnerStat = () => {
             {stats?.menuUsage?.map((menu, index) => (
                 <Statistics
                     key={index}
-                    mode="orgstat" // 기존 스타일 재사용
+                    mode="orgstat"
                     orgname={menu.menuName}
                     published={menu.menuIssued}
                     used={menu.menuUsed}
+                    onClick={() => navigate(`/partner/menudetail/${encodeURIComponent(menu.menuName)}`)}
                 />
             ))}
         </div>
