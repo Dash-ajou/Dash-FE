@@ -185,7 +185,7 @@ export const getUserInfo = async () => {
         const response = await apiClient.get("/account/session-info")
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data.data }
+            return { success: true, data: response.data.data }
         } else {
             return { success: false }
         }
