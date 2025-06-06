@@ -53,7 +53,7 @@ const Login: React.FC = () => {
                 setShowLoginFail(false)
                 if (user.user_type === "GENERAL") {
                     navigate("/user/main")
-                } else if (user.user_type === "PARTNER") {
+                } else if (user.user_t6ype === "PARTNER") {
                     navigate("/partner/main")
                 } else {
                     navigate("/")
