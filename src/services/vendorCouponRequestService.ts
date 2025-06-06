@@ -79,7 +79,7 @@ export const SearchPartner = async (keyword: string) => {
         })
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data.data }
+            return { success: true, data: response.data.data }
         } else {
             return { success: false }
         }
