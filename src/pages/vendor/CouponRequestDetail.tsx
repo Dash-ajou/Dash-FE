@@ -6,6 +6,7 @@ import { couponRequestDetail, RequestDelete } from "../../services/vendorCouponR
 import { useLocation, useNavigate } from "react-router-dom"
 import Icon from "../../components/common/icons/Icon.tsx"
 import iconRegistry from "../../components/common/icons/IconRegistry.tsx"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
 
 type ItemStatus = {
     icon: keyof typeof iconRegistry
@@ -17,12 +18,14 @@ const CouponRequestDetail: React.FC = () => {
     const location = useLocation()
     const requestId = location.state
     const [data, setData] = useState<any>(null)
+    const [deleteButton, setDeleteButton] = useState<boolean>(true)
     const [itemStatus, setItemStatus] = useState<ItemStatus>({
         icon: "pendingicon_fill",
         message: "",
     })
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false)
 
     const handleDelete = async (requestId: number) => {
         try {
@@ -44,6 +47,9 @@ const CouponRequestDetail: React.FC = () => {
                 if (response.success) {
                     setData(response.data)
                     setItemStatus(getItemStatus(response.data.status))
+                    if (response.data.status !== "REQUESTED") {
+                        setDeleteButton(false)
+                    }
                 } else {
                     setError("데이터를 불러오는 데 실패했습니다.")
                 }
@@ -130,16 +136,26 @@ const CouponRequestDetail: React.FC = () => {
                     leftstring={[<Icon name={itemStatus.icon} size={16} />]}
                     rightstring={[itemStatus.message]}
                 />
-
-                <CommonButton
-                    size="small"
-                    isActive={true}
-                    mode="text"
-                    color="black"
-                    detail={{ label: "요청 철회하기", position: "none" }}
-                    onClick={() => handleDelete}
-                />
+                {deleteButton && (
+                    <CommonButton
+                        size="small"
+                        isActive={true}
+                        mode="text"
+                        color="black"
+                        detail={{ label: "요청 철회하기", position: "none" }}
+                        onClick={() => setIsAlertModalOpen(true)}
+                    />
+                )}
             </div>
+
+            <BasicModal
+                mode={"YesNo"}
+                isOpen={isAlertModalOpen}
+                title={"요청을 철회하시나요?"}
+                description={"요청을 철회하면 전달된 요청서도 함께 취소돼요"}
+                onClose={() => setIsAlertModalOpen(false)}
+                onConfirm={() => handleDelete(requestId)}
+            />
         </Layout>
     )
 }

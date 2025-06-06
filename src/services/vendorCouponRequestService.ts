@@ -71,3 +71,35 @@ export const RequestDelete = async (request_id: number) => {
         return { success: false, error }
     }
 }
+
+export const SearchPartner = async (keyword: string) => {
+    try {
+        const response = await apiClient.get("/partner/search/autocomplete", {
+            params: { keyword },
+        })
+
+        if (response.status === 200) {
+            return { success: true, data: response.data.data.data }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const SearchItem = async (product_name: string, partner_id?: number) => {
+    try {
+        const response = await apiClient.get("/coupon/product/list", {
+            params: { product_name, partner_id },
+        })
+
+        if (response.status === 200) {
+            return { success: true, data: response.data.data.data }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
