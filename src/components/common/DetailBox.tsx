@@ -1,18 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Status from "./Status";
-import Icon from "./icons/Icon";
+import React from "react"
+import { Link } from "react-router-dom"
+import Status from "./Status"
+import Icon from "./icons/Icon"
 
 type DetailBoxProps = {
-    mode: "default" | "coupinfo" | "setting";
-    title: string;
-    leftstring?: (string | React.ReactNode)[];
-    rightstring?: string[];
-    linkurl?: string[];
-    statusType?: "used" | "unused";
-    statusColor?: "red" | "green";
-    requestList?: { name: string; count: number }[];
-};
+    mode: "default" | "coupinfo" | "setting"
+    title: string
+    leftstring?: (string | React.ReactNode)[]
+    rightstring?: string[]
+    linkurl?: string[]
+    onClicks?: (() => void)[]
+    statusType?: "used" | "unused"
+    statusColor?: "red" | "green"
+    requestList?: { name: string; count: number }[]
+}
 
 const DetailBox: React.FC<DetailBoxProps> = ({
     mode,
@@ -20,27 +21,19 @@ const DetailBox: React.FC<DetailBoxProps> = ({
     leftstring = [],
     rightstring = [],
     linkurl = [],
+    onClicks = [],
     statusType,
     statusColor = "gray",
     requestList,
 }) => {
-    const rowCount = Math.max(
-        leftstring.length,
-        rightstring.length,
-        linkurl.length
-    );
+    const rowCount = Math.max(leftstring.length, rightstring.length, linkurl.length)
 
     return (
         <div className="border rounded-xl px-4 py-5 shadow-custom-basic bg-white w-full h-auto">
             <div className="flex justify-between mb-3">
-                <h3 className="px-1 text-base font-semibold text-blue-500">
-                    {title}
-                </h3>
+                <h3 className="px-1 text-base font-semibold text-blue-500">{title}</h3>
                 {mode === "coupinfo" && statusType && (
-                    <Status
-                        statusType={statusType}
-                        color={statusColor as "red" | "green"}
-                    />
+                    <Status statusType={statusType} color={statusColor as "red" | "green"} />
                 )}
             </div>
 
@@ -50,10 +43,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                 <div className="flex flex-row justify-between pl-3">
                     <div className="flex flex-col gap-2.5 items-start">
                         {Array.from({ length: rowCount }).map((_, i) => (
-                            <div
-                                key={i}
-                                className="text-black text-base font-bold text-Main100"
-                            >
+                            <div key={i} className="text-black text-base font-bold text-Main100">
                                 {leftstring[i] ?? ""}
                             </div>
                         ))}
@@ -61,8 +51,8 @@ const DetailBox: React.FC<DetailBoxProps> = ({
 
                     <div className="flex flex-col gap-3.5 items-start">
                         {Array.from({ length: rowCount }).map((_, i) => {
-                            const value = rightstring[i] ?? "";
-                            const isMissing = value.includes("없어요");
+                            const value = rightstring[i] ?? ""
+                            const isMissing = value.includes("없어요")
                             return (
                                 <div
                                     key={i}
@@ -74,12 +64,12 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                                 >
                                     {value}
                                 </div>
-                            );
+                            )
                         })}
                     </div>
                     <div className="flex flex-col justify-between gap-1.5 items-start">
                         {Array.from({ length: rowCount }).map((_, i) => {
-                            const url = linkurl[i];
+                            const url = linkurl[i]
                             return (
                                 <div
                                     key={i}
@@ -90,16 +80,13 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                                             to={url}
                                             className="rounded-full p-2 flex justify-center items-center hover:no-underline"
                                         >
-                                            <Icon
-                                                name="arrowicon_line_right"
-                                                size={12}
-                                            />
+                                            <Icon name="arrowicon_line_right" size={12} />
                                         </Link>
                                     ) : (
                                         <div className="w-6 h-6" />
                                     )}
                                 </div>
-                            );
+                            )
                         })}
                     </div>
                 </div>
@@ -124,9 +111,7 @@ const DetailBox: React.FC<DetailBoxProps> = ({
 
                     {/* 총 금액 */}
                     <div className="flex items-start justify-between gap-3">
-                        <div className="w-[110px] text-base text-black font-semibold">
-                            총 금액
-                        </div>
+                        <div className="w-[110px] text-base text-black font-semibold">총 금액</div>
                         <div className="flex-1 text-sm text-black font-light">
                             {rightstring?.[0] ?? ""}
                         </div>
@@ -146,37 +131,38 @@ const DetailBox: React.FC<DetailBoxProps> = ({
                 // 기본 default 렌더링
                 <div className="px-1 space-y-3">
                     {leftstring.map((left, index) => {
-                        const right = rightstring?.[index] ?? "";
-                        const url = linkurl?.[index] ?? "";
+                        const right = rightstring?.[index] ?? ""
+                        const url = linkurl?.[index] ?? ""
+                        const onClick = onClicks?.[index]
 
                         return (
-                            <div
-                                key={index}
-                                className="flex items-start justify-between gap-3"
-                            >
+                            <div key={index} className="flex items-start justify-between gap-3">
                                 <div className="w-[110px] text-base text-black font-semibold">
                                     {url ? (
-                                        <Link
-                                            to={url}
-                                            className="hover:underline"
-                                        >
+                                        <Link to={url} className="hover:underline">
                                             {left}
                                         </Link>
+                                    ) : onClick ? (
+                                        <button
+                                            type="button"
+                                            className="bg-transparent border-none p-0 m-0 cursor-pointer hover:underline"
+                                            onClick={onClick}
+                                        >
+                                            {left}
+                                        </button>
                                     ) : (
                                         <span>{left}</span>
                                     )}
                                 </div>
 
-                                <div className="flex-1 text-sm text-black font-light">
-                                    {right}
-                                </div>
+                                <div className="flex-1 text-sm text-black font-light">{right}</div>
                             </div>
-                        );
+                        )
                     })}
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default DetailBox;
+export default DetailBox

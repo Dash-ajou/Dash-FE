@@ -33,7 +33,6 @@ const UserMain = () => {
     useEffect(() => {
         const getCouponList = async () => {
             const res = await fetchRegisteredCouponList()
-            console.log(res)
             if (res.success && res.data) {
                 const mappedData: QRData[] = res.data.map((item: RegisteredCouponItem) => ({
                     title: item.couponName,
