@@ -152,12 +152,25 @@ export const passwordReset = async (data: {
     new_password: string
     new_password_confirm: string
 }) => {
-    console.log(data)
     try {
         const response = await apiClient.post("/auth/password-reset/complete", data)
 
         if (response.status === 200) {
             return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const getUserInfo = async () => {
+    try {
+        const response = await apiClient.get("/account/session-info")
+
+        if (response.status === 200) {
+            return { success: true, data: response.data.data.data }
         } else {
             return { success: false }
         }
