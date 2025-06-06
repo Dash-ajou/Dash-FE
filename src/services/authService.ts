@@ -5,7 +5,8 @@ export const login = async (data: { user_phone: string; user_password: string })
         const response = await apiClient.post("/auth/login", data)
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data.data.user }
+            console.log(response)
+            return { success: true, data: response.data.data.user }
         } else {
             return { success: false }
         }
