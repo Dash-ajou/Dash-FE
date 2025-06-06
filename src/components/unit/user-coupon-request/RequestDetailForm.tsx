@@ -30,7 +30,17 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
 }) => {
     const [localRequestDetail, setLocalRequestDetail] = useState<RequestDetail>({
         ...requestDetail,
-        menu: requestDetail.menu.length > 0 ? requestDetail.menu : [{ menuName: "", quantity: "" }],
+        menu:
+            requestDetail.menu.length > 0
+                ? requestDetail.menu
+                : [
+                      {
+                          menuName: "",
+                          menuId: undefined,
+                          quantity: "",
+                          is_new: true,
+                      },
+                  ],
     })
     const [isButtonActive, setIsButtonActive] = useState(false)
     const [showQuantityErrorModal, setShowQuantityErrorModal] = useState(false)
@@ -54,13 +64,20 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
     const handleMenuChange = (index: number, field: "menuName" | "quantity", value: string) => {
         const updatedMenu = [...localRequestDetail.menu]
         updatedMenu[index][field] = value
+        if (field === "menuName") {
+            updatedMenu[index].is_new = true
+            updatedMenu[index].menuId = undefined
+        }
         setLocalRequestDetail({ ...localRequestDetail, menu: updatedMenu })
     }
 
     const addMenu = () => {
         setLocalRequestDetail({
             ...localRequestDetail,
-            menu: [...localRequestDetail.menu, { menuName: "", quantity: "" }],
+            menu: [
+                ...localRequestDetail.menu,
+                { menuName: "", menuId: undefined, quantity: "", is_new: true },
+            ],
         })
     }
 
@@ -128,6 +145,17 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
         setPartnerId(item.id)
     }
 
+    const handleItemSelectSuggestion = (index: number, item: { id: number; name: string }) => {
+        const updatedMenu = [...localRequestDetail.menu]
+        updatedMenu[index] = {
+            ...updatedMenu[index],
+            menuName: item.name,
+            menuId: item.id,
+            is_new: false,
+        }
+        setLocalRequestDetail({ ...localRequestDetail, menu: updatedMenu })
+    }
+
     return (
         <div className="flex flex-col gap-4">
             <InputField
@@ -156,6 +184,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
                                 handleMenuChange(index, "menuName", e.currentTarget.value)
                             }
                             fetchSuggestions={fetchItemSuggestions}
+                            onSelectSuggestion={(item) => handleItemSelectSuggestion(index, item)}
                         />
                     </div>
                     <div className="flex-[1]">
