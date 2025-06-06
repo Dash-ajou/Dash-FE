@@ -165,6 +165,20 @@ export const passwordReset = async (data: {
     }
 }
 
+export const googleOAuth = async (data: { google_access_token: string }) => {
+    try {
+        const response = await apiClient.post("/auth/google", data)
+
+        if (response.status === 200) {
+            return { success: true, data: response.data.data.data.user_email }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
 export const getUserInfo = async () => {
     try {
         const response = await apiClient.get("/account/session-info")

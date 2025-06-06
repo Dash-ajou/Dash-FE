@@ -26,7 +26,7 @@ const Join: React.FC = () => {
     const [userName, setUserName] = useState<string>("")
     const [isVerified, setIsVerified] = useState<boolean>(false)
     const [role, setRole] = useState<(typeof Role)[keyof typeof Role] | null>(null)
-    //const [email, setEmail] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
 
     useEffect(() => {
         if (!searchParams.get("step")) {
@@ -49,7 +49,7 @@ const Join: React.FC = () => {
                 password_confirm: confirmPassword,
                 user_type: "GENERAL",
                 general_phone: phoneNum,
-                //...(email.trim() !== "" ? { general_email: email } : {}), TODO
+                ...(email.trim() !== "" ? { general_email: email } : {}),
             })
             if (response.success) {
                 setSearchParams({ step: JoinStep.COMPLETE })
@@ -62,7 +62,7 @@ const Join: React.FC = () => {
                 partner_address: partnerInfo.address,
                 owner_name: userName,
                 owner_phone: phoneNum,
-                //...(email.trim() !== "" ? { owner_email: email } : {}), TODO
+                ...(email.trim() !== "" ? { owner_email: email } : {}),
                 password,
                 password_confirm: confirmPassword,
             })
@@ -115,7 +115,10 @@ const Join: React.FC = () => {
             )}
 
             {currentStep === JoinStep.OAUTH_CONNECT && (
-                <OAuthConnect onNext={() => setSearchParams({ step: JoinStep.PASSWORD_INPUT })} />
+                <OAuthConnect
+                    onNext={() => setSearchParams({ step: JoinStep.PASSWORD_INPUT })}
+                    onEmailReceived={(receivedEmail: string) => setEmail(receivedEmail)}
+                />
             )}
 
             {currentStep === JoinStep.PASSWORD_INPUT && (
