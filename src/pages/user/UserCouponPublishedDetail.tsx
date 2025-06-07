@@ -139,7 +139,7 @@ const UserCouponPublishedDetail = () => {
               icon: "trashicon_white",
             }}
             onClick={() => {
-              if (publishedCoupon?.status === "ENABLED") {
+              if (publishedCoupon?.status === "ENABLE") {
                   setIsBasicModalOpen(true);
                   setBasicModalConfig({ mode: "OnlyYes", title: "먼저 쿠폰을 일시정지 처리해 주세요."});
             } else {
@@ -164,7 +164,8 @@ const UserCouponPublishedDetail = () => {
           if (basicModalConfig.mode === "YesNo") {
             try {
               const response = await cancelCouponRequest(numericIssueId);
-              if (response.status === "SUCCEED") {
+
+              if (response.status === "SUCCESS") {
                 navigate(`/user/coupon/published/${numericIssueId}/cancel`);
               } else {
                 throw new Error("쿠폰 철회 요청 실패");
@@ -173,7 +174,7 @@ const UserCouponPublishedDetail = () => {
               console.log("쿠폰 철회 요청 실패:", err);
               setBasicModalConfig({
                 mode: "OnlyYes",
-                title: "쿠폰 철회가 완료되었습니다.",
+                title: "쿠폰 철회 요청에 실패했습니다. 다시 시도해 주세요.",
               });
               }
             } else {

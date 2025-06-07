@@ -7,7 +7,7 @@ export type StatisticsProps = {
   title?: string;
   orgname?: string;
   published: number;
-  registered?: number;
+  registered: number;
   used: number;
   onClick?: () => void;
 };
@@ -17,11 +17,11 @@ const Statistics: React.FC<StatisticsProps> = ({
   title,
   orgname,
   published,
-  registered = 0,
+  registered,
   used,
   onClick,
 }) => {
-  const percentage = Math.round((used / published) * 100);
+    const percentage = published === 0 ? 0 : Math.round((used / published) * 100);
 
   const getStrokeWidth = (mode: string) => {
     switch (mode) {

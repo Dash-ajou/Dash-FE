@@ -14,7 +14,6 @@ interface UpdateCouponStatusResponse {
         issue_id: number;
         issue_count: number;
         deactive_count?: number;
-        active_count?: number;
     };
 }
 
@@ -24,7 +23,12 @@ export const updateCouponStatus = async ({
 }: UpdateCouponStatusParams): Promise<UpdateCouponStatusResponse> => {
     const response = await apiClient.patch<UpdateCouponStatusResponse>(
         `/coupon/manage/${issueId}/status`,
-        { status }
+        { status },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
     );
     return response.data;
 };
