@@ -37,6 +37,7 @@ import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
 import UserCouponCancel from './pages/user/UserCouponCancel.tsx'
+import ReceiptModal from './components/common/modal/ReceiptModal.tsx'
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
@@ -62,6 +63,7 @@ const App: React.FC = () => {
 
     return (
         <Routes>
+            <Route path="/component/test" element={<ReceiptModal />}/>
             <Route path="/" element={<Onboarding />} />
             <Route path="/join" element={<Join />} />
             <Route path="/login" element={<Login />} />
