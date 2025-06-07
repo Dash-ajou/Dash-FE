@@ -134,6 +134,34 @@ export const partnerUpdatePhone = async (data: {
     }
 }
 
+export const emailVerify = async (data: { new_email: string }) => {
+    try {
+        const response = await apiClient.post("/general/account/email-verify/request", data)
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
+export const emailChange = async (data: { new_email: string; email_verify_code: string }) => {
+    try {
+        const response = await apiClient.post("/general/account/email-verify/confirm", data)
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
 export const passwordReset_phoneVerifyRequest = async (data: { user_phone: string }) => {
     try {
         const response = await apiClient.post("/auth/password-reset/request", data)
@@ -188,7 +216,7 @@ export const googleOAuth = async (data: { google_access_token: string }) => {
         const response = await apiClient.post("/auth/google", data)
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data.data.user_email }
+            return { success: true, data: response.data.data.userEmail }
         } else {
             return { success: false }
         }
