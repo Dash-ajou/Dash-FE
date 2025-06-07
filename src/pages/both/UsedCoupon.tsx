@@ -1,7 +1,7 @@
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layout/Layout.tsx";
 import { useEffect, useState } from 'react';
-import Icon from "../../components/common/icons/Icon";
-import ListBlock from "../../components/common/ListBlock";
+import Icon from "../../components/common/icons/Icon.tsx";
+import ListBlock from "../../components/common/ListBlock.tsx";
 import { fetchUsedCoupon } from '../../services/couponUsedService.ts';
 import { fetchCouponDetailService, CouponDetailResponse } from '../../services/couponDetailService.ts';
 import ReceiptModal from '../../components/common/modal/ReceiptModal.tsx';
@@ -14,7 +14,7 @@ type UsedCoupon = {
   payment_code: string;
 };
 
-const UserUsedCoupon = () => {
+const UsedCoupon = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [usedCoupons, setUsedCoupons] = useState<UsedCoupon[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -97,4 +97,4 @@ const UserUsedCoupon = () => {
   );
 };
 
-export default UserUsedCoupon;
+export default UsedCoupon;
