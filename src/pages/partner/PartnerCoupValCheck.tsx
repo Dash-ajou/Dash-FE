@@ -94,22 +94,53 @@ const PartnerCoupValCheck = () => {
                     }
                 />
 
-                <div className="w-full flex mt-[106px]">
-                    <CommonButton
-                        size="large"
-                        isActive={true}
-                        mode="fill"
-                        color="blue"
-                        detail={{
-                            label: isUsed ? "쿠폰 사용 철회" : "쿠폰 사용 처리",
-                            position: "none",
-                        }}
-                        onClick={() => {
-                            setConfirmAction(isUsed ? "cancel" : "use");
-                            setConfirmModalOpen(true);
-                        }}
-                    />
+                <div className="w-full flex flex-col gap-4 mt-[106px]">
+                    {isUsed ? (
+                        <>
+                            <CommonButton
+                                size="large"
+                                isActive={true}
+                                mode="fill"
+                                color="blue"
+                                detail={{
+                                    label: "사용 내역 조회",
+                                    position: "none",
+                                }}
+                                onClick={() => navigate(`/partner/coupon/status/${couponNum}/detail`)}
+                            />
+                            <CommonButton
+                                size="large"
+                                isActive={true}
+                                mode="line"
+                                color="blue"
+                                detail={{
+                                    label: "쿠폰 사용 철회",
+                                    position: "none",
+                                }}
+                                onClick={() => {
+                                    setConfirmAction("cancel");
+                                    setConfirmModalOpen(true);
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <CommonButton
+                            size="large"
+                            isActive={true}
+                            mode="fill"
+                            color="blue"
+                            detail={{
+                                label: "쿠폰 사용 처리",
+                                position: "none",
+                            }}
+                            onClick={() => {
+                                setConfirmAction("use");
+                                setConfirmModalOpen(true);
+                            }}
+                        />
+                    )}
                 </div>
+
 
                 <BasicModal
                     mode="OnlyYes"
