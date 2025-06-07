@@ -11,6 +11,8 @@ import {
     RegisteredCouponItem,
 } from "../../services/userCouponListService.ts"
 import { QRData } from "../../types/QRData.ts"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
+import DashMap from "../../components/module/DashMap.tsx"
 
 const formatDueDate = (dateString: string) => {
     if (!dateString) return ""
@@ -22,6 +24,7 @@ const UserMain = () => {
     const [qrData, setQRData] = useState<QRData[]>([])
     const userName = useSelector((state: RootState) => state.user.name)
     const navigate = useNavigate()
+    const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
 
     useEffect(() => {
         const getCouponList = async () => {
@@ -70,6 +73,20 @@ const UserMain = () => {
             <div className="mt-6">
                 <UserMainButtons />
             </div>
+
+            <div className="mt-8">
+                <h2>지도로 보기</h2>
+                <div onClick={() => setIsDevNoticeModalOpen(true)}>
+                    <DashMap />
+                </div>
+            </div>
+
+            <BasicModal
+                mode={"OnlyYes"}
+                isOpen={isDevNoticeModalOpen}
+                title={"아직 개발중입니다."}
+                onConfirm={() => setIsDevNoticeModalOpen(false)}
+            />
         </Layout>
     )
 }
