@@ -188,7 +188,7 @@ export const googleOAuth = async (data: { google_access_token: string }) => {
         const response = await apiClient.post("/auth/google", data)
 
         if (response.status === 200) {
-            return { success: true, data: response.data.data.data.user_email }
+            return { success: true, data: response.data.data.userEmail }
         } else {
             return { success: false }
         }
