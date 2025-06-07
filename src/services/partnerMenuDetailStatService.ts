@@ -1,10 +1,11 @@
 import apiClient from "./apiClient";
 
 export type MenuVendorStat = {
+  vendor_id: number;
   vendor_name: string;
   vendor_issued: number;
   vendor_used: number;
-  vendor_remainder: number;
+  vendor_remained: number;
   usable_status: string;
 };
 
@@ -20,16 +21,12 @@ export const fetchPartnerMenuDetailStat = async (
   const response = await apiClient.get<{
     status: string;
     message: string;
-    data: {
-      data: PartnerMenuDetailStat;
-      message: string;
-      status: string;
-    };
+    data: PartnerMenuDetailStat;
   }>(`/partner/stats/menu/${encodeURIComponent(menu_name)}/vendors`);
 
   if (response.data.status !== "SUCCESS") {
     throw new Error("메뉴별 벤더 목록 조회 실패");
   }
 
-  return response.data.data.data;
+  return response.data.data;
 };
