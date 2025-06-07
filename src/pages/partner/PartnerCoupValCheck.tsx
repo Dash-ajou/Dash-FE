@@ -1,52 +1,43 @@
-import { useNavigate, useParams } from "react-router-dom";
-import DetailBox from "../../components/common/DetailBox";
-import Layout from "../../components/layout/Layout";
-import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom"
+import DetailBox from "../../components/common/DetailBox"
+import Layout from "../../components/layout/Layout"
+import { useEffect, useState } from "react"
 import {
     fetchPartnerCouponValidation,
     PartnerCouponValidationResponse,
-} from "../../services/partnerCouponValidationCheckService";
-import BasicModal from "../../components/common/modal/BasicModal";
-import CommonButton from "../../components/common/button/CommonButton";
-import {
-    fetchCouponUse,
-    fetchCouponCancel,
-} from "../../services/partnerCoupStatusChangeService";
+} from "../../services/partnerCouponValidationCheckService"
+import BasicModal from "../../components/common/modal/BasicModal"
+import CommonButton from "../../components/common/button/CommonButton"
+import { fetchCouponUse, fetchCouponCancel } from "../../services/partnerCoupStatusChangeService"
 //TO-DO: partnerCoupValidationCheckService.ts에서 응답형식 수정되면 수정할것
 const PartnerCoupValCheck = () => {
-    const { couponNum } = useParams<{ couponNum: string }>();
-    const navigate = useNavigate();
+    const { couponNum } = useParams<{ couponNum: string }>()
+    const navigate = useNavigate()
 
-    const [couponData, setCouponData] =
-        useState<PartnerCouponValidationResponse | null>(null);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(
-        null
-    );
+    const [couponData, setCouponData] = useState<PartnerCouponValidationResponse | null>(null)
+    const [modalOpen, setModalOpen] = useState(false)
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+    const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (!couponNum) throw new Error("쿠폰 번호 누락");
-                const data = await fetchPartnerCouponValidation(couponNum);
-                if (
-                    data.type === "REGISTER_CODE" &&
-                    data.status === "REGISTERABLE"
-                ) {
-                    setModalOpen(true);
-                    return;
+                if (!couponNum) throw new Error("쿠폰 번호 누락")
+                const data = await fetchPartnerCouponValidation(couponNum)
+                if (data.type === "REGISTER_CODE" && data.status === "REGISTERABLE") {
+                    setModalOpen(true)
+                    return
                 }
-                setCouponData(data);
+                setCouponData(data)
             } catch (err) {
-                console.error("쿠폰 조회 실패:", err);
-                setModalOpen(true);
+                console.error("쿠폰 조회 실패:", err)
+                setModalOpen(true)
             }
-        };
-        fetchData();
-    }, [couponNum]);
+        }
+        fetchData()
+    }, [couponNum])
 
-    const handleConfirm = () => navigate(-1);
+    const handleConfirm = () => navigate(-1)
 
     if (!couponData) {
         return (
@@ -58,11 +49,11 @@ const PartnerCoupValCheck = () => {
                     onConfirm={handleConfirm}
                 />
             </Layout>
-        );
+        )
     }
 
-    const { partner, product, status, redeem } = couponData;
-    const isUsed = status === "USED";
+    const { partner, product, status, redeem } = couponData
+    const isUsed = status === "USED"
 
     return (
         <Layout>
@@ -74,23 +65,18 @@ const PartnerCoupValCheck = () => {
                     statusColor={isUsed ? "green" : "red"}
                     leftstring={
                         isUsed
-                            ? [
-                                  "소속 단체명",
-                                  "요청 상세",
-                                  "사용 일시",
-                                  "결제 코드",
-                              ]
+                            ? ["소속 단체명", "요청 상세", "사용 일시", "결제 코드"]
                             : ["소속 단체명", "요청 상세"]
                     }
                     rightstring={
                         isUsed
                             ? [
-                                  partner.partner_name,
+                                  partner.business_name ?? "-",
                                   product.product_name,
                                   redeem?.used_at ?? "-",
                                   redeem?.payment_code ?? "-",
                               ]
-                            : [partner.partner_name, product.product_name]
+                            : [partner.business_name ?? "-", product.product_name]
                     }
                 />
 
@@ -106,7 +92,9 @@ const PartnerCoupValCheck = () => {
                                     label: "사용 내역 조회",
                                     position: "none",
                                 }}
-                                onClick={() => navigate(`/partner/coupon/status/${couponNum}/detail`)}
+                                onClick={() =>
+                                    navigate(`/partner/coupon/status/${couponNum}/detail`)
+                                }
                             />
                             <CommonButton
                                 size="large"
@@ -118,8 +106,8 @@ const PartnerCoupValCheck = () => {
                                     position: "none",
                                 }}
                                 onClick={() => {
-                                    setConfirmAction("cancel");
-                                    setConfirmModalOpen(true);
+                                    setConfirmAction("cancel")
+                                    setConfirmModalOpen(true)
                                 }}
                             />
                         </>
@@ -134,13 +122,12 @@ const PartnerCoupValCheck = () => {
                                 position: "none",
                             }}
                             onClick={() => {
-                                setConfirmAction("use");
-                                setConfirmModalOpen(true);
+                                setConfirmAction("use")
+                                setConfirmModalOpen(true)
                             }}
                         />
                     )}
                 </div>
-
 
                 <BasicModal
                     mode="OnlyYes"
@@ -159,17 +146,17 @@ const PartnerCoupValCheck = () => {
                     }
                     onConfirm={async () => {
                         try {
-                            if (!couponNum) throw new Error("쿠폰 번호 누락");
+                            if (!couponNum) throw new Error("쿠폰 번호 누락")
 
                             if (confirmAction === "cancel") {
                                 if (!redeem?.payment_code || !redeem?.redeem_id)
-                                    throw new Error("필수 정보 누락");
+                                    throw new Error("필수 정보 누락")
 
                                 const result = await fetchCouponCancel(
                                     redeem.payment_code,
                                     redeem.redeem_id
-                                );
-                                console.log("[성공] 사용 철회 결과:", result);
+                                )
+                                console.log("[성공] 사용 철회 결과:", result)
 
                                 setCouponData((prev) =>
                                     prev
@@ -179,10 +166,10 @@ const PartnerCoupValCheck = () => {
                                               redeem: undefined,
                                           }
                                         : prev
-                                );
+                                )
                             } else if (confirmAction === "use") {
-                                const result = await fetchCouponUse(couponNum);
-                                console.log("[성공] 사용 처리 결과:", result);
+                                const result = await fetchCouponUse(couponNum)
+                                console.log("[성공] 사용 처리 결과:", result)
 
                                 setCouponData((prev) =>
                                     prev
@@ -196,20 +183,20 @@ const PartnerCoupValCheck = () => {
                                               },
                                           }
                                         : prev
-                                );
+                                )
                             }
                         } catch (e) {
-                            console.error("쿠폰 처리 실패:", e);
-                            alert("처리 중 오류가 발생했습니다.");
+                            console.error("쿠폰 처리 실패:", e)
+                            alert("처리 중 오류가 발생했습니다.")
                         } finally {
-                            setConfirmModalOpen(false);
+                            setConfirmModalOpen(false)
                         }
                     }}
                     onClose={() => setConfirmModalOpen(false)}
                 />
             </div>
         </Layout>
-    );
-};
+    )
+}
 
-export default PartnerCoupValCheck;
+export default PartnerCoupValCheck
