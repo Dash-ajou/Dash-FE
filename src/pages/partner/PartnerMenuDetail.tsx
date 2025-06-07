@@ -32,15 +32,22 @@ const PartnerMenuDetail = () => {
                 <div className="w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
             </div>
             <div className="py-2">
-                {vendorList.map((vendor, idx) => (
-                    <ListBlock
-                        key={idx}
-                        type="orgnamelist"
-                        orgname={vendor.vendor_name}
-                        coupea={vendor.vendor_issued}
-                        usedea={vendor.vendor_used}
-                    />
-                ))}
+                {vendorList.length === 0 && (
+                    <div className="text-red-500 text-sm">빈 목록입니다</div>
+                )}
+
+                {vendorList.map((vendor, idx) => {
+                    return (
+                        <ListBlock
+                            key={idx}
+                            type="orgnamelist"
+                            orgname={vendor.vendor_name}
+                            coupea={vendor.vendor_issued}
+                            usedea={vendor.vendor_used}
+                        />
+                    );
+                })}
+
             </div>
         </Layout>
     );

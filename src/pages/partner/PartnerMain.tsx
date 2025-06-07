@@ -103,7 +103,7 @@ const PartnerMain = () => {
           <div className="mt-4 pb-6 overflow-y-scroll h-[148px] pr-2 scrollbar-hide">
             {stats?.detailedStats && stats.detailedStats.length > 0 ? (
                 stats.detailedStats.map((vendor) => (
-                    <ListBlock key={vendor.vendorId} type='orgnamelist' orgname={vendor.vendorName} coupea={vendor.vendorIssued} usedea={vendor.vendorUsed} onClick={() =>
+                    <ListBlock key={vendor.vendorId} type='mainorgnamelist' orgname={vendor.vendorName} coupea={vendor.vendorIssued} usedea={vendor.vendorUsed} onClick={() =>
                         navigate(`/partner/orgdetail/${vendor.vendorId}`, {
                           state: {
                             vendorId: vendor.vendorId,

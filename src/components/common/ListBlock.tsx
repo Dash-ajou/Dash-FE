@@ -1,7 +1,7 @@
 import React from "react";
 
 type ListBlockProps = {
-  type: "coupstatuslist" | "datetimelist" | "orgnamelist";
+  type: "coupstatuslist" | "datetimelist" | "orgnamelist" | "mainorgnamelist";
   coupnum?: string;
   coupstatus?: "Issued" | "Registered" | "Used";
   name?: string;
@@ -45,7 +45,8 @@ const ListBlock: React.FC<ListBlockProps> = ({
       case "datetimelist":
         return datetime ? `${datetime}` : "정보 없음";
       case "orgnamelist":
-        return orgname && coupea !== undefined && usedea !== undefined
+      case "mainorgnamelist":
+        return coupea !== undefined && usedea !== undefined
           ? `${usedea}/${coupea}`
           : "정보 없음";
       default:
@@ -56,17 +57,19 @@ const ListBlock: React.FC<ListBlockProps> = ({
   return (
     <div
       className={`flex items-center justify-between w-full px-6 py-4 rounded-xl text-xs text-black font-normal my-1 
-                        ${type === "orgnamelist" ? "bg-gray-100 text-base" : "bg-blue-50"}`} onClick={onClick}>
+                        ${type === "orgnamelist" || type === "mainorgnamelist" ? "bg-gray-100 text-base" : "bg-blue-50"}`} onClick={onClick}>
       <span
           className={
             type === "orgnamelist"
                 ? "text-base font-bold"
+                : type === "mainorgnamelist"
+                ? "text-xs text-black"
                 : type === "datetimelist"
                     ? "flex flex-wrap text-base font-medium"
                     : ""
           }
       >
-  {type === "orgnamelist"
+  {type === "orgnamelist" || type === "mainorgnamelist"
       ? orgname
       : type === "datetimelist"
           ? menuname
