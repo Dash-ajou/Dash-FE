@@ -2,11 +2,10 @@ type QRButtonProps = {
     title: string
     partnername: string
     duedate: string
-    qrimg: string
     onClick?: () => void
 }
 
-const QRButton: React.FC<QRButtonProps> = ({ title, partnername, duedate, qrimg, onClick }) => {
+const QRButton: React.FC<QRButtonProps> = ({ title, partnername, duedate, onClick }) => {
     return (
         <div
             className="flex w-full justify-between items-center px-5 py-7 rounded-xl shadow-custom-basic bg-white"
@@ -29,12 +28,7 @@ const QRButton: React.FC<QRButtonProps> = ({ title, partnername, duedate, qrimg,
 
             {/* qr이미지 */}
             <div className="relative w-[100px] h-[100px] bg-gray-200 rounded-lg overflow-hidden flex justify-center items-center">
-                {qrimg ? (
-                    <img src={qrimg} alt="QR Code" className="object-contain w-full h-full" />
-                ) : (
-                    <div className="text-gray-500">QR 이미지 없음</div>
-                )}
-
+                <img src="/qrimg.png" alt="QR Code" className="object-contain w-full h-full" />
                 <div className="absolute rounded-xl inset-0 bg-white/50 backdrop-blur-sm z-10"></div>
             </div>
         </div>

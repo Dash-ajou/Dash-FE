@@ -5,31 +5,9 @@ export interface CouponStatus {
     usedCoupons: number
 }
 
-export interface MenuItem {
-    title: string
-    url: string
-}
-
-export interface Menus {
-    myInfo: MenuItem[]
-    customerCenter: MenuItem[]
-}
-
-export interface UserMyPageData {
-    generalName: string
-    couponStatus: CouponStatus
-    menus: Menus
-}
-
 interface RawCouponStatus {
-    usable_coupons: number
-    used_coupons: number
-}
-
-interface RawUserMyPageData {
-    generalName: string
-    couponStatus: RawCouponStatus
-    menus: Menus
+    usable_count: number
+    used_count: number
 }
 
 export interface ApiResponse<T> {
@@ -40,34 +18,31 @@ export interface ApiResponse<T> {
     data: T
 }
 
-export const fetchUserMyPage = async () => {
+export const fetchUserCouponCount = async () => {
     try {
-        const response = await apiClient.get<ApiResponse<RawUserMyPageData>>("/general/mypage")
+        const response =
+            await apiClient.get<ApiResponse<RawCouponStatus>>("/general/coupons/status")
 
-        if (response.data.status === "SUCCESS" && response.data.status === "SUCCESS") {
+        if (response.data.status === "SUCCESS") {
             const rawData = response.data.data
 
-            const mappedData: UserMyPageData = {
-                generalName: rawData.generalName,
-                couponStatus: {
-                    usableCoupons: rawData.couponStatus.usable_coupons,
-                    usedCoupons: rawData.couponStatus.used_coupons,
-                },
-                menus: rawData.menus,
+            const couponStatus: CouponStatus = {
+                usableCoupons: rawData.usable_count,
+                usedCoupons: rawData.used_count,
             }
+
             return {
                 success: true,
-                data: mappedData,
+                data: couponStatus,
             }
         }
 
-        console.warn("마이페이지 응답 실패:", response.data.message || response.data.message)
         return {
             success: false,
             data: null,
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error("마이페이지 조회 실패:", error)
         return {
             success: false,
             data: null,

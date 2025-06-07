@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import CommonButton from "../../components/common/button/CommonButton"
 import CouponCount from "../../components/unit/user-mypage/CouponCount"
-import { fetchUserMyPage, UserMyPageData } from "../../services/userMypageService"
+import { CouponStatus, fetchUserCouponCount } from "../../services/userMypageService"
 import DetailBox from "../../components/common/DetailBox"
 import Layout from "../../components/layout/Layout"
 import { useSelector } from "react-redux"
@@ -24,11 +24,11 @@ const UserMypage = () => {
         ],
         myInfo: [
             { title: "계정 정보", url: "/general/account" },
-            { title: "비밀번호 변경하기", url: "/findpw" },
+            { title: "비밀번호 변경", url: "/findpw" },
         ],
     }
 
-    const [userData, setUserData] = useState<UserMyPageData | null>(null)
+    const [userData, setUserData] = useState<CouponStatus | null>(null)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
@@ -57,7 +57,7 @@ const UserMypage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetchUserMyPage()
+            const res = await fetchUserCouponCount()
             if (res.success) {
                 setUserData(res.data)
             }
@@ -77,12 +77,12 @@ const UserMypage = () => {
 
             <div className="flex justify-center gap-3">
                 <div className="w-full">
-                    <CouponCount type="available" count={userData.couponStatus.usableCoupons} />
+                    <CouponCount type="available" count={userData.usableCoupons} />
                 </div>
                 <div className="w-full">
                     <CouponCount
                         type="used"
-                        count={userData.couponStatus.usedCoupons}
+                        count={userData.usedCoupons}
                         onClick={() => navigate("/user/mypage/usedcoupon")}
                     />
                 </div>

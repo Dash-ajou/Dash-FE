@@ -37,8 +37,6 @@ body {
   min-width: 350px;
   background-color: white;
   position: relative;
-  height: 100vh;
-  overflow: hidden;
 
   .react-datepicker {
     border: none;
