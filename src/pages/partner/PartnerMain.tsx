@@ -26,6 +26,7 @@ const PartnerMain = () => {
   useEffect(() => {
     const getStats = async () => {
       const res = await fetchPartnerStats();
+
       setStats(res);
     };
     getStats();
@@ -33,11 +34,18 @@ const PartnerMain = () => {
 
   return (
     <Layout>
-      <div className="mt-5" onClick={goToStatsPage}>
+      <div className="mt-5">
         {stats && (
-          <Statistics mode="totalstat" published={stats?.totalIssued} used={stats?.totalUsed} />
+            <div className="cursor-pointer" onClick={goToStatsPage}>
+              <Statistics
+                  mode="totalstat"
+                  published={stats.totalIssued}
+                  used={stats.totalUsed}
+              />
+            </div>
         )}
       </div>
+
       <div className="flex flex-col w-full mt-5">
         <div className="flex" onClick={() => navigate("/partner/coupon/scan")}>
           <QRScanButton />
