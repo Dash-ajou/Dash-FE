@@ -11,16 +11,26 @@ type OAuthConnectProps = {
 
 const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived }) => {
     const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false)
+    const path = window.location.pathname
 
     const login = useGoogleLogin({
         onSuccess: async (response: TokenResponse) => {
             const apiRes = await googleOAuth({ google_access_token: response.access_token })
             const email = apiRes?.data ?? ""
-            if (email && onEmailReceived) {
-                onEmailReceived(email)
-                onNext()
-            } else {
-                alert("이메일을 받아오지 못했습니다.")
+
+            if (path.startsWith("/join")) {
+                if (email && onEmailReceived) {
+                    onEmailReceived(email)
+                    onNext()
+                } else {
+                    alert("이메일을 받아오지 못했습니다.")
+                }
+            } else if (path === "/mypage/update/email") {
+                if (email) {
+                    onNext()
+                } else {
+                    alert("이메일 등록에 실패했습니다.")
+                }
             }
         },
         onError: () => alert("구글 로그인 실패"),
