@@ -65,7 +65,7 @@ const PartnerCoupValCheck = () => {
                     statusColor={isUsed ? "green" : "red"}
                     leftstring={
                         isUsed
-                            ? ["소속 단체명", "요청 상세", "사용 일시", "결제 코드"]
+                            ? ["소속 단체명", "요청 상세", "사용 일시"]
                             : ["소속 단체명", "요청 상세"]
                     }
                     rightstring={
@@ -74,7 +74,6 @@ const PartnerCoupValCheck = () => {
                                   vendor.vendor_name ?? "-",
                                   product.product_name,
                                   redeem?.used_at ?? "-",
-                                  redeem?.payment_code ?? "-",
                               ]
                             : [vendor.vendor_name ?? "-", product.product_name]
                     }
