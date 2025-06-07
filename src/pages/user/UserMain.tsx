@@ -34,7 +34,6 @@ const UserMain = () => {
                     title: item.couponName,
                     partnername: item.partnerName,
                     duedate: formatDueDate(item.validUntil),
-                    qrimg: "none",
                     couponId: item.couponId,
                 }))
                 setQRData(mappedData)
