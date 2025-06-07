@@ -16,7 +16,7 @@ export type PublishedCoupon = {
   vendor: Vendor;
   partner: Partner;
   issue_id: number;
-  status: "ENABLED" | "DISABLED";
+  status: "ENABLE" | "DISABLE";
   issue_at: string;
   issue_count: number;
   used_count: number;

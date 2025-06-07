@@ -39,15 +39,15 @@ export const fetchPartnerStats = async (): Promise<MainPartnerStats> => {
       throw new Error("파트너 통계 데이터 로딩 실패");
     }
 
-    if (!data.data || !Array.isArray(data.data.detailedStats)) {
+    if (!data || !Array.isArray(data.detailedStats)) {
       console.warn("[fetchPartnerStats] detailedStats가 배열이 아님 또는 없음:", data.data);
-    } else if (data.data.detailedStats.length === 0) {
+    } else if (data.detailedStats.length === 0) {
       console.warn("[fetchPartnerStats] detailedStats가 빈 배열입니다");
     } else {
-      console.log("[fetchPartnerStats] detailedStats 정상:", data.data.detailedStats);
+      console.log("[fetchPartnerStats] detailedStats 정상:", data.detailedStats);
     }
 
-    return data.data;
+    return data;
   } catch (error) {
     console.error("[fetchPartnerStats] 요청 중 에러 발생:", error);
     throw error;

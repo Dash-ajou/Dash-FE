@@ -15,14 +15,15 @@ export type PartnerCouponValidationResponse = {
 };
 
 export const fetchPartnerCouponValidation = async (coupon_number: string) => {
-  const formData = new URLSearchParams();
-  formData.append("code", coupon_number);
-
-  const response = await apiClient.post("/coupon/payment/validate", formData, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+  const response = await apiClient.post(
+      "/coupon/payment/validate",
+      {code: coupon_number},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+      );
   if (response.data.status !== "SUCCEED") {
     throw new Error("쿠폰 유효성 검증 실패");
   }

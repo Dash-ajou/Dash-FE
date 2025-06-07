@@ -2,9 +2,11 @@ import Layout from "../../components/layout/Layout";
 import { useState } from "react";
 import Icon from "../../components/common/icons/Icon";
 import ListBlock from "../../components/common/ListBlock";
+// import { useNavigate } from 'react-router-dom'
 
 const UserUsedCoupon = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  // const navigate = useNavigate();
 
   return (
     <Layout>
@@ -19,7 +21,7 @@ const UserUsedCoupon = () => {
             className="w-full text-base text-neutral-800 placeholder-neutral-400 bg-transparent focus:outline-none"
           />
         </div>
-        <ListBlock type="datetimelist" />
+        <ListBlock type="datetimelist" /* onClick={() => navigate(`/user/coupon/used/${issueId}/${couponId}`)} *//>
       </div>
     </Layout>
   );
