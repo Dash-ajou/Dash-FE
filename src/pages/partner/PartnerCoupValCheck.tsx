@@ -52,7 +52,7 @@ const PartnerCoupValCheck = () => {
         )
     }
 
-    const { partner, product, status, redeem } = couponData
+    const { vendor, product, status, redeem } = couponData
     const isUsed = status === "USED"
 
     return (
@@ -71,12 +71,12 @@ const PartnerCoupValCheck = () => {
                     rightstring={
                         isUsed
                             ? [
-                                  partner.business_name ?? "-",
+                                  vendor.vendor_name ?? "-",
                                   product.product_name,
                                   redeem?.used_at ?? "-",
                                   redeem?.payment_code ?? "-",
                               ]
-                            : [partner.business_name ?? "-", product.product_name]
+                            : [vendor.vendor_name ?? "-", product.product_name]
                     }
                 />
 
@@ -169,7 +169,6 @@ const PartnerCoupValCheck = () => {
                                 )
                             } else if (confirmAction === "use") {
                                 const result = await fetchCouponUse(couponNum)
-                                console.log("[성공] 사용 처리 결과:", result)
 
                                 setCouponData((prev) =>
                                     prev
