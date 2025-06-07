@@ -38,7 +38,7 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
         try {
             const res = await CouponPaymentCode(selectedQR.couponId)
             if (res.success) {
-                setPayCode(res.data.payment_code)
+                setPayCode(res.data.paymentCode)
                 setQrCodeImg(res.data.qrcode_image)
                 setIsQRModalOpen(true)
             } else {
