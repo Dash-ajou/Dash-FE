@@ -7,7 +7,7 @@ export type StatisticsProps = {
   title?: string;
   orgname?: string;
   published: number;
-  registered: number;
+  registered?: number;
   used: number;
   onClick?: () => void;
 };
@@ -22,6 +22,7 @@ const Statistics: React.FC<StatisticsProps> = ({
   onClick,
 }) => {
     const percentage = published === 0 ? 0 : Math.round((used / published) * 100);
+    const displayRegistered = registered ?? 0;
 
   const getStrokeWidth = (mode: string) => {
     switch (mode) {
@@ -193,7 +194,7 @@ const Statistics: React.FC<StatisticsProps> = ({
         <div className="flex flex-col justify-end leading-tight text-xs text-black space-y-3 ml-3">
           <div>
             <span className=" font-bold mr-3">미등록매수</span>
-            <span className=" font-light">{published - registered}매</span>
+            <span className=" font-light">{published - displayRegistered}매</span>
           </div>
           <div>
             <span className=" font-bold mr-3">잔여매수</span>

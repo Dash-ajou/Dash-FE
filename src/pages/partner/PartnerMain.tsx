@@ -38,7 +38,7 @@ const PartnerMain = () => {
         {stats && (
             <div className="cursor-pointer" onClick={goToStatsPage}>
               <Statistics
-                  mode="totalstat"
+                  mode='totalstat'
                   published={stats.totalIssued}
                   used={stats.totalUsed}
               />
