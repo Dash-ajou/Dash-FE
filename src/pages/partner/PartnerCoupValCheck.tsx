@@ -57,7 +57,7 @@ const PartnerCoupValCheck = () => {
 
     return (
         <Layout>
-            <div className="flex flex-col mt-[56px] px-5">
+            <div className="flex flex-col mt-[56px]">
                 <DetailBox
                     mode="coupinfo"
                     title="쿠폰 정보"
