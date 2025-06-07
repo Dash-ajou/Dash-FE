@@ -38,8 +38,8 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
         try {
             const res = await CouponPaymentCode(selectedQR.couponId)
             if (res.success) {
-                setPayCode(res.data.paymentCode)
-                setQrCodeImg(res.data.qrcodeUrl)
+                setPayCode(res.data.payment_code)
+                setQrCodeImg(res.data.qrcode_image)
                 setIsQRModalOpen(true)
             } else {
                 alert("쿠폰 정보를 불러올 수 없습니다.")

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPushNotifications, Notification } from "../../services/pushManageService";
-
+import { fetchPushNotifications, markPushAsRead, Notification } from '../../services/pushManageService'
 import PushButton from "../../components/common/button/PushButton";
 import Layout from "../../components/layout/Layout";
 
@@ -28,10 +27,15 @@ const UserNotification = () => {
     console.log(notifications);
   }, [notifications]);
 
-  const onReadNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.map((notif) => (notif.notification_id === id ? { ...notif, readed: true } : notif)),
-    );
+  const onReadNotification = async (id: number) => {
+    const success = await markPushAsRead(id);
+    if (success) {
+      setNotifications((prev) =>
+          prev.map((notif) =>
+              notif.notification_id === id ? {...notif, readed:true}: notif,
+          ),
+      )
+    }
   };
 
   if (loading) {

@@ -37,7 +37,7 @@ import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
 import UserCouponCancel from './pages/user/UserCouponCancel.tsx'
-import ReceiptModal from './components/common/modal/ReceiptModal.tsx'
+// import ReceiptModal from './components/common/modal/ReceiptModal.tsx'
 
 const App: React.FC = () => {
     const dispatch = useDispatch()

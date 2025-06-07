@@ -40,3 +40,14 @@ export const fetchPushNotifications = async (
   return {success: false, data: []};
 };
 
+export const markPushAsRead = async (pushId: number): Promise<boolean> => {
+  try{
+    const res = await apiClient.patch(`/push/${pushId}/status`, {
+      is_readed: true,
+    });
+    return res.status === 200;
+  } catch (err) {
+    console.error(`알림(${pushId}) 읽음 처리 실패:`, err);
+    return false;
+  }
+};
