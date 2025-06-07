@@ -1,0 +1,22 @@
+{
+  "name": "소상공인 쿠폰 발급 서비스: Dash",
+  "short_name": "Dash",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#256FEF",
+  "icons": [
+    {
+      "src": "public/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "public/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orintation": "portrait",
+  "scope": "/"
+}
