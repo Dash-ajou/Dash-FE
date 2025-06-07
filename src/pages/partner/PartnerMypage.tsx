@@ -22,7 +22,7 @@ const PartnerMypage = () => {
         ],
         myInfo: [
             { title: "계정 정보", url: "/general/account" },
-            { title: "비밀번호 변경하기", url: "/findpw" },
+            { title: "비밀번호 변경", url: "/findpw" },
         ],
     }
 
