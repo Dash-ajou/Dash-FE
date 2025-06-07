@@ -14,7 +14,7 @@ import CouponRequest from "./pages/vendor/CouponRequest.tsx"
 import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx"
 import CouponRequestList from "./pages/vendor/CouponRequestList.tsx"
 import CouponRequestDetail from "./pages/vendor/CouponRequestDetail.tsx"
-import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx"
+import UsedCoupon from "./pages/both/UsedCoupon.tsx"
 import PartnerMain from "./pages/partner/PartnerMain.tsx"
 import PartnerStat from "./pages/partner/PartnerStat.tsx"
 import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx"
@@ -30,14 +30,12 @@ import RequestView from "./pages/partner/RequestView.tsx"
 import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx"
 import PartnerMypage from "./pages/partner/PartnerMypage.tsx"
 import PartnerNotification from "./pages/partner/PartnerNotification.tsx"
-import PartnerUsedCoup from "./pages/partner/PartnerUsedCoup.tsx"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
 import UserCouponCancel from './pages/user/UserCouponCancel.tsx'
-// import ReceiptModal from './components/common/modal/ReceiptModal.tsx'
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
@@ -73,7 +71,7 @@ const App: React.FC = () => {
             <Route path="/user/main" element={<UserMain />} />
             <Route path="/user/notification" element={<UserNotification />} />
             <Route path="/user/mypage" element={<UserMypage />} />
-            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+            <Route path="/user/mypage/usedcoupon" element={<UsedCoupon />} />
             <Route path="/user/gift" element={<UserGift />} />
             <Route path="/general/account" element={<UserAccountInfo />} />
             <Route path="/user/coupon/register" element={<QRScanPage />} />
@@ -98,7 +96,7 @@ const App: React.FC = () => {
             <Route path="/partner/request/detail" element={<RequestView />} />
             <Route path="/partner/request/payment" element={<PaymentInfo />} />
             <Route path="/partner/request/approve" element={<RequestApproveFin />} />
-            <Route path="/partner/usedcoupon" element={<PartnerUsedCoup />} />
+            <Route path="/partner/usedcoupon" element={<UsedCoupon />} />
         </Routes>
     )
 }
