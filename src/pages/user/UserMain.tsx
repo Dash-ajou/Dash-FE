@@ -76,7 +76,10 @@ const UserMain = () => {
 
             <div className="mt-8">
                 <h1 className="text-black text-xl font-semibold mb-4">지도로 보기</h1>
-                <div className="rounded-xl" onClick={() => setIsDevNoticeModalOpen(true)}>
+                <div
+                    className="rounded-xl overflow-hidden"
+                    onClick={() => setIsDevNoticeModalOpen(true)}
+                >
                     <DashMap />
                 </div>
             </div>
