@@ -95,7 +95,7 @@ const PartnerMypage = () => {
             <BasicModal
                 mode={"OnlyYes"}
                 isOpen={isDevNoticeModalOpen}
-                title={"아직 개발중입니다."}
+                title={"개발중입니다."}
                 onConfirm={() => setIsDevNoticeModalOpen(false)}
             />
         </Layout>

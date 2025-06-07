@@ -75,8 +75,8 @@ const UserMain = () => {
             </div>
 
             <div className="mt-8">
-                <h2>지도로 보기</h2>
-                <div onClick={() => setIsDevNoticeModalOpen(true)}>
+                <h1 className="text-black text-xl font-semibold mb-4">지도로 보기</h1>
+                <div className="rounded-xl" onClick={() => setIsDevNoticeModalOpen(true)}>
                     <DashMap />
                 </div>
             </div>
@@ -84,7 +84,7 @@ const UserMain = () => {
             <BasicModal
                 mode={"OnlyYes"}
                 isOpen={isDevNoticeModalOpen}
-                title={"아직 개발중입니다."}
+                title={"개발중입니다."}
                 onConfirm={() => setIsDevNoticeModalOpen(false)}
             />
         </Layout>

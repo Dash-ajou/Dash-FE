@@ -9,10 +9,11 @@ const center = {
     lat: 37.282, // 예시 위도 (아주대)
     lng: 127.047, // 예시 경도 (아주대)
 }
+const GOOGLE_MAP_KEY = import.meta.env.VITE_GOOGLE_MAP_KEY
 
 const DashMap = ({ isLarge = false }) => {
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "여기에_본인_API_KEY", // ★본인 키로 교체!
+        googleMapsApiKey: GOOGLE_MAP_KEY,
     })
 
     if (!isLoaded) return <div>지도를 불러오는 중...</div>
@@ -21,10 +22,16 @@ const DashMap = ({ isLarge = false }) => {
         <GoogleMap
             mapContainerStyle={{
                 ...containerStyle,
-                height: isLarge ? "400px" : "200px", // 크게 띄울 땐 높이 늘리기
+                height: isLarge ? "400px" : "200px",
             }}
             center={center}
             zoom={15}
+            options={{
+                disableDefaultUI: true,
+                // 필요하다면 특정 컨트롤만 켜거나 끌 수도 있음
+                // zoomControl: false,
+                // mapTypeControl: false,
+            }}
         >
             <Marker position={center} />
         </GoogleMap>
