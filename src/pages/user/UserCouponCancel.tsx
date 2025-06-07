@@ -16,10 +16,14 @@ const UserCouponCancel = () => {
 
     const handleCancel = async () => {
         try {
-            const res = await apiClient.post(`/coupon/manage/${issueId}/cancel`, {
-                expire_status: "CANCEL",
-                user_verify_code: verifyCode,
-            })
+            const res = await apiClient.post(
+                `/coupon/manage/${issueId}/cancel`,
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }
+            );
 
             if (res.data.status === "SUCCEED") {
                 setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다")
