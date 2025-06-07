@@ -27,7 +27,6 @@ const UserCouponPublished = () => {
 
     const handleToggleChange = async (issueId: number, isOn: boolean) => {
     const requestStatus = isOn ? "ENABLE" : "DISABLE"; // 서버에 보낼 값
-    const newClientStatus = isOn ? "ENABLED" : "DISABLED"; // 프론트에 저장할 값
 
     try {
       const response = await updateCouponStatus({ issueId: `${issueId}`, status: requestStatus });
@@ -36,7 +35,7 @@ const UserCouponPublished = () => {
       setCoupons((prevCoupons) =>
           prevCoupons.map((coupon) =>
               coupon.issue_id === issueId
-                  ? { ...coupon, status: newClientStatus }
+                  ? { ...coupon, status: requestStatus }
                   : coupon
           )
       );
@@ -83,7 +82,7 @@ const UserCouponPublished = () => {
                 title={coupon.partner.business_name}
                 subtitle={`사용 현황: ${coupon.used_count} / ${coupon.issue_count}`}
                 info={`유효 기간: ~${formatDateYMD(coupon.issue_at)}`}
-                isActive={coupon.status === "ENABLED"}
+                isActive={coupon.status === "ENABLE"}
                 onToggleChange={(isOn) => handleToggleChange(coupon.issue_id, isOn)}
               />
             </div>
