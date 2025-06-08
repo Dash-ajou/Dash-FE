@@ -29,6 +29,7 @@ const PartnerMypage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
+    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<boolean>(false)
 
     const partnerNameFromRedux = useSelector((state: RootState) => state.user.name)
 
@@ -88,7 +89,7 @@ const PartnerMypage = () => {
                     mode="text"
                     color="red"
                     detail={{ label: "회원 탈퇴", position: "none" }}
-                    onClick={handleWithdraw}
+                    onClick={() => setIsWithdrawModalOpen(true)}
                 />
             </div>
 
@@ -97,6 +98,15 @@ const PartnerMypage = () => {
                 isOpen={isDevNoticeModalOpen}
                 title={"개발중입니다."}
                 onConfirm={() => setIsDevNoticeModalOpen(false)}
+            />
+
+            <BasicModal
+                mode={"YesNo"}
+                isOpen={isWithdrawModalOpen}
+                title={"탈퇴하시나요?"}
+                description={"탈퇴 시 모든 쿠폰과 기록이 소멸됩니다"}
+                onClose={() => setIsWithdrawModalOpen(false)}
+                onConfirm={handleWithdraw}
             />
         </Layout>
     )
