@@ -20,6 +20,7 @@ type PhoneAuthProps = {
     setIsVerified: (verify: boolean) => void
     onNext: () => void
     setVerifyCode?: (num: string) => void
+    bottomPosition: number
 }
 
 const PhoneAuth: React.FC<PhoneAuthProps> = ({
@@ -29,6 +30,7 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
     setIsVerified,
     onNext,
     setVerifyCode,
+    bottomPosition,
 }) => {
     const [localPhoneNum, setLocalPhoneNum] = useState<string>(phoneNum)
     const [showNotice, setShowNotice] = useState<boolean>(false)
@@ -194,7 +196,10 @@ const PhoneAuth: React.FC<PhoneAuthProps> = ({
             )}
 
             {(isVerified || (!isVerified && isCodeSixDigits)) && (
-                <div className="absolute bottom-[336px] px-6 left-0 right-0 w-full flex">
+                <div
+                    className="absolute w-full px-6 left-0 right-0 flex"
+                    style={{ bottom: `${bottomPosition}px` }}
+                >
                     <CommonButton
                         size="large"
                         isActive={true}

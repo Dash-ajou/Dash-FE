@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import InputField from "../../components/common/InputField.tsx"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
@@ -19,6 +19,26 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const navigate = useNavigate()
+
+    const [bottomPosition, setBottomPosition] = useState(336)
+
+    useEffect(() => {
+        const updateBottom = () => {
+            const windowHeight = window.innerHeight
+
+            if (windowHeight >= 800) {
+                setBottomPosition(336)
+            } else {
+                const decrease = 800 - windowHeight
+                const newBottom = 336 - decrease
+                setBottomPosition(Math.max(newBottom, 100))
+            }
+        }
+
+        updateBottom()
+        window.addEventListener("resize", updateBottom)
+        return () => window.removeEventListener("resize", updateBottom)
+    }, [])
 
     const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
@@ -106,7 +126,10 @@ const Login: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-[336px] px-6 left-0 right-0 w-full flex flex-col">
+                <div
+                    className="absolute w-full px-6 left-0 right-0 flex flex-col"
+                    style={{ bottom: `${bottomPosition}px` }}
+                >
                     <CommonButton
                         size="large"
                         isActive={true}
@@ -116,7 +139,10 @@ const Login: React.FC = () => {
                         onClick={handleLogin}
                     />
                 </div>
-                <div className="absolute left-0 right-0 w-full flex flex-row gap-4 justify-center bottom-[295px]">
+                <div
+                    className="absolute w-full px-6 left-0 right-0 flex flex-row gap-4 justify-center"
+                    style={{ bottom: `${bottomPosition - 40}px` }}
+                >
                     <CommonButton
                         size="mini"
                         isActive={true}
