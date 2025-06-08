@@ -1,14 +1,18 @@
-import React from "react";
-import CommonButton from "../common/button/CommonButton";
+import React, { useState } from "react"
+import CommonButton from "../common/button/CommonButton"
+import BasicModal from "../common/modal/BasicModal.tsx"
+import { DeleteCoupon } from "../../services/userCoupManageService.ts"
+import { useNavigate } from "react-router-dom"
 
 type QRModalProps = {
-    title: string;
-    qrimg: string;
-    coupnum: string;
-    storename: string;
-    duedate: string;
-    onClose: () => void;
-};
+    title: string
+    qrimg: string
+    coupnum: string
+    storename: string
+    duedate: string
+    couponId: number
+    onClose: () => void
+}
 
 const QRModal: React.FC<QRModalProps> = ({
     title,
@@ -16,8 +20,26 @@ const QRModal: React.FC<QRModalProps> = ({
     coupnum,
     storename,
     duedate,
+    couponId,
     onClose,
 }) => {
+    const navigate = useNavigate()
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false)
+    const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
+
+    const handleDelete = async () => {
+        try {
+            const response = await DeleteCoupon(couponId)
+            if (response.success) {
+                navigate("/user/main")
+            } else {
+                alert("쿠폰 삭제에 실패했습니다.")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-5 flex items-center justify-center z-50"
@@ -28,9 +50,7 @@ const QRModal: React.FC<QRModalProps> = ({
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="w-full flex flex-col mb-8 items-start">
-                    <h1 className="text-black text-xl font-bold leading-normal">
-                        {title}
-                    </h1>
+                    <h1 className="text-black text-xl font-bold leading-normal">{title}</h1>
                 </div>
 
                 <div className="flex flex-col justify-center items-center gap-4 flex-grow">
@@ -66,6 +86,7 @@ const QRModal: React.FC<QRModalProps> = ({
                                 label: "쿠폰 선물하기",
                                 position: "none",
                             }}
+                            onClick={() => setIsDevNoticeModalOpen(true)}
                         />
                         <CommonButton
                             size="small"
@@ -76,12 +97,28 @@ const QRModal: React.FC<QRModalProps> = ({
                                 label: "쿠폰 삭제하기",
                                 position: "none",
                             }}
+                            onClick={() => setIsCancelModalOpen(true)}
                         />
                     </div>
                 </div>
             </div>
-        </div>
-    );
-};
 
-export default QRModal;
+            <BasicModal
+                mode={"YesNo"}
+                isOpen={isCancelModalOpen}
+                title={"쿠폰을 삭제하시나요?"}
+                onClose={() => setIsCancelModalOpen(false)}
+                onConfirm={handleDelete}
+            />
+
+            <BasicModal
+                mode={"OnlyYes"}
+                isOpen={isDevNoticeModalOpen}
+                title={"개발중입니다."}
+                onConfirm={() => setIsDevNoticeModalOpen(false)}
+            />
+        </div>
+    )
+}
+
+export default QRModal

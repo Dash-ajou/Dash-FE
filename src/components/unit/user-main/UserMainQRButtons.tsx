@@ -99,6 +99,7 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
                         coupnum={payCode}
                         storename={selectedQR.partnername}
                         duedate={selectedQR.duedate}
+                        couponId={selectedQR.couponId}
                         onClose={() => setIsQRModalOpen(false)}
                     />
                 </div>

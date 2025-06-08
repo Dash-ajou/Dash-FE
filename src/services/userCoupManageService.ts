@@ -27,3 +27,17 @@ export const CouponPaymentCode = async (coupon_id: number) => {
         return { success: false, error }
     }
 }
+
+export const DeleteCoupon = async (coupon_id: number) => {
+    try {
+        const response = await apiClient.delete(`/general/coupons/${coupon_id}`)
+
+        if (response.status === 200) {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
