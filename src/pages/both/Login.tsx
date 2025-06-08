@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import InputField from "../../components/common/InputField.tsx"
 import CommonButton from "../../components/common/button/CommonButton.tsx"
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import Icon from "../../components/common/icons/Icon.tsx"
 import { useDispatch } from "react-redux"
 import { setUserInfo } from "../../store/userSlice.ts"
-import { login } from "../../services/authService.ts"
+import { getUserInfo, login } from "../../services/authService.ts"
 import { setUserType } from "../../store/typeSlice.ts"
 
 const Login: React.FC = () => {
@@ -19,6 +19,27 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        async function checkSession() {
+            try {
+                const response = await getUserInfo()
+
+                if (response.success) {
+                    if (response.data.userType === "GENERAL") {
+                        navigate("/user/main")
+                    } else {
+                        navigate("/partner/main")
+                    }
+                }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (error) {
+                //stay onboarding page
+            }
+        }
+
+        checkSession()
+    }, [])
 
     const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
