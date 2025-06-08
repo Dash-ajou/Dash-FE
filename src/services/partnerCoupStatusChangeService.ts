@@ -18,19 +18,22 @@ export type CancelCouponResponse = {
 
 export const fetchCouponUse = async (
     payment_code: string
-    // scan_img: File // 현재 이미지 전송 제외
 ): Promise<UseCouponResponse> => {
-    const formData = new FormData()
-    formData.append("payment_code", payment_code)
-    // formData.append("scan_img", scan_img);
-
-    const response = await apiClient.post("/coupon/payment/use", formData)
+    const response = await apiClient.post(
+        "/coupon/payment/use",
+        { code: payment_code },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
 
     if (response.data.status !== "SUCCESS") {
-        throw new Error("쿠폰 사용 처리 실패")
+        throw new Error("쿠폰 사용 처리 실패");
     }
-    return response.data.data
-}
+    return response.data.data;
+};
 
 export const fetchCouponCancel = async (
     payment_code: string,
@@ -39,9 +42,13 @@ export const fetchCouponCancel = async (
     const response = await apiClient.post("/coupon/payment/cancel", {
         payment_code,
         redeem_id,
-    })
-    if (response.data.status !== "SUCCEED") {
-        throw new Error("쿠폰 사용 취소 실패")
+    });
+
+    if (response.data.status !== "SUCCESS") {
+        throw new Error("쿠폰 사용 취소 실패");
     }
-    return response.data.data
-}
+
+    return response.data.data;
+};
+
+
