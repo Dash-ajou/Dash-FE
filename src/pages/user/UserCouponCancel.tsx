@@ -16,27 +16,45 @@ const UserCouponCancel = () => {
 
     const handleCancel = async () => {
         try {
+            const params = new URLSearchParams();
+            params.append("user_verify_code", verifyCode);
+
             const res = await apiClient.post(
                 `/coupon/manage/${issueId}/cancel`,
+                { user_verify_code: verifyCode }, // 그냥 JSON 객체
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        "Content-Type": "application/json"
                     }
                 }
             );
 
+
             if (res.data.status === "SUCCEED") {
-                setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다")
+                setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다");
             } else {
-                setModalTitle("쿠폰 철회에 실패했습니다. 다시 시도해 주세요.")
+                setModalTitle(res.data.message || "쿠폰 철회에 실패했습니다. 다시 시도해 주세요.");
             }
-        } catch (err) {
-            console.error(err)
-            setModalTitle("서버 오류가 발생했습니다.")
+        } catch (err: unknown) {
+            console.error(err);
+
+            let errorMessage = "서버 오류가 발생했습니다.";
+
+            if (
+                typeof err === "object" &&
+                err !== null &&
+                "response" in err &&
+                typeof (err as { response?: { data?: { message?: string } } }).response?.data?.message === "string"
+            ) {
+                errorMessage = (err as { response?: { data?: { message?: string } } }).response!.data!.message!;
+            }
+
+            setModalTitle(errorMessage);
         } finally {
-            setIsModalOpen(true)
+            setIsModalOpen(true);
         }
-    }
+    };
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
