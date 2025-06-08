@@ -18,7 +18,10 @@ const PartnerMypage = () => {
             // { title: "문의하기", url: "/support/contact" },
             { title: "공지사항", onClick: () => setIsDevNoticeModalOpen(true) },
             { title: "FAQ", onClick: () => setIsDevNoticeModalOpen(true) },
-            { title: "문의하기", onClick: () => setIsDevNoticeModalOpen(true) },
+            {
+                title: "문의하기",
+                onClick: () => window.open("https://open.kakao.com/o/sMlEaHAh", "_blank"),
+            },
         ],
         myInfo: [
             { title: "계정 정보", url: "/general/account" },
