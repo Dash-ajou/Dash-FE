@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import PhoneAuth from "../../components/unit/join/PhoneAuth.tsx"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
@@ -9,6 +9,25 @@ const PhoneNumChange: React.FC = () => {
     const [phoneNum, setPhoneNum] = useState<string>("")
     const [isVerified, setIsVerified] = useState<boolean>(false)
     const [isAlarmOpen, setIsAlarmOpen] = useState<boolean>(false)
+    const [bottomPosition, setBottomPosition] = useState(336)
+
+    useEffect(() => {
+        const updateBottom = () => {
+            const windowHeight = window.innerHeight
+
+            if (windowHeight >= 800) {
+                setBottomPosition(336)
+            } else {
+                const decrease = 800 - windowHeight
+                const newBottom = 336 - decrease
+                setBottomPosition(Math.max(newBottom, 100))
+            }
+        }
+
+        updateBottom()
+        window.addEventListener("resize", updateBottom)
+        return () => window.removeEventListener("resize", updateBottom)
+    }, [])
 
     const handleConfirm = () => {
         setIsAlarmOpen(true)
@@ -26,6 +45,7 @@ const PhoneNumChange: React.FC = () => {
                 isVerified={isVerified}
                 setIsVerified={setIsVerified}
                 onNext={handleConfirm}
+                bottomPosition={bottomPosition}
             />
 
             <BasicModal
