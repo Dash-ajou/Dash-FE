@@ -1,10 +1,32 @@
-import React from "react";
-import Icon from "../../components/common/icons/Icon.tsx";
-import CommonButton from "../../components/common/button/CommonButton.tsx";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect } from "react"
+import Icon from "../../components/common/icons/Icon.tsx"
+import CommonButton from "../../components/common/button/CommonButton.tsx"
+import { useNavigate } from "react-router-dom"
+import { getUserInfo } from "../../services/authService.ts"
 
 const Onboarding: React.FC = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        async function checkSession() {
+            try {
+                const response = await getUserInfo()
+
+                if (response.success) {
+                    if (response.data.userType === "GENERAL") {
+                        navigate("/user/main")
+                    } else {
+                        navigate("/partner/main")
+                    }
+                }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (error) {
+                //stay onboarding page
+            }
+        }
+
+        checkSession()
+    }, [])
 
     return (
         <div className="relative w-full min-h-screen bg-white overflow-hidden">
@@ -26,7 +48,9 @@ const Onboarding: React.FC = () => {
                             <div className="h-0.5 bg-blue-700 flex-grow"></div>
                         </div>
                         <div className="flex items-center justify-end w-full space-x-4">
-                            <span className="text-blue-600 whitespace-nowrap">잊어버리지 않게,</span>
+                            <span className="text-blue-600 whitespace-nowrap">
+                                잊어버리지 않게,
+                            </span>
                             <div className="h-0.5 bg-blue-600 flex-grow w-1/2"></div>
                         </div>
                     </div>
@@ -67,7 +91,7 @@ const Onboarding: React.FC = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Onboarding;
+export default Onboarding

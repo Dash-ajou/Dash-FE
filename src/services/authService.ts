@@ -229,7 +229,7 @@ export const getUserInfo = async () => {
     try {
         const response = await apiClient.get("/account/session-info")
 
-        if (response.status === 200) {
+        if (response.data.status === "SUCCESS") {
             return { success: true, data: response.data.data }
         } else {
             return { success: false }

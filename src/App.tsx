@@ -30,6 +30,7 @@ import RequestView from "./pages/partner/RequestView.tsx"
 import RequestApproveFin from "./pages/partner/RequestApproveFin.tsx"
 import PartnerMypage from "./pages/partner/PartnerMypage.tsx"
 import PartnerNotification from "./pages/partner/PartnerNotification.tsx"
+import ProtectedRoute from "./components/common/ProtectedRoute"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
@@ -77,38 +78,248 @@ const App: React.FC = () => {
             <Route path="/join" element={<Join />} />
             <Route path="/login" element={<Login />} />
             <Route path="/findpw" element={<FindPW />} />
-            <Route path="/mypage/update/phone" element={<PhoneNumChange />} />
-            <Route path="/mypage/update/email" element={<EmailChange />} />
+            <Route
+                path="/mypage/update/phone"
+                element={
+                    <ProtectedRoute>
+                        <PhoneNumChange />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/mypage/update/email"
+                element={
+                    <ProtectedRoute>
+                        <EmailChange />
+                    </ProtectedRoute>
+                }
+            />
 
-            <Route path="/user/main" element={<UserMain />} />
-            <Route path="/user/notification" element={<UserNotification />} />
-            <Route path="/user/mypage" element={<UserMypage />} />
-            <Route path="/user/mypage/usedcoupon" element={<UsedCoupon />} />
-            <Route path="/user/gift" element={<UserGift />} />
-            <Route path="/general/account" element={<UserAccountInfo />} />
-            <Route path="/user/coupon/register" element={<QRScanPage />} />
-            <Route path="/user/coupon/request" element={<CouponRequest />} />
-            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
-            <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
-            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
-            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
-            <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
-            <Route path="/user/coupon/published/:issueId/cancel" element={<UserCouponCancel />} />
+            <Route
+                path="/user/main"
+                element={
+                    <ProtectedRoute>
+                        <UserMain />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/notification"
+                element={
+                    <ProtectedRoute>
+                        <UserNotification />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/mypage"
+                element={
+                    <ProtectedRoute>
+                        <UserMypage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/mypage/usedcoupon"
+                element={
+                    <ProtectedRoute>
+                        <UsedCoupon />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/gift"
+                element={
+                    <ProtectedRoute>
+                        <UserGift />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/general/account"
+                element={
+                    <ProtectedRoute>
+                        <UserAccountInfo />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/register"
+                element={
+                    <ProtectedRoute>
+                        <QRScanPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/request"
+                element={
+                    <ProtectedRoute>
+                        <CouponRequest />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/request/confirm"
+                element={
+                    <ProtectedRoute>
+                        <CouponRequestConfirm />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/request/list"
+                element={
+                    <ProtectedRoute>
+                        <CouponRequestList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/request/detail"
+                element={
+                    <ProtectedRoute>
+                        <CouponRequestDetail />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/published"
+                element={
+                    <ProtectedRoute>
+                        <UserCouponPublished />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/published/:issueId"
+                element={
+                    <ProtectedRoute>
+                        <UserCouponPublishedDetail />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/published/:issueId/cancel"
+                element={
+                    <ProtectedRoute>
+                        <UserCouponCancel />
+                    </ProtectedRoute>
+                }
+            />
 
-            <Route path="/partner/coupon/scan" element={<QRScanPage />} />
-            <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
-            <Route path="/partner/main" element={<PartnerMain />} />
-            <Route path="/partner/mypage" element={<PartnerMypage />} />
-            <Route path="/partner/notification" element={<PartnerNotification />} />
-            <Route path="/partner/statistics" element={<PartnerStat />} />
-            <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
-            <Route path="/partner/menudetail/:menuName" element={<PartnerMenuDetail />} />
-            <Route path="/partner/request/auth" element={<PartnerAuth />} />
-            <Route path="/partner/request/list" element={<CouponRequestList />} />
-            <Route path="/partner/request/detail" element={<RequestView />} />
-            <Route path="/partner/request/payment" element={<PaymentInfo />} />
-            <Route path="/partner/request/approve" element={<RequestApproveFin />} />
-            <Route path="/partner/usedcoupon" element={<UsedCoupon />} />
+            <Route
+                path="/partner/coupon/scan"
+                element={
+                    <ProtectedRoute>
+                        <QRScanPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/coupon/status/:couponNum"
+                element={
+                    <ProtectedRoute>
+                        <PartnerCoupValCheck />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/main"
+                element={
+                    <ProtectedRoute>
+                        <PartnerMain />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/mypage"
+                element={
+                    <ProtectedRoute>
+                        <PartnerMypage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/notification"
+                element={
+                    <ProtectedRoute>
+                        <PartnerNotification />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/statistics"
+                element={
+                    <ProtectedRoute>
+                        <PartnerStat />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/orgdetail/:vendorId"
+                element={
+                    <ProtectedRoute>
+                        <PartnerOrgDetail />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/menudetail/:menuName"
+                element={
+                    <ProtectedRoute>
+                        <PartnerMenuDetail />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/request/auth"
+                element={
+                    <ProtectedRoute>
+                        <PartnerAuth />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/request/list"
+                element={
+                    <ProtectedRoute>
+                        <CouponRequestList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/request/detail"
+                element={
+                    <ProtectedRoute>
+                        <RequestView />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/request/payment"
+                element={
+                    <ProtectedRoute>
+                        <PaymentInfo />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/request/approve"
+                element={
+                    <ProtectedRoute>
+                        <RequestApproveFin />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/partner/usedcoupon"
+                element={
+                    <ProtectedRoute>
+                        <UsedCoupon />
+                    </ProtectedRoute>
+                }
+            />
         </Routes>
     )
 }
