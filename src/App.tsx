@@ -35,12 +35,24 @@ import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
-import UserCouponCancel from './pages/user/UserCouponCancel.tsx'
+import UserCouponCancel from "./pages/user/UserCouponCancel.tsx"
+import { setIsMobile } from "./store/deviceSlice.ts"
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user)
     const type = useSelector((state: RootState) => state.type)
+
+    useEffect(() => {
+        const handleResize = () => {
+            dispatch(setIsMobile(window.innerWidth <= 1024))
+        }
+
+        window.addEventListener("resize", handleResize)
+        handleResize() // initial check
+
+        return () => window.removeEventListener("resize", handleResize)
+    }, [dispatch])
 
     useEffect(() => {
         if (!user.name || !type.userType) {

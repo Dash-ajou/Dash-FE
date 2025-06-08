@@ -59,11 +59,11 @@ const QRScanPage: React.FC = () => {
     }
 
     return (
-        <>
+        <div className="overflow-hidden">
             <div className="relative z-10">
                 <SubHeader />
             </div>
-            <div className="relative z-0">
+            <div className="relative z-0 h-[100dvh] ">
                 <QRScan isPartner={isPartner} onClick={(couponNum) => handleClick(couponNum)} />
             </div>
 
@@ -73,7 +73,7 @@ const QRScanPage: React.FC = () => {
                 title={modalTitle}
                 onConfirm={handleConfirm}
             />
-        </>
+        </div>
     )
 }
 
