@@ -1,7 +1,8 @@
 import apiClient from "./apiClient"
-import { PartnerInfo, ProductInfo, VendorInfo } from "../types/CouponRedeemTypes.ts"
-// TO-DO: 소속단체명 string으로 필요
+import { VendorInfo, PartnerInfo, ProductInfo } from '../types/CouponRedeemTypes.ts'
+
 export type PartnerCouponValidationResponse = {
+    coupon_id: number;
     type: "REGISTER_CODE" | "PAYMENT_CODE"
     status: "REGISTERABLE" | "USABLE" | "USED"
     vendor: VendorInfo
