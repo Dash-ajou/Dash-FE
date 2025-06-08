@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
 import userReducer from "./userSlice"
 import typeReducer from "./typeSlice"
+import deviceReducer from "./deviceSlice"
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         type: typeReducer,
+        device: deviceReducer,
     },
 })
 
