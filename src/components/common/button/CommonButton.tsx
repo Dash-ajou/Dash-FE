@@ -1,18 +1,18 @@
-import React, {HTMLAttributes} from 'react';
-import IconRegistry from "../icons/IconRegistry.tsx";
-import Icon from "../icons/Icon.tsx";
+import React, { HTMLAttributes } from "react"
+import IconRegistry from "../icons/IconRegistry.tsx"
+import Icon from "../icons/Icon.tsx"
 
 type CommonButtonProps = {
-    size: "mini" | "small" | "normal" | "large";
-    isActive?: boolean;
-    mode: "fill" | "line" | "text" | "text_no_line" | "ghost"| "textbold";
-    color: "blue" | "red" | "gray" | "black";
+    size: "mini" | "small" | "normal" | "large"
+    isActive?: boolean
+    mode: "fill" | "line" | "text" | "text_no_line" | "ghost" | "textbold"
+    color: "blue" | "red" | "gray" | "black"
     detail: {
-        label: string;
-        position: "right" | "left" | "none";
-        icon?: keyof typeof IconRegistry;
-    };
-} & HTMLAttributes<HTMLButtonElement>;
+        label: string
+        position: "right" | "left" | "none"
+        icon?: keyof typeof IconRegistry
+    }
+} & HTMLAttributes<HTMLButtonElement>
 
 /*
 mini: 로그아웃, 회원 탈퇴 등 텍스트 버튼
@@ -26,16 +26,15 @@ text: 텍스트에 밑줄만 있는 버튼 (글자색이 color) -> 밑줄 유무
 ghost: 배경이 흰색이고 테두리가 회색인 버튼 (partnerMainButton) (글자색이 color)
 */
 
-const baseStyles =
-    "flex items-center justify-center rounded-xl transition";
+const baseStyles = "flex items-center justify-center rounded-xl transition"
 
 // Size styles
 const sizeStyles = {
     mini: "py-1 text-sm",
-    small: "flex-1 py-2 text-sm font-bold",
+    small: "flex-1 py-3 text-sm font-bold",
     normal: "px-3 py-4 text-base font-bold flex-none w-40",
     large: "flex-1 py-4 text-base font-bold",
-};
+}
 
 // Color styles
 const colorStyles = {
@@ -43,30 +42,28 @@ const colorStyles = {
     red: "text-white bg-red-500 hover:bg-red-600",
     gray: "text-black bg-gray-200 hover:bg-gray-300",
     black: "text-black",
-};
+}
 
 const CommonButton: React.FC<CommonButtonProps> = ({
-                                                       size,
-                                                       isActive,
-                                                       mode,
-                                                       color,
-                                                       detail,
-                                                       ...props
-                                                   }) => {
+    size,
+    isActive,
+    mode,
+    color,
+    detail,
+    ...props
+}) => {
     // Mode styles
     const modeStyles = {
         fill: `shadow ${colorStyles[color]}`,
         line: `border-2 border-${color}-500 text-${color}-500 bg-transparent`,
-        text: `${color=="black" ? 'text-black' : `text-${color}-500`} underline bg-transparent`,
-        text_no_line: `${color=="black" ? 'text-black' : `text-${color}-500`} bg-transparent`,
+        text: `${color == "black" ? "text-black" : `text-${color}-500`} underline bg-transparent`,
+        text_no_line: `${color == "black" ? "text-black" : `text-${color}-500`} bg-transparent`,
         ghost: `shadow-custom-basic bg-white text-${color}-500`,
-        textbold: `${color=="black" ? 'text-black' : `text-${color}-500`} font-bold bg-transparent`,
-    };
+        textbold: `${color == "black" ? "text-black" : `text-${color}-500`} font-bold bg-transparent`,
+    }
 
     // Disabled styles
-    const disabledStyles = isActive
-        ? ""
-        : "cursor-not-allowed opacity-50 hover:bg-none";
+    const disabledStyles = isActive ? "" : "cursor-not-allowed opacity-50 hover:bg-none"
 
     return (
         <button
@@ -76,17 +73,17 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         >
             {detail.icon && detail.position === "left" && (
                 <span className="mr-2">
-                    <Icon name={detail.icon}/>
+                    <Icon name={detail.icon} />
                 </span>
             )}
             {detail.label}
             {detail.icon && detail.position === "right" && (
                 <span className="ml-2">
-                    <Icon name={detail.icon}/>
+                    <Icon name={detail.icon} />
                 </span>
             )}
         </button>
     )
-};
+}
 
-export default CommonButton;
+export default CommonButton

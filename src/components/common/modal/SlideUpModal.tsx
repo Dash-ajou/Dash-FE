@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "../../../store/store.ts"
 
 type SlideUpModalProps = {
     isOpen: boolean
@@ -24,7 +22,6 @@ const SlideUpModal: React.FC<SlideUpModalProps> = ({
     const [shouldRender, setShouldRender] = useState(isOpen)
     const [expanded, setExpanded] = useState<boolean>(false)
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
-    const isMobile = useSelector((state: RootState) => state.device.isMobile)
 
     // Touch gesture state for swipe up/down
     const [touchStartY, setTouchStartY] = useState<number | null>(null)
