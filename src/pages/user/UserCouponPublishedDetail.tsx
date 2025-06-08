@@ -16,6 +16,7 @@ import BasicModal from "../../components/common/modal/BasicModal"
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService"
 import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService"
 import { cancelCouponRequest } from "../../services/VendorCouponCancleRequestService.ts"
+import { ExportCSV, ExportImage } from "../../services/vendorCouponFileManage.ts"
 
 const UserCouponPublishedDetail = () => {
     const { issueId } = useParams<{ issueId: string }>()
@@ -89,6 +90,26 @@ const UserCouponPublishedDetail = () => {
                 return "Used"
             default:
                 return undefined
+        }
+    }
+
+    const handleCSV = async () => {
+        if (!issueId) return
+        const result = await ExportCSV(issueId)
+        if (result.success && result.data) {
+            window.location.href = result.data
+        } else {
+            alert("CSV 다운로드에 실패했습니다. 다시 시도해 주세요.")
+        }
+    }
+
+    const handleImage = async () => {
+        if (!issueId) return
+        const result = await ExportImage(issueId)
+        if (result.success && result.data) {
+            window.location.href = result.data
+        } else {
+            alert("양식 다운로드에 실패했습니다. 다시 시도해 주세요.")
         }
     }
 
@@ -197,13 +218,15 @@ const UserCouponPublishedDetail = () => {
                         mode="fill"
                         color="blue"
                         detail={{ label: "csv 다운로드", position: "none" }}
+                        onClick={handleCSV}
                     />
                     <CommonButton
                         size="large"
                         isActive
                         mode="fill"
                         color="blue"
-                        detail={{ label: "png 다운로드", position: "none" }}
+                        detail={{ label: "쿠폰 양식 다운로드", position: "none" }}
+                        onClick={handleImage}
                     />
                 </div>
             </SlideUpModal>
@@ -220,7 +243,7 @@ const UserCouponPublishedDetail = () => {
                     {["전체", "사용완료", "등록완료", "미등록"].map((label) => (
                         <div
                             key={label}
-                            className={`cursor-pointer px-2 py-1 text-xs font-normal rounded-3xl border ${
+                            className={`cursor-pointer px-2 py-1 text-sm font-normal rounded-3xl border ${
                                 selectedFilter === label
                                     ? "bg-blue-500 text-white border-blue-500"
                                     : "bg-white text-black border-gray-200"
