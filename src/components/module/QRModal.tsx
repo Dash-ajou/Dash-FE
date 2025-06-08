@@ -25,6 +25,7 @@ const QRModal: React.FC<QRModalProps> = ({
 }) => {
     const navigate = useNavigate()
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false)
+    const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
 
     const handleDelete = async () => {
         try {
@@ -85,6 +86,7 @@ const QRModal: React.FC<QRModalProps> = ({
                                 label: "쿠폰 선물하기",
                                 position: "none",
                             }}
+                            onClick={() => setIsDevNoticeModalOpen(true)}
                         />
                         <CommonButton
                             size="small"
@@ -107,6 +109,13 @@ const QRModal: React.FC<QRModalProps> = ({
                 title={"쿠폰을 삭제하시나요?"}
                 onClose={() => setIsCancelModalOpen(false)}
                 onConfirm={handleDelete}
+            />
+
+            <BasicModal
+                mode={"OnlyYes"}
+                isOpen={isDevNoticeModalOpen}
+                title={"개발중입니다."}
+                onConfirm={() => setIsDevNoticeModalOpen(false)}
             />
         </div>
     )
