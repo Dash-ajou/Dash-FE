@@ -1,9 +1,13 @@
 import apiClient from './apiClient.ts'
 
 export type Partner = {
+    id: number;
     business_name: string;
+    owner_name: string;
     owner_phone: string;
-}
+    owner_email: string | null;
+    address: string;
+};
 
 export type Product = {
     product_id: number;
@@ -19,7 +23,9 @@ export type RegisterUser = {
 };
 
 export type CouponDetailResponse = {
-    status: 'SUCCEED';
+    apiVersion: string;
+    clientVersion: string;
+    status: 'SUCCESS' | 'FAILED';
     message: string | null;
     data: {
         coupon_id: number;

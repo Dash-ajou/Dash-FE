@@ -48,8 +48,9 @@ const PartnerCoupValCheck = () => {
 
     const openReceiptModal = async () => {
         try {
-            if (!couponNum) throw new Error("쿠폰 번호 없음");
-            const res = await fetchCouponDetailService(couponNum);
+            if (!couponData?.coupon_id) throw new Error("쿠폰 ID 없음");
+
+            const res = await fetchCouponDetailService(couponData.coupon_id);
             setReceiptData(res.data);
             setReceiptModalOpen(true);
         } catch (e) {
