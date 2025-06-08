@@ -7,6 +7,8 @@ type ReceiptModalProps = {
         partner: {
             business_name: string;
             owner_phone: string;
+            owner_name: string;
+            address: string;
         };
         product: {
             product_name: string;
@@ -28,7 +30,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[50px] pt-[73px] pb-3"
+                className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[30px] pt-[73px] pb-3"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-center mb-5">
@@ -36,8 +38,8 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
                 </div>
 
                 <div className="flex flex-col justify-start items-start">
-                    <p className="text-xs text-black font-medium">(주소)</p>
-                    <p className="text-xs text-black font-medium mb-5">(대표명)</p>
+                    <p className="text-xs text-black font-medium">{coupon.partner.address}</p>
+                    <p className="text-xs text-black font-medium mb-5">{coupon.partner.owner_name}</p>
                     <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
                 </div>
 
@@ -65,10 +67,8 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
                         </p>
                     </div>
                 </div>
-
                 <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
-
-                <div className="mt-6 mb-8 w-60 h-60 border bg-black" />
+                <div className="w-full justify-center items-center mt-6 mb-8 h-60 bg-gray-300" />
             </div>
         </div>
     );
