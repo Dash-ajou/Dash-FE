@@ -12,13 +12,15 @@ const UserNotification = () => {
   useEffect(() => {
     const load = async () => {
       const { success, data } = await fetchPushNotifications();
-      if (success) setNotifications(data);
+      if (success) {
+        const filtered = data.filter(n => n.tag !== "REQUEST_RECEIVED"); // 이 라인 추가
+        setNotifications(filtered);
+      }
       setLoading(false);
     };
     load();
   }, []);
 
-  // 외부 클릭 또는 터치 시 슬라이드 닫기
   useEffect(() => {
     const handleOutside = (event: MouseEvent | TouchEvent) => {
       if (
