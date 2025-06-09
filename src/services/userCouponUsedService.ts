@@ -19,7 +19,7 @@ export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
       usedAt: string;
       paymentCode: string;
     }[];
-  }>("/general/coupon/list/used");
+  }>("/general/coupons/list/used");
 
   return res.data.data.map(
     (item): UsedCoupon => ({
