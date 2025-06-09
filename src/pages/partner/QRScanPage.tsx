@@ -59,7 +59,7 @@ const QRScanPage: React.FC = () => {
     }
 
     return (
-        <div className="overflow-hidden">
+        <div className="overflow-hidden overscroll-none">
             <div className="relative z-10">
                 <SubHeader />
             </div>
