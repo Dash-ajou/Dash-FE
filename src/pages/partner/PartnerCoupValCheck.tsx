@@ -12,8 +12,8 @@ import {
     fetchCouponUse,
     fetchCouponCancel,
 } from "../../services/partnerCoupStatusChangeService";
-import { fetchCouponDetailService, CouponDetailResponse } from "../../services/couponDetailService";
-import ReceiptModal from "../../components/common/modal/ReceiptModal";
+import { fetchCouponDetailService } from "../../services/couponDetailService";
+import ReceiptModal, { ReceiptCouponData } from '../../components/common/modal/ReceiptModal'
 
 const PartnerCoupValCheck = () => {
     const { couponNum } = useParams<{ couponNum: string }>()
@@ -24,7 +24,7 @@ const PartnerCoupValCheck = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(null);
     const [receiptModalOpen, setReceiptModalOpen] = useState(false);
-    const [receiptData, setReceiptData] = useState<CouponDetailResponse["data"] | null>(null);
+    const [receiptData, setReceiptData] = useState<ReceiptCouponData | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,13 +50,39 @@ const PartnerCoupValCheck = () => {
         try {
             if (!couponNum) throw new Error("쿠폰 번호 없음");
             const res = await fetchCouponDetailService(couponNum);
-            setReceiptData(res.data);
+
+            if (!couponData?.redeem?.redeem_id || !couponData.redeem.payment_code) {
+                throw new Error("결제 정보가 누락되어 영수증을 표시할 수 없습니다.");
+            }
+
+            const formatted: ReceiptCouponData = {
+                coupon_id: res.data.coupon_id,
+                partner: {
+                    business_name: res.data.partner.business_name,
+                    owner_phone: res.data.partner.owner_phone,
+                },
+                product: {
+                    product_name: res.data.product.product_name,
+                },
+                register: {
+                    name: res.data.register.name,
+                    phone: res.data.register.phone,
+                },
+                registered_at: res.data.registered_at,
+                payment_id: couponData.redeem.redeem_id,
+                payment_code: couponData.redeem.payment_code,
+            };
+
+            setReceiptData(formatted);
             setReceiptModalOpen(true);
         } catch (e) {
             console.error("상세 정보 조회 실패", e);
             alert("상세 정보 조회 중 오류 발생");
         }
     };
+
+
+
 
     if (!couponData) {
         return (
