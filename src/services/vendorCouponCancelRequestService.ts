@@ -12,18 +12,20 @@ export const fetchCancelCoupon = async (
     issueId: number,
     verifyCode: string
 ) => {
-    const body = new URLSearchParams();
-    body.append("expire_status", "CANCEL");
-    body.append("user_verify_code", verifyCode); // 선택이지만 현재는 포함한다고 가정
+    const body = {
+        expire_status: "CANCEL",
+        user_verify_code: verifyCode,
+    };
 
     const response = await apiClient.post(
         `/coupon/manage/${issueId}/cancel`,
         body,
         {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
             },
         }
     );
     return response.data;
 };
+

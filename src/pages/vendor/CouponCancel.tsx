@@ -4,7 +4,7 @@ import CommonButton from "../../components/common/button/CommonButton.tsx"
 import BasicModal from "../../components/common/modal/BasicModal.tsx"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import { fetchcancelCouponRequest } from '../../services/vendorCouponCancelRequestService.ts'
+import { fetchCancelCoupon } from '../../services/vendorCouponCancelRequestService.ts'
 
 const CouponCancel = () => {
     const { issueId } = useParams<{ issueId: string }>()
@@ -16,7 +16,7 @@ const CouponCancel = () => {
 
     const handleCancel = async () => {
         try {
-            await fetchcancelCouponRequest(Number(issueId))
+            await fetchCancelCoupon(Number(issueId), verifyCode)
             setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다")
         } catch (err) {
             console.error(err)
