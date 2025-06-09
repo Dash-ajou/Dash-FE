@@ -1,5 +1,4 @@
 //TO-DO: 쿠폰 철회하기 눌렀을 때 로직 추가 필요
-//TO-DO: 다운로드 API 연동 필요
 //TO-DO: 필터 기능 연동 필요
 //TO-DO: 스크롤 수정
 
@@ -80,7 +79,9 @@ const UserCouponPublishedDetail = () => {
         })
     }, [couponList, selectedFilter])
 
-    const statusToText = (status: string): "Issued" | "Registered" | "Used" | "Canceled" | undefined => {
+    const statusToText = (
+        status: string
+    ): "Issued" | "Registered" | "Used" | "Canceled" | undefined => {
         switch (status) {
             case "REGISTERABLE":
                 return "Issued"
@@ -106,7 +107,9 @@ const UserCouponPublishedDetail = () => {
             if (result.data?.response?.data?.status === "ACCEPTED") {
                 setBasicModalConfig({
                     mode: "OnlyYes",
-                    title: result.data.response.data.message || "CSV 파일이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.",
+                    title:
+                        result.data.response.data.message ||
+                        "CSV 파일이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.",
                 })
                 setIsBasicModalOpen(true)
             } else {
@@ -129,7 +132,9 @@ const UserCouponPublishedDetail = () => {
             if (result.data?.response?.data?.status === "ACCEPTED") {
                 setBasicModalConfig({
                     mode: "OnlyYes",
-                    title: result.data.response.data.message || "이미지가 아직 처리 중입니다. 잠시 후 다시 시도해 주세요.",
+                    title:
+                        result.data.response.data.message ||
+                        "이미지가 아직 처리 중입니다. 잠시 후 다시 시도해 주세요.",
                 })
                 setIsBasicModalOpen(true)
             } else {
@@ -141,7 +146,6 @@ const UserCouponPublishedDetail = () => {
             }
         }
     }
-
 
     return (
         <>
