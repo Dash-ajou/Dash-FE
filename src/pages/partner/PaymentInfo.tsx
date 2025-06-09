@@ -39,6 +39,7 @@ const PaymentInfo: React.FC = () => {
     const [discount, setDiscount] = useState<string>("")
     const [totalPrice, setTotalPrice] = useState<number>(0)
     const [isCheckModalOpen, setIsCheckModalOpen] = useState<boolean>(false)
+    const [isFailModalOpen, setIsFailModalOpen] = useState<boolean>(false)
 
     React.useEffect(() => {
         const sum = menuItems.reduce((acc, item) => {
@@ -76,7 +77,7 @@ const PaymentInfo: React.FC = () => {
 
             const discountValue = parseInt(discount, 10) || 0
 
-            await RequestSign(request_id, {
+            const resposne = await RequestSign(request_id, {
                 status: "APPROVED",
                 payment: {
                     paid_at,
@@ -84,11 +85,13 @@ const PaymentInfo: React.FC = () => {
                     discount: discountValue,
                 },
             })
+
+            if (resposne.success) {
+                navigate("/partner/request/approve")
+            }
         } catch (error) {
             console.error("반려 처리 중 오류가 발생했습니다.", error)
-            //TODO - 에러처리
-        } finally {
-            navigate("/partner/request/list")
+            setIsFailModalOpen(true)
         }
     }
 
@@ -213,6 +216,13 @@ const PaymentInfo: React.FC = () => {
                 title={`총 결제금액이 ${totalPrice.toLocaleString()}원이 맞으신가요?`}
                 onClose={() => setIsCheckModalOpen(false)}
                 onConfirm={handleConfirm}
+            />
+
+            <BasicModal
+                mode="OnlyYes"
+                isOpen={isFailModalOpen}
+                title={"요청 승인에 실패했어요"}
+                onConfirm={() => setIsFailModalOpen(false)}
             />
         </Layout>
     )

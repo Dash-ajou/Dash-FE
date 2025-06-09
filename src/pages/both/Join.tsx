@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Layout from "../../components/layout/Layout.tsx"
 import RoleSelect from "../../components/unit/join/RoleSelect.tsx"
 import { Role } from "../../constants/role.ts"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import PartnerDetail from "../../components/unit/join/PartnerDetail.tsx"
 import PartnerForm from "../../components/unit/join/PartnerForm.tsx"
 import { JoinStep, PartnerInfo } from "../../types/JoinTypes.ts"
@@ -14,6 +14,7 @@ import JoinComplete from "../../components/unit/join/JoinComplete.tsx"
 import { generalJoin, partnerJoin } from "../../services/authService.ts"
 
 const Join: React.FC = () => {
+    const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
     const currentStep = searchParams.get("step") || JoinStep.ROLE_SELECT
 
@@ -29,6 +30,35 @@ const Join: React.FC = () => {
     const [email, setEmail] = useState<string>("")
 
     const [bottomPosition, setBottomPosition] = useState(336)
+
+    const shouldBlock = currentStep === JoinStep.COMPLETE
+
+    useEffect(() => {
+        if (!shouldBlock) return
+
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            event.preventDefault()
+            event.returnValue = ""
+        }
+
+        const handlePopState = () => {
+            if (window.confirm("이전 페이지로 이동할 수 없습니다. 메인으로 이동하시나요?")) {
+                navigate("/", { replace: true })
+            } else {
+                // 사용자가 취소를 눌렀으면 원래 페이지에 머물러야 하는데
+                // pop은 이미 진행됐으므로, 다시 앞으로 가버리자.
+                window.history.forward()
+            }
+        }
+
+        window.addEventListener("beforeunload", handleBeforeUnload)
+        window.addEventListener("popstate", handlePopState)
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload)
+            window.removeEventListener("popstate", handlePopState)
+        }
+    }, [shouldBlock, navigate])
 
     useEffect(() => {
         const updateBottom = () => {
