@@ -80,7 +80,7 @@ const UserCouponPublishedDetail = () => {
         })
     }, [couponList, selectedFilter])
 
-    const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
+    const statusToText = (status: string): "Issued" | "Registered" | "Used" | "Canceled" | undefined => {
         switch (status) {
             case "REGISTERABLE":
                 return "Issued"
@@ -89,6 +89,8 @@ const UserCouponPublishedDetail = () => {
             case "USED":
             case "EXPIRED":
                 return "Used"
+            case "CANCELED":
+                return "Canceled"
             default:
                 return undefined
         }
