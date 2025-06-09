@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google"
-import CommonButton from "../../common/button/CommonButton.tsx"
+// import CommonButton from "../../common/button/CommonButton.tsx"
 import BasicModal from "../../common/modal/BasicModal.tsx"
 import { googleOAuth } from "../../../services/authService.ts"
 
@@ -38,9 +38,9 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived, bo
         scope: "openid profile email",
     })
 
-    const handlePass = () => {
-        setIsAlertModalOpen(true)
-    }
+    // const handlePass = () => {
+    //     setIsAlertModalOpen(true)
+    // }
 
     return (
         <div className="flex flex-col justify-center gap-4 w-full">
@@ -61,8 +61,7 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived, bo
                 style={{ bottom: `${bottomPosition - 11}px` }}
             >
                 <button
-                    className="gsi-material-button"
-                    style={{ width: 400 }}
+                    className="gsi-material-button w-full max-w-xs"
                     type="button"
                     onClick={() => login()} // 실제 구글 로그인 함수로 연결
                 >
@@ -99,16 +98,16 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived, bo
                     </div>
                 </button>
 
-                {window.location.pathname !== "/mypage/update/email" && (
-                    <CommonButton
-                        size="mini"
-                        isActive={true}
-                        mode="text"
-                        color="gray"
-                        detail={{ label: "건너뛰기", position: "none" }}
-                        onClick={handlePass}
-                    />
-                )}
+                {/*{window.location.pathname !== "/mypage/update/email" && (*/}
+                {/*    <CommonButton*/}
+                {/*        size="mini"*/}
+                {/*        isActive={true}*/}
+                {/*        mode="text"*/}
+                {/*        color="gray"*/}
+                {/*        detail={{ label: "건너뛰기", position: "none" }}*/}
+                {/*        onClick={handlePass}*/}
+                {/*    />*/}
+                {/*)}*/}
 
                 <BasicModal
                     mode={"YesNo"}
