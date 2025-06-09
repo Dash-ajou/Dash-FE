@@ -1,65 +1,73 @@
-import { useEffect, useState } from "react";
-import { fetchPushNotifications, markPushAsRead, Notification } from '../../services/pushManageService'
-
+import { useEffect, useRef, useState } from "react";
+import { fetchPushNotifications, markPushAsRead, Notification } from "../../services/pushManageService";
 import PushButton from "../../components/common/button/PushButton";
 import Layout from "../../components/layout/Layout";
 
 const PartnerNotification = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [slidId, setSlidId] = useState<number | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const loadNotifications = async () => {
+    const load = async () => {
       const { success, data } = await fetchPushNotifications();
-      console.log("로드된 알림:", success);
-
-      if (success) {
-        setNotifications(data);
-      } else {
-        setNotifications([]);
-      }
+      if (success) setNotifications(data);
       setLoading(false);
     };
-
-    loadNotifications();
+    load();
   }, []);
 
+  // 외부 클릭 또는 터치 시 슬라이드 닫기
   useEffect(() => {
-    console.log(notifications);
-  }, [notifications]);
+    const handleOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+          wrapperRef.current &&
+          event.target instanceof Node &&
+          !wrapperRef.current.contains(event.target)
+      ) {
+        setSlidId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("touchstart", handleOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("touchstart", handleOutside);
+    };
+  }, []);
 
-  const onReadNotification = async (id: number) => {
+  const onRead = async (id: number) => {
     const success = await markPushAsRead(id);
     if (success) {
       setNotifications((prev) =>
-          prev.map((notif) =>
-            notif.notification_id === id ? {...notif, readed:true}: notif,
-          ),
-      )
+          prev.map((n) => (n.notification_id === id ? { ...n, readed: true } : n))
+      );
+      setSlidId(null); // 읽음 처리 후 닫기
     }
   };
 
-  if (loading) {
-    return <div className="text-center text-gray-500">🔄 로딩 중...</div>;
-  }
-
   return (
-    <Layout>
-      <div className="mb-9"></div>
-      <div className="flex flex-col px-3 gap-4">
-        {notifications.length > 0 ? (
-          notifications.map((notif) => (
-            <PushButton
-              key={notif.notification_id}
-              notification={notif}
-              onRead={onReadNotification}
-            />
-          ))
-        ) : (
-          <div className="text-center text-gray-500">알림이 없습니다.</div>
-        )}
-      </div>
-    </Layout>
+      <Layout>
+        <div className="mb-9" />
+        <div ref={wrapperRef} className="flex flex-col px-3 gap-4">
+          {loading ? (
+              <div className="text-center text-gray-500">🔄 로딩 중...</div>
+          ) : notifications.length > 0 ? (
+              notifications.map((notif) => (
+                  <PushButton
+                      key={notif.notification_id}
+                      notification={notif}
+                      onRead={onRead}
+                      slidId={slidId}
+                      setSlidId={setSlidId}
+                  />
+              ))
+          ) : (
+              <div className="text-center text-gray-500">알림이 없습니다.</div>
+          )}
+        </div>
+      </Layout>
   );
 };
 

@@ -6,7 +6,7 @@ export type CouponStatus =
   | "USED"
   | "EXPIRED"
   | "DISABLED"
-  | "CANCELLED";
+  | "CANCELED";
 
 export type CouponByIssueID = {
   coupon_id: number;
