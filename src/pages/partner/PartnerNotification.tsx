@@ -12,11 +12,15 @@ const PartnerNotification = () => {
   useEffect(() => {
     const load = async () => {
       const { success, data } = await fetchPushNotifications();
-      if (success) setNotifications(data);
+      if (success) {
+        const filtered = data.filter(n => n.tag !== "REQUEST_ISSUED"); // 이 라인 추가
+        setNotifications(filtered);
+      }
       setLoading(false);
     };
     load();
   }, []);
+
 
   useEffect(() => {
     const handleOutside = (event: MouseEvent | TouchEvent) => {

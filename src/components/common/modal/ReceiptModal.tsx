@@ -2,24 +2,7 @@ import React, { useState } from "react";
 import CommonButton from "../button/CommonButton";
 import BasicModal from "../modal/BasicModal";
 import { fetchPartnerCouponPaymentCancel } from '../../../services/partnerCouponPaymentCancel';
-
-export type ReceiptCouponData = {
-        coupon_id: number;
-        partner: {
-            business_name: string;
-            owner_phone: string;
-        };
-        product: {
-            product_name: string;
-        };
-        register: {
-            name: string;
-            phone: string;
-        };
-        registered_at: string;
-        payment_code: string;
-        payment_id: number;
-};
+import { ReceiptCouponData } from '../../../types/ReceiptCouponData';
 
 type ReceiptModalProps = {
     visible: boolean;
@@ -36,7 +19,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
 
     const handleCancelConfirm = async () => {
         try {
-            const res = await fetchPartnerCouponPaymentCancel(coupon.payment_id);
+            const res = await fetchPartnerCouponPaymentCancel(coupon.coupon_id);
             if (res.data.result) {
                 setResultModalTitle("쿠폰 사용이 철회되었습니다.");
             } else {
@@ -66,8 +49,16 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
                     </div>
 
                     <div className="flex flex-col justify-start items-start">
-                        <p className="text-xs text-black font-medium">(주소)</p>
-                        <p className="text-xs text-black font-medium mb-5">(대표명)</p>
+                        {coupon.partner.address && (
+                            <p className="text-xs text-black font-medium text-neutral-600">
+                                {coupon.partner.address}
+                            </p>
+                        )}
+                        {coupon.partner.owner_name && (
+                            <p className="text-xs text-black font-medium mb-5 text-neutral-600">
+                                {coupon.partner.owner_name}
+                            </p>
+                        )}
                         <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
                     </div>
 
@@ -80,7 +71,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
                             <p className="text-sm text-black font-semibold">사용 일시</p>
                         </div>
                         <div>
-                            <p className="text-sm text-black font-light">{coupon.partner.business_name}</p>
+                            <p className="text-sm text-black font-light">{coupon.vendor?.vendor_name ?? '-'}</p>
                             <p className="text-sm text-black font-light">{coupon.register.name}</p>
                             <p className="text-sm text-black font-light">{coupon.register.phone}</p>
                             <p className="text-sm text-black font-light">{coupon.product.product_name}</p>
@@ -98,7 +89,19 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
 
                     <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
 
-                    <div className="flex mt-6 mb-8 w-60 h-60 border bg-black" />
+                    <div className="flex flex-col items-center justify-center mb-8 gap-2">
+                        <div className="mt-6 w-60 h-60 border flex items-center justify-center bg-gray-100 rounded-md">
+                            {coupon.paid_qrimage ? (
+                                <img
+                                    src={coupon.paid_qrimage}
+                                    alt="QR 코드"
+                                    className="w-full h-full object-contain p-4"
+                                />
+                            ) : (
+                                <span className="text-sm text-gray-400">QR 이미지 없음</span>
+                            )}
+                        </div>
+                    </div>
 
                     <div className="flex justify-center">
                         <CommonButton

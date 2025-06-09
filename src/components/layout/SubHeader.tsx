@@ -19,6 +19,8 @@ const SubHeader = () => {
             navigate("/partner/request/list", { replace: true })
         } else if (path === "/partner/request/list") {
             navigate("/partner/main", { replace: true })
+        } else if (path === "/user/coupon/published" && state?.fromCancel) {
+            navigate("/user/main", { replace: true });
         } else {
             navigate(-1)
         }

@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom"
-import DetailBox from "../../components/common/DetailBox"
-import Layout from "../../components/layout/Layout"
-import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom";
+import DetailBox from "../../components/common/DetailBox";
+import Layout from "../../components/layout/Layout";
+import { useEffect, useState } from "react";
 import {
     fetchPartnerCouponValidation,
     PartnerCouponValidationResponse,
@@ -13,11 +13,12 @@ import {
     fetchCouponCancel,
 } from "../../services/partnerCoupStatusChangeService";
 import { fetchCouponDetailService } from "../../services/couponDetailService";
-import ReceiptModal, { ReceiptCouponData } from '../../components/common/modal/ReceiptModal'
+import ReceiptModal from '../../components/common/modal/ReceiptModal';
+import { ReceiptCouponData } from '../../types/ReceiptCouponData';
 
 const PartnerCoupValCheck = () => {
-    const { couponNum } = useParams<{ couponNum: string }>()
-    const navigate = useNavigate()
+    const { couponNum } = useParams<{ couponNum: string }>();
+    const navigate = useNavigate();
 
     const [couponData, setCouponData] = useState<PartnerCouponValidationResponse | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -29,22 +30,22 @@ const PartnerCoupValCheck = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (!couponNum) throw new Error("쿠폰 번호 누락")
-                const data = await fetchPartnerCouponValidation(couponNum)
+                if (!couponNum) throw new Error("쿠폰 번호 누락");
+                const data = await fetchPartnerCouponValidation(couponNum);
                 if (data.type === "REGISTER_CODE" && data.status === "REGISTERABLE") {
-                    setModalOpen(true)
-                    return
+                    setModalOpen(true);
+                    return;
                 }
-                setCouponData(data)
+                setCouponData(data);
             } catch (err) {
-                console.error("쿠폰 조회 실패:", err)
-                setModalOpen(true)
+                console.error("쿠폰 조회 실패:", err);
+                setModalOpen(true);
             }
-        }
-        fetchData()
-    }, [couponNum])
+        };
+        fetchData();
+    }, [couponNum]);
 
-    const handleConfirm = () => navigate(-1)
+    const handleConfirm = () => navigate(-1);
 
     const openReceiptModal = async () => {
         try {
@@ -59,7 +60,9 @@ const PartnerCoupValCheck = () => {
                 coupon_id: res.data.coupon_id,
                 partner: {
                     business_name: res.data.partner.business_name,
+                    owner_name: res.data.partner.owner_name,
                     owner_phone: res.data.partner.owner_phone,
+                    address: res.data.partner.address,
                 },
                 product: {
                     product_name: res.data.product.product_name,
@@ -71,6 +74,8 @@ const PartnerCoupValCheck = () => {
                 registered_at: res.data.registered_at,
                 payment_id: couponData.redeem.redeem_id,
                 payment_code: couponData.redeem.payment_code,
+                paid_qrimage: res.data.paid_qrimage,
+                vendor: res.data.vendor,
             };
 
             setReceiptData(formatted);
@@ -80,10 +85,6 @@ const PartnerCoupValCheck = () => {
             alert("상세 정보 조회 중 오류 발생");
         }
     };
-
-
-
-
     if (!couponData) {
         return (
             <Layout>
@@ -200,11 +201,11 @@ const PartnerCoupValCheck = () => {
                             }
 
                             if (confirmAction === "cancel") {
-                                if (!redeem?.payment_code || !redeem?.redeem_id) {
+                                if (!redeem?.payment_code) {
                                     throw new Error("필수 정보 누락");
                                 }
 
-                                await fetchCouponCancel(redeem.payment_code, redeem.redeem_id);
+                                await fetchCouponCancel(redeem.payment_code);
 
                                 setCouponData((prev) =>
                                     prev
