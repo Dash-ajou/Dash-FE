@@ -14,7 +14,6 @@ import CouponRequest from "./pages/vendor/CouponRequest.tsx"
 import CouponRequestConfirm from "./pages/vendor/CouponRequestConfirm.tsx"
 import CouponRequestList from "./pages/vendor/CouponRequestList.tsx"
 import CouponRequestDetail from "./pages/vendor/CouponRequestDetail.tsx"
-import UsedCoupon from "./pages/both/UsedCoupon.tsx"
 import PartnerMain from "./pages/partner/PartnerMain.tsx"
 import PartnerStat from "./pages/partner/PartnerStat.tsx"
 import PartnerOrgDetail from "./pages/partner/PartnerOrgDetail.tsx"
@@ -36,7 +35,9 @@ import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
-import UserCouponCancel from "./pages/user/UserCouponCancel.tsx"
+import CouponCancel from './pages/vendor/CouponCancel.tsx'
+import PartnerUsedCoupon from './pages/partner/PartnerUsedCoupon.tsx'
+import UserUsedCoupon from './pages/user/UserUsedCoupon.tsx'
 import { setIsMobile } from "./store/deviceSlice.ts"
 
 const App: React.FC = () => {
@@ -95,6 +96,20 @@ const App: React.FC = () => {
                 }
             />
 
+            <Route path="/user/main" element={<UserMain />} />
+            <Route path="/user/notification" element={<UserNotification />} />
+            <Route path="/user/mypage" element={<UserMypage />} />
+            <Route path="/user/mypage/usedcoupon" element={<UserUsedCoupon />} />
+            <Route path="/user/gift" element={<UserGift />} />
+            <Route path="/general/account" element={<UserAccountInfo />} />
+            <Route path="/user/coupon/register" element={<QRScanPage />} />
+            <Route path="/user/coupon/request" element={<CouponRequest />} />
+            <Route path="/user/coupon/request/confirm" element={<CouponRequestConfirm />} />
+            <Route path="/user/coupon/request/list" element={<CouponRequestList />} />
+            <Route path="/user/coupon/request/detail" element={<CouponRequestDetail />} />
+            <Route path="/user/coupon/published" element={<UserCouponPublished />} />
+            <Route path="/user/coupon/published/:issueId" element={<UserCouponPublishedDetail />} />
+            <Route path="/user/coupon/published/:issueId/cancel" element={<CouponCancel />} />
             <Route
                 path="/user/main"
                 element={
@@ -123,7 +138,7 @@ const App: React.FC = () => {
                 path="/user/mypage/usedcoupon"
                 element={
                     <ProtectedRoute>
-                        <UsedCoupon />
+                        <UserUsedCoupon />
                     </ProtectedRoute>
                 }
             />
@@ -208,6 +223,20 @@ const App: React.FC = () => {
                 }
             />
 
+            <Route path="/partner/coupon/scan" element={<QRScanPage />} />
+            <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
+            <Route path="/partner/main" element={<PartnerMain />} />
+            <Route path="/partner/mypage" element={<PartnerMypage />} />
+            <Route path="/partner/notification" element={<PartnerNotification />} />
+            <Route path="/partner/statistics" element={<PartnerStat />} />
+            <Route path="/partner/orgdetail/:vendorId" element={<PartnerOrgDetail />} />
+            <Route path="/partner/menudetail/:menuName" element={<PartnerMenuDetail />} />
+            <Route path="/partner/request/auth" element={<PartnerAuth />} />
+            <Route path="/partner/request/list" element={<CouponRequestList />} />
+            <Route path="/partner/request/detail" element={<RequestView />} />
+            <Route path="/partner/request/payment" element={<PaymentInfo />} />
+            <Route path="/partner/request/approve" element={<RequestApproveFin />} />
+            <Route path="/partner/usedcoupon" element={<PartnerUsedCoupon />} />
             <Route
                 path="/partner/coupon/scan"
                 element={
@@ -316,7 +345,7 @@ const App: React.FC = () => {
                 path="/partner/usedcoupon"
                 element={
                     <ProtectedRoute>
-                        <UsedCoupon />
+                        <PartnerUsedCoupon />
                     </ProtectedRoute>
                 }
             />

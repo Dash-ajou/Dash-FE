@@ -1,22 +1,34 @@
-import apiClient from './apiClient.ts'
+import apiClient from './apiClient';
 
 export type UsedCoupon = {
-    coupon_id: number;       // ← snake_case로 통일
+    coupon_id: number;
     coupon_name: string;
     partner_name: string;
     used_at: string;
     payment_code: string;
+    payment_id: number;
 };
 
-export type UsedCouponResponse = {
-    status: string;
-    message: string;
-    data: UsedCoupon[];
-};
+export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
+    const res = await apiClient.get<{
+        status: string;
+        message: string;
+        data: {
+            couponId: number;
+            couponName: string;
+            partnerName: string;
+            usedAt: string;
+            paymentCode: string;
+            paymentId: number;
+        }[];
+    }>("/general/coupons/used");
 
-export const fetchUsedCoupon = async (): Promise<UsedCouponResponse> => {
-    const res = await apiClient.get<UsedCouponResponse>(
-        "/general/coupons/used"
-    );
-    return res.data;
+    return res.data.data.map((item): UsedCoupon => ({
+        coupon_id: item.couponId,
+        coupon_name: item.couponName,
+        partner_name: item.partnerName,
+        used_at: item.usedAt,
+        payment_code: item.paymentCode,
+        payment_id: item.paymentId,
+    }));
 };
