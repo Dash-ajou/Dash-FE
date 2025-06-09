@@ -174,7 +174,6 @@ const UserCouponPublishedDetail = () => {
                                 type="coupstatuslist"
                                 coupnum={`#${coupon.coupon_id}`}
                                 coupstatus={statusToText(coupon.status)}
-                                name={"알 수 없음"}
                             />
                         ))}
                     </div>
