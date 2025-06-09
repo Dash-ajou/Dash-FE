@@ -2,13 +2,14 @@ import Layout from "../../components/layout/Layout.tsx";
 import InputField from "../../components/common/InputField.tsx";
 import CommonButton from "../../components/common/button/CommonButton.tsx";
 import BasicModal from "../../components/common/modal/BasicModal.tsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { fetchCancelCoupon } from "../../services/vendorCouponCancelRequestService.ts";
+import { fetchCouponCancel } from "../../services/partnerCoupStatusChangeService.ts";
 
 const CouponCancel = () => {
-  const { issueId } = useParams<{ issueId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const payment_code = location.state?.payment_code;
   const [verifyCode, setVerifyCode] = useState("");
   const [showNotice, setShowNotice] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,8 +17,11 @@ const CouponCancel = () => {
 
   const handleCancel = async () => {
     try {
-      await fetchCancelCoupon(Number(issueId), verifyCode);
-      setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다");
+      if (!payment_code) {
+        throw new Error("쿠폰 정보가 올바르지 않습니다.");
+      }
+      await fetchCouponCancel(payment_code);
+      setModalTitle("쿠폰 사용이 철회되었습니다");
     } catch (err) {
       console.error(err);
       setModalTitle("쿠폰 철회에 실패했습니다. 다시 시도해 주세요.");
@@ -38,6 +42,16 @@ const CouponCancel = () => {
     }
     handleCancel();
   };
+
+  if (!payment_code) {
+    return (
+      <Layout>
+        <div className="w-full mx-auto mt-16 flex flex-col gap-6 px-6 pb-40">
+          <div className="text-black font-bold text-xl">잘못된 접근입니다</div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <>
@@ -76,19 +90,13 @@ const CouponCancel = () => {
         onClose={() => {
           setIsModalOpen(false);
           if (modalTitle.includes("완료")) {
-            navigate("/user/coupon/published", {
-              state: { fromCancel: true },
-              replace: true,
-            });
+            navigate(-1);
           }
         }}
         onConfirm={() => {
           setIsModalOpen(false);
           if (modalTitle.includes("완료")) {
-            navigate("/user/coupon/published", {
-              state: { fromCancel: true },
-              replace: true,
-            });
+            navigate(-1);
           }
         }}
       />
