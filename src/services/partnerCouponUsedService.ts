@@ -21,7 +21,7 @@ export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
       paymentCode: string;
       paymentId: number;
     }[];
-  }>("/partner/coupons/used");
+  }>("/partner/coupon/list/used");
 
   return res.data.data.map(
     (item): UsedCoupon => ({
