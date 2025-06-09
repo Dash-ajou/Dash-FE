@@ -6,7 +6,7 @@ const SubHeader = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const state = location.state as { businessName?: string } | null
+    const state = location.state as { businessName?: string; fromCancel?: boolean } | null
     const { pathname } = location
 
     const handleBack = () => {
@@ -20,7 +20,7 @@ const SubHeader = () => {
         } else if (path === "/partner/request/list") {
             navigate("/partner/main", { replace: true })
         } else if (path === "/user/coupon/published" && state?.fromCancel) {
-            navigate("/user/main", { replace: true });
+            navigate("/user/main", { replace: true })
         } else {
             navigate(-1)
         }
