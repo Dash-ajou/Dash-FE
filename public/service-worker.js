@@ -3,6 +3,7 @@ const CACHE_NAME = `my-app-cache-${CACHE_VERSION}`
 
 self.addEventListener("install", (event) => {
     console.log("Service Worker installing...")
+    self.skipWaiting()
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll([
@@ -14,7 +15,6 @@ self.addEventListener("install", (event) => {
             ])
         })
     )
-    self.skipWaiting()
 })
 
 self.addEventListener("activate", (event) => {
