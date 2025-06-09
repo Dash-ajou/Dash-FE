@@ -4,7 +4,7 @@ import CommonButton from "../../common/button/CommonButton.tsx"
 import { useNavigate } from "react-router-dom"
 
 type JoinCompleteProps = {
-    bottomPosition: string
+    bottomPosition: number
 }
 
 const JoinComplete: React.FC<JoinCompleteProps> = ({ bottomPosition }) => {

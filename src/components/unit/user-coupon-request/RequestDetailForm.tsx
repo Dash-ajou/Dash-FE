@@ -10,7 +10,6 @@ type RequestDetailFormProps = {
     setRequestDetail: (info: RequestDetail) => void
     onPrev: () => void
     setShouldProceedNext: (data: boolean) => void
-    setPartnerPhone: (data: string) => void
 }
 
 type partnerType = {
@@ -29,7 +28,6 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
     setRequestDetail,
     onPrev,
     setShouldProceedNext,
-    setPartnerPhone,
 }) => {
     const [localRequestDetail, setLocalRequestDetail] = useState<RequestDetail>({
         ...requestDetail,
@@ -98,7 +96,6 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
             if (field === "storeName") {
                 setIsPartnerPhoneDisabled(false)
                 setLocalRequestDetail({ ...updatedInfo, partnerPhone: "" })
-                setPartnerPhone("")
             }
         }
     }
@@ -159,7 +156,6 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
             partnerPhone: item.phone,
         })
         setPartnerId(item.id)
-        setPartnerPhone(item.phone)
         setIsPartnerPhoneDisabled(true)
     }
 
