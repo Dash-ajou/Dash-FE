@@ -20,7 +20,7 @@ const PartnerUsedCoupon = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const coupons = await fetchUsedCoupon(); // now returns UsedCoupon[]
+                const coupons = await fetchUsedCoupon();
                 setPartnerUsedCoupons(coupons);
             } catch (error) {
                 console.error("파트너 사용 완료 쿠폰 조회 실패", error);
