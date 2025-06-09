@@ -7,7 +7,6 @@ import { fetchCouponDetailService, CouponDetailResponse } from "../../services/c
 import ReceiptModal from "../../components/common/modal/ReceiptModal";
 
 type ExtendedCouponDetail = CouponDetailResponse["data"] & {
-  payment_id: number;
   payment_code: string;
 };
 
@@ -34,7 +33,6 @@ const PartnerUsedCoupon = () => {
       const res = await fetchCouponDetailService(String(coupon.coupon_id));
       setSelectedCoupon({
         ...res.data,
-        payment_id: coupon.payment_id,
         payment_code: coupon.payment_code,
       });
       setModalVisible(true);
