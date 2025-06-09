@@ -30,7 +30,7 @@ const PartnerUsedCoupon = () => {
 
   const handlePartnerCouponClick = async (coupon: UsedCoupon) => {
     try {
-      const res = await fetchCouponDetailService(String(coupon.coupon_id));
+      const res = await fetchCouponDetailService(coupon.coupon_id);
       setSelectedCoupon({
         ...res.data,
         payment_code: coupon.payment_code,
