@@ -65,7 +65,7 @@ module.exports = {
                 modalExit: "modalExit 400ms cubic-bezier(0.25, 1, 0.5, 1) forwards",
                 bgFadeIn: "bgFadeIn 400ms ease-out forwards",
                 bgFadeOut: "bgFadeOut 400ms ease-out forwards",
-                shrink30: "shrink 30s linear forwards",
+                shrink60: "shrink 60s linear forwards",
             },
         },
     },

@@ -27,7 +27,7 @@ const QRModal: React.FC<QRModalProps> = ({
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false)
     const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
 
-    const [timeLeft, setTimeLeft] = useState<number>(30)
+    const [timeLeft, setTimeLeft] = useState<number>(60)
     const timerRef = useRef<number | null>(null)
 
     useEffect(() => {
@@ -91,7 +91,7 @@ const QRModal: React.FC<QRModalProps> = ({
                     <div className="w-full flex flex-col items-center gap-2">
                         <div className="text-black text-base font-semibold">{timeLeft}초 남음</div>
                         <div className="w-full bg-gray-300 rounded-full h-2 overflow-hidden mb-8">
-                            <div className="bg-blue-500 h-full animate-shrink30"></div>
+                            <div className="bg-blue-500 h-full animate-shrink60"></div>
                         </div>
                     </div>
                 </div>

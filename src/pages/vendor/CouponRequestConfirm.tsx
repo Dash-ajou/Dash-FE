@@ -56,8 +56,11 @@ const CouponRequestConfirm: React.FC = () => {
     }
 
     const handleConfirm = () => {
-        setShowResultModal(true)
-        navigate("/user/coupon/request/detail", { state: requestId })
+        setShowResultModal(false)
+        navigate("/user/coupon/request/list", { replace: true })
+        setTimeout(() => {
+            navigate("/user/coupon/request/detail", { state: requestId })
+        }, 0)
     }
 
     return (
@@ -118,7 +121,7 @@ const CouponRequestConfirm: React.FC = () => {
                 mode={"YesNo"}
                 isOpen={showResultModal}
                 title={"요청서 발행에 성공했습니다."}
-                onClose={() => navigate("/user/main")}
+                onClose={() => navigate("/user/coupon/request/list", { replace: true })}
                 onConfirm={handleConfirm}
             />
 

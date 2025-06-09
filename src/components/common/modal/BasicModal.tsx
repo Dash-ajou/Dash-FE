@@ -92,17 +92,16 @@ const BasicModal: React.FC<BasicModalProps> = ({
                         mode === "YesNo" ? "justify-between" : "justify-center"
                     }`}
                 >
-                    {mode === "YesNo" ||
-                        (mode === "Review" && (
-                            <CommonButton
-                                size="small"
-                                isActive={true}
-                                mode="fill"
-                                color="gray"
-                                detail={{ label: "돌아가기", position: "none" }}
-                                onClick={onClose}
-                            />
-                        ))}
+                    {mode !== "OnlyYes" && (
+                        <CommonButton
+                            size="small"
+                            isActive={true}
+                            mode="fill"
+                            color="gray"
+                            detail={{ label: "돌아가기", position: "none" }}
+                            onClick={onClose}
+                        />
+                    )}
                     <CommonButton
                         size="small"
                         isActive={true}
