@@ -1,12 +1,12 @@
-import Layout from "../../components/layout/Layout"
-import InputField from "../../components/common/InputField"
-import CommonButton from "../../components/common/button/CommonButton"
-import BasicModal from "../../components/common/modal/BasicModal"
+import Layout from "../../components/layout/Layout.tsx"
+import InputField from "../../components/common/InputField.tsx"
+import CommonButton from "../../components/common/button/CommonButton.tsx"
+import BasicModal from "../../components/common/modal/BasicModal.tsx"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import apiClient from "../../services/apiClient"
+import { fetchcancelCouponRequest } from '../../services/vendorCouponCancelRequestService.ts'
 
-const UserCouponCancel = () => {
+const CouponCancel = () => {
     const { issueId } = useParams<{ issueId: string }>()
     const navigate = useNavigate()
     const [verifyCode, setVerifyCode] = useState("")
@@ -16,31 +16,18 @@ const UserCouponCancel = () => {
 
     const handleCancel = async () => {
         try {
-            const res = await apiClient.post(
-                `/coupon/manage/${issueId}/cancel`,
-                {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }
-            );
-
-            if (res.data.status === "SUCCEED") {
-                setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다")
-            } else {
-                setModalTitle("쿠폰 철회에 실패했습니다. 다시 시도해 주세요.")
-            }
+            await fetchcancelCouponRequest(Number(issueId))
+            setModalTitle("쿠폰발급 철회 및 쿠폰말소가 완료되었습니다")
         } catch (err) {
             console.error(err)
-            setModalTitle("서버 오류가 발생했습니다.")
+            setModalTitle("쿠폰 철회에 실패했습니다. 다시 시도해 주세요.")
         } finally {
             setIsModalOpen(true)
         }
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        setVerifyCode(value)
+        setVerifyCode(e.target.value)
         setShowNotice(false)
     }
 
@@ -107,4 +94,4 @@ const UserCouponCancel = () => {
     )
 }
 
-export default UserCouponCancel
+export default CouponCancel
