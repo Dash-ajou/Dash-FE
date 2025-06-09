@@ -18,24 +18,50 @@
 }
 
 html {
-  display: flex;
-  justify-content: center;
   background-color: rgb(245, 245, 245);
   height: 100vh;
   overflow: hidden;
 }
 
-html {
-  display: flex;
-  justify-content: center;
+body{
+  width: 100%;
+  user-select: none;
+  background-color: rgb(245, 245, 245);
 }
 
-body {
-  user-select: none;
-  font-size: 1.6rem;
-  width: 100%;
+@media (max-width: 1000px) {
+  #description {
+    display: none !important;
+  }
+  #app_body {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1000px) {
+  #app_body {
+    max-width: 450px;
+    min-width: 350px;
+    width: 390px;
+    max-height: calc(100dvh - 112px);
+    margin-top: 56px;
+    margin-bottom: 56px;
+    border-radius: 28px;
+    box-shadow: 0 4px 32px #e6e6e6;
+    overflow-y: auto;
+  }
+}
+
+#description {
+  min-width: 350px;
+  max-width: 450px;
+  margin-right: 40px;
+}
+
+#app_body {
   max-width: 450px;
   min-width: 350px;
+  width: 450px;
   background-color: white;
   position: relative;
 
