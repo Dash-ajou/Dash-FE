@@ -58,7 +58,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
                 onClick={onClose}
             >
                 <div
-                    className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[50px] pt-[73px] pb-3"
+                    className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[25px] pt-[73px] pb-3"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex justify-center mb-5">
