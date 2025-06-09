@@ -45,7 +45,6 @@ const UserUsedCoupon = () => {
           phone: res.data.register.phone,
         },
         registered_at: res.data.registered_at,
-        payment_id: coupon.payment_id,
         payment_code: coupon.payment_code,
         paid_qrimage: res.data.paid_qrimage,
         vendor: res.data.vendor,
