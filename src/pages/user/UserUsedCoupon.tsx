@@ -1,20 +1,11 @@
-import Layout from "../../components/layout/Layout.tsx";
+import Layout from "../../components/layout/Layout";
 import { useEffect, useState } from 'react';
-import Icon from "../../components/common/icons/Icon.tsx";
-import ListBlock from "../../components/common/ListBlock.tsx";
-import { fetchUsedCoupon, UsedCoupon } from '../../services/couponUsedService.ts'
-import { fetchCouponDetailService } from '../../services/couponDetailService.ts';
-import ReceiptModal from '../../components/common/modal/ReceiptModal.tsx';
-
-export type ReceiptCouponData = {
-    coupon_id: number;
-    partner: { business_name: string; owner_phone: string };
-    product: { product_name: string };
-    register: { name: string; phone: string };
-    registered_at: string;
-    payment_code: string;
-    payment_id: number;
-};
+import Icon from "../../components/common/icons/Icon";
+import ListBlock from "../../components/common/ListBlock";
+import { fetchUsedCoupon, UsedCoupon } from '../../services/couponUsedService';
+import { fetchCouponDetailService } from '../../services/couponDetailService';
+import ReceiptModal from '../../components/common/modal/ReceiptModal';
+import { ReceiptCouponData } from '../../types/ReceiptCouponData';
 
 const UserUsedCoupon = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -42,7 +33,9 @@ const UserUsedCoupon = () => {
                 coupon_id: res.data.coupon_id,
                 partner: {
                     business_name: res.data.partner.business_name,
+                    owner_name: res.data.partner.owner_name,
                     owner_phone: res.data.partner.owner_phone,
+                    address: res.data.partner.address,
                 },
                 product: {
                     product_name: res.data.product.product_name,
@@ -54,6 +47,8 @@ const UserUsedCoupon = () => {
                 registered_at: res.data.registered_at,
                 payment_id: coupon.payment_id,
                 payment_code: coupon.payment_code,
+                paid_qrimage: res.data.paid_qrimage,
+                vendor: res.data.vendor,
             };
 
             setSelectedCoupon(formatted);
@@ -62,7 +57,6 @@ const UserUsedCoupon = () => {
             console.error("쿠폰 상세 조회 실패", err);
         }
     };
-
 
     const filteredCoupons = userUsedCoupons.filter((coupon) =>
         coupon.coupon_name.toLowerCase().includes(searchTerm.toLowerCase())
