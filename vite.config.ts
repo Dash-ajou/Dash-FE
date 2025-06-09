@@ -11,7 +11,7 @@ export default defineConfig({
                 cleanupOutdatedCaches: true, // 새로운 워커 등록 시 이전 캐시 삭제
                 skipWaiting: true, // 새 워커 바로 적용
                 clientsClaim: true, // 모든 탭에 적용
-                cacheId: "dash-cache-v1.0.1",
+                cacheId: "dash-cache-v1.0.3",
             },
             includeAssets: ["logo.svg", "apple-touch-icon.png"],
             manifest: {

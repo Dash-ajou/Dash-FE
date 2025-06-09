@@ -27,21 +27,6 @@ const CouponCancel = () => {
       setModalTitle("쿠폰 철회에 실패했습니다. 다시 시도해 주세요.");
     } finally {
       setIsModalOpen(true);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVerifyCode(e.target.value);
-    setShowNotice(false);
-  };
-
-  const handleConfirm = () => {
-    if (verifyCode.length !== 6) {
-      setShowNotice(true);
-      return;
-    }
-    handleCancel();
-  };
 
   if (!payment_code) {
     return (
@@ -69,20 +54,6 @@ const CouponCancel = () => {
           />
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 w-full py-4 bg-white shadow-[0px_-2px_4px_0px_rgba(0,0,0,0.10)] z-50">
-          <div className="flex px-9">
-            <CommonButton
-              size="large"
-              isActive={verifyCode.length === 6}
-              mode="fill"
-              color="blue"
-              detail={{ label: "계속하기", position: "none" }}
-              onClick={handleConfirm}
-            />
-          </div>
-        </div>
-      </Layout>
-
       <BasicModal
         mode="OnlyYes"
         isOpen={isModalOpen}
@@ -104,4 +75,4 @@ const CouponCancel = () => {
   );
 };
 
-export default CouponCancel;
+export default CouponCancel
