@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import CommonButton from "../button/CommonButton";
+import BasicModal from "../modal/BasicModal";
+import { fetchPartnerCouponPaymentCancel } from '../../../services/partnerCouponPaymentCancel';
 
-type ReceiptModalProps = {
-    visible: boolean;
-    onClose: () => void;
-    coupon: {
+export type ReceiptCouponData = {
+        coupon_id: number;
         partner: {
             business_name: string;
             owner_phone: string;
-            owner_name: string;
-            address: string;
         };
         product: {
             product_name: string;
@@ -18,59 +17,127 @@ type ReceiptModalProps = {
             phone: string;
         };
         registered_at: string;
-    } | null;
+        payment_code: string;
+        payment_id: number;
+};
+
+type ReceiptModalProps = {
+    visible: boolean;
+    onClose: () => void;
+    coupon: ReceiptCouponData | null;
 };
 
 const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon }) => {
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [resultModalOpen, setResultModalOpen] = useState(false);
+    const [resultModalTitle, setResultModalTitle] = useState("");
+
     if (!visible || !coupon) return null;
 
+    const handleCancelConfirm = async () => {
+        try {
+            const res = await fetchPartnerCouponPaymentCancel(coupon.payment_id);
+            if (res.data.result) {
+                setResultModalTitle("쿠폰 사용이 철회되었습니다.");
+            } else {
+                setResultModalTitle("쿠폰 철회에 실패했습니다.");
+            }
+        } catch (error) {
+            console.log(error);
+            setResultModalTitle("서버 오류가 발생했습니다.");
+        } finally {
+            setConfirmModalOpen(false);
+            setResultModalOpen(true);
+        }
+    };
+
     return (
-        <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            onClick={onClose}
-        >
+        <>
             <div
-                className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[30px] pt-[73px] pb-3"
-                onClick={(e) => e.stopPropagation()}
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                onClick={onClose}
             >
-                <div className="flex justify-center mb-5">
-                    <p className="text-2xl text-black font-bold">{coupon.partner.business_name}</p>
-                </div>
+                <div
+                    className="bg-white rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.5)] justify-center items-center px-[25px] pt-[73px] pb-3"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="flex justify-center mb-5">
+                        <p className="text-2xl text-black font-bold">{coupon.partner.business_name}</p>
+                    </div>
 
-                <div className="flex flex-col justify-start items-start">
-                    <p className="text-xs text-black font-medium">{coupon.partner.address}</p>
-                    <p className="text-xs text-black font-medium mb-5">{coupon.partner.owner_name}</p>
+                    <div className="flex flex-col justify-start items-start">
+                        <p className="text-xs text-black font-medium">(주소)</p>
+                        <p className="text-xs text-black font-medium mb-5">(대표명)</p>
+                        <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
+                    </div>
+
+                    <div className="flex gap-[72px] py-5">
+                        <div>
+                            <p className="text-sm text-black font-semibold">발행 단체명</p>
+                            <p className="text-sm text-black font-semibold">대표자명</p>
+                            <p className="text-sm text-black font-semibold">대표자 연락처</p>
+                            <p className="text-sm text-black font-semibold">요청 상세</p>
+                            <p className="text-sm text-black font-semibold">사용 일시</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-black font-light">{coupon.partner.business_name}</p>
+                            <p className="text-sm text-black font-light">{coupon.register.name}</p>
+                            <p className="text-sm text-black font-light">{coupon.register.phone}</p>
+                            <p className="text-sm text-black font-light">{coupon.product.product_name}</p>
+                            <p className="text-sm text-black font-light">
+                                {new Date(coupon.registered_at).toLocaleString("ko-KR", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                })}
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
-                </div>
 
-                <div className="flex gap-[72px] py-5">
-                    <div>
-                        <p className="text-sm text-black font-semibold">발행 단체명</p>
-                        <p className="text-sm text-black font-semibold">대표자명</p>
-                        <p className="text-sm text-black font-semibold">대표자 연락처</p>
-                        <p className="text-sm text-black font-semibold">요청 상세</p>
-                        <p className="text-sm text-black font-semibold">사용 일시</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-black font-light">{coupon.partner.business_name}</p>
-                        <p className="text-sm text-black font-light">{coupon.register.name}</p>
-                        <p className="text-sm text-black font-light">{coupon.register.phone}</p>
-                        <p className="text-sm text-black font-light">{coupon.product.product_name}</p>
-                        <p className="text-sm text-black font-light">
-                            {new Date(coupon.registered_at).toLocaleString("ko-KR", {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                                hour: "2-digit",
-                                minute: "2-digit"
-                            })}
-                        </p>
+                    <div className="flex mt-6 mb-8 w-60 h-60 border bg-black" />
+
+                    <div className="flex justify-center">
+                        <CommonButton
+                            size="mini"
+                            mode="text"
+                            color="red"
+                            isActive={true}
+                            detail={{
+                                label: "쿠폰 사용 철회",
+                                position: "none"
+                            }}
+                            onClick={() => setConfirmModalOpen(true)}
+                        />
                     </div>
                 </div>
-                <div className="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-gray-300"></div>
-                <div className="w-full justify-center items-center mt-6 mb-8 h-60 bg-gray-300" />
             </div>
-        </div>
+
+            <BasicModal
+                mode="OnlyYes"
+                isOpen={confirmModalOpen}
+                title="쿠폰 사용을 철회하시겠습니까?"
+                onConfirm={handleCancelConfirm}
+                onClose={() => setConfirmModalOpen(false)}
+            />
+
+            <BasicModal
+                mode="OnlyYes"
+                isOpen={resultModalOpen}
+                title={resultModalTitle}
+                onConfirm={() => {
+                    setResultModalOpen(false);
+                    onClose();
+                }}
+                onClose={() => {
+                    setResultModalOpen(false);
+                    onClose();
+                }}
+            />
+        </>
     );
 };
 

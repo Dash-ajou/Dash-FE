@@ -28,6 +28,26 @@ const Join: React.FC = () => {
     const [role, setRole] = useState<(typeof Role)[keyof typeof Role] | null>(null)
     const [email, setEmail] = useState<string>("")
 
+    const [bottomPosition, setBottomPosition] = useState(336)
+
+    useEffect(() => {
+        const updateBottom = () => {
+            const windowHeight = window.innerHeight
+
+            if (windowHeight >= 800) {
+                setBottomPosition(336)
+            } else {
+                const decrease = 800 - windowHeight
+                const newBottom = 336 - decrease
+                setBottomPosition(Math.max(newBottom, 100))
+            }
+        }
+
+        updateBottom()
+        window.addEventListener("resize", updateBottom)
+        return () => window.removeEventListener("resize", updateBottom)
+    }, [])
+
     useEffect(() => {
         if (!searchParams.get("step")) {
             setSearchParams({ step: JoinStep.ROLE_SELECT })
@@ -85,7 +105,10 @@ const Join: React.FC = () => {
             )}
 
             {currentStep === JoinStep.PARTNER_INFO && (
-                <PartnerDetail onNext={() => setSearchParams({ step: JoinStep.PARTNER_FORM })} />
+                <PartnerDetail
+                    onNext={() => setSearchParams({ step: JoinStep.PARTNER_FORM })}
+                    bottomPosition={bottomPosition}
+                />
             )}
 
             {currentStep === JoinStep.PARTNER_FORM && (
@@ -93,6 +116,7 @@ const Join: React.FC = () => {
                     partnerInfo={partnerInfo}
                     setPartnerInfo={setPartnerInfo}
                     onNext={() => setSearchParams({ step: JoinStep.PHONE_AUTH })}
+                    bottomPosition={bottomPosition}
                 />
             )}
 
@@ -103,6 +127,7 @@ const Join: React.FC = () => {
                     isVerified={isVerified}
                     setIsVerified={setIsVerified}
                     onNext={() => setSearchParams({ step: JoinStep.NAME })}
+                    bottomPosition={bottomPosition}
                 />
             )}
 
@@ -111,6 +136,7 @@ const Join: React.FC = () => {
                     userName={userName}
                     setUserName={setUserName}
                     onNext={() => setSearchParams({ step: JoinStep.OAUTH_CONNECT })}
+                    bottomPosition={bottomPosition}
                 />
             )}
 
@@ -118,6 +144,7 @@ const Join: React.FC = () => {
                 <OAuthConnect
                     onNext={() => setSearchParams({ step: JoinStep.PASSWORD_INPUT })}
                     onEmailReceived={(receivedEmail: string) => setEmail(receivedEmail)}
+                    bottomPosition={bottomPosition}
                 />
             )}
 
@@ -126,6 +153,7 @@ const Join: React.FC = () => {
                     onNext={(pw: string, confirmPw: string) => {
                         handleJoin(pw, confirmPw)
                     }}
+                    bottomPosition={bottomPosition}
                 />
             )}
 

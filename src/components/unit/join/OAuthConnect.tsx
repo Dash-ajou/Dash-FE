@@ -7,9 +7,10 @@ import { googleOAuth } from "../../../services/authService.ts"
 type OAuthConnectProps = {
     onNext: () => void
     onEmailReceived?: (email: string) => void
+    bottomPosition: number
 }
 
-const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived }) => {
+const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived, bottomPosition }) => {
     const [isAlertModalOpen, setIsAlertModalOpen] = useState<boolean>(false)
     const path = window.location.pathname
 
@@ -55,7 +56,10 @@ const OAuthConnect: React.FC<OAuthConnectProps> = ({ onNext, onEmailReceived }) 
                 </div>
             )}
 
-            <div className="absolute bottom-[325px] left-0 right-0 px-6 w-full flex flex-col">
+            <div
+                className="absolute w-full px-6 left-0 right-0 flex flex-col"
+                style={{ bottom: `${bottomPosition - 11}px` }}
+            >
                 <button
                     className="gsi-material-button"
                     style={{ width: 400 }}

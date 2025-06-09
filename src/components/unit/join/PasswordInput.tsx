@@ -5,9 +5,10 @@ import Icon from "../../common/icons/Icon.tsx"
 
 type PasswordInputProps = {
     onNext: (pw: string, verify_pw: string) => void
+    bottomPosition: number
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ onNext }) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({ onNext, bottomPosition }) => {
     const [localPassword, setLocalPassword] = useState<string>("")
     const [verifyPassword, setVerifyPassword] = useState<string>("")
     const [showPassword, setShowPassword] = useState({ first: false, second: false })
@@ -106,7 +107,10 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ onNext }) => {
             </div>
 
             {isPasswordValid && (
-                <div className="absolute bottom-[336px] px-6 left-0 right-0 w-full flex">
+                <div
+                    className="absolute w-full px-6 left-0 right-0 flex"
+                    style={{ bottom: `${bottomPosition}px` }}
+                >
                     <CommonButton
                         size="large"
                         isActive={true}

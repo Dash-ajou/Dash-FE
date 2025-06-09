@@ -15,7 +15,7 @@ import SlideUpModal from "../../components/common/modal/SlideUpModal"
 import BasicModal from "../../components/common/modal/BasicModal"
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService"
 import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService"
-import { cancelCouponRequest } from "../../services/VendorCouponCancleRequestService.ts"
+import { fetchcancelCouponRequest } from "../../services/vendorCouponCancelRequestService.ts"
 import { ExportCSV, ExportImage } from "../../services/vendorCouponFileManage.ts"
 
 const UserCouponPublishedDetail = () => {
@@ -33,6 +33,7 @@ const UserCouponPublishedDetail = () => {
         mode: "YesNo",
         title: "미등록 쿠폰을 철회할까요?",
     })
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     useEffect(() => {
         let isMounted = true
@@ -79,7 +80,7 @@ const UserCouponPublishedDetail = () => {
         })
     }, [couponList, selectedFilter])
 
-    const statusToText = (status: string): "Issued" | "Registered" | "Used" | undefined => {
+    const statusToText = (status: string): "Issued" | "Registered" | "Used" | "Canceled" | undefined => {
         switch (status) {
             case "REGISTERABLE":
                 return "Issued"
@@ -88,6 +89,8 @@ const UserCouponPublishedDetail = () => {
             case "USED":
             case "EXPIRED":
                 return "Used"
+            case "CANCELED":
+                return "Canceled"
             default:
                 return undefined
         }
@@ -96,22 +99,49 @@ const UserCouponPublishedDetail = () => {
     const handleCSV = async () => {
         if (!issueId) return
         const result = await ExportCSV(issueId)
+
         if (result.success && result.data) {
             window.location.href = result.data
         } else {
-            alert("CSV 다운로드에 실패했습니다. 다시 시도해 주세요.")
+            if (result.data?.response?.data?.status === "ACCEPTED") {
+                setBasicModalConfig({
+                    mode: "OnlyYes",
+                    title: result.data.response.data.message || "CSV 파일이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.",
+                })
+                setIsBasicModalOpen(true)
+            } else {
+                setBasicModalConfig({
+                    mode: "OnlyYes",
+                    title: "CSV 다운로드에 실패했습니다. 다시 시도해 주세요.",
+                })
+                setIsBasicModalOpen(true)
+            }
         }
     }
 
     const handleImage = async () => {
         if (!issueId) return
         const result = await ExportImage(issueId)
+
         if (result.success && result.data) {
             window.location.href = result.data
         } else {
-            alert("양식 다운로드에 실패했습니다. 다시 시도해 주세요.")
+            if (result.data?.response?.data?.status === "ACCEPTED") {
+                setBasicModalConfig({
+                    mode: "OnlyYes",
+                    title: result.data.response.data.message || "이미지가 아직 처리 중입니다. 잠시 후 다시 시도해 주세요.",
+                })
+                setIsBasicModalOpen(true)
+            } else {
+                setBasicModalConfig({
+                    mode: "OnlyYes",
+                    title: "쿠폰 양식 다운로드에 실패했습니다. 다시 시도해 주세요.",
+                })
+                setIsBasicModalOpen(true)
+            }
         }
     }
+
 
     return (
         <>
@@ -188,10 +218,12 @@ const UserCouponPublishedDetail = () => {
                 title={basicModalConfig.title}
                 onClose={() => setIsBasicModalOpen(false)}
                 onConfirm={async () => {
-                    if (basicModalConfig.mode === "YesNo") {
-                        try {
-                            const response = await cancelCouponRequest(numericIssueId)
+                    if (isSubmitting) return
 
+                    if (basicModalConfig.mode === "YesNo") {
+                        setIsSubmitting(true)
+                        try {
+                            const response = await fetchcancelCouponRequest(numericIssueId)
                             if (response.status === "SUCCESS") {
                                 navigate(`/user/coupon/published/${numericIssueId}/cancel`)
                             } else {
@@ -203,6 +235,8 @@ const UserCouponPublishedDetail = () => {
                                 mode: "OnlyYes",
                                 title: "쿠폰 철회 요청에 실패했습니다. 다시 시도해 주세요.",
                             })
+                        } finally {
+                            setIsSubmitting(false)
                         }
                     } else {
                         setIsBasicModalOpen(false)
