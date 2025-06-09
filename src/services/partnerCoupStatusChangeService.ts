@@ -34,12 +34,10 @@ export const fetchCouponUse = async (payment_code: string): Promise<UseCouponRes
 }
 
 export const fetchCouponCancel = async (
-    coupon_id: number,
-    redeem_id: number
+    payment_code: string,
 ): Promise<CancelCouponResponse> => {
     const response = await apiClient.post("/coupon/payment/cancel", {
-        coupon_id,
-        redeem_id,
+        payment_code,
     })
 
     if (response.data.status !== "SUCCESS") {

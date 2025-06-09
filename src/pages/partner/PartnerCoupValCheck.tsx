@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DetailBox from "../../components/common/DetailBox";
 import Layout from "../../components/layout/Layout";
 import { useEffect, useState } from "react";
@@ -18,8 +18,10 @@ import { ReceiptCouponData } from '../../types/ReceiptCouponData';
 
 const PartnerCoupValCheck = () => {
     const { couponNum } = useParams<{ couponNum: string }>();
+    const navigate = useNavigate();
 
     const [couponData, setCouponData] = useState<PartnerCouponValidationResponse | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [confirmAction, setConfirmAction] = useState<"use" | "cancel" | null>(null);
     const [receiptModalOpen, setReceiptModalOpen] = useState(false);
@@ -30,13 +32,20 @@ const PartnerCoupValCheck = () => {
             try {
                 if (!couponNum) throw new Error("쿠폰 번호 누락");
                 const data = await fetchPartnerCouponValidation(couponNum);
+                if (data.type === "REGISTER_CODE" && data.status === "REGISTERABLE") {
+                    setModalOpen(true);
+                    return;
+                }
                 setCouponData(data);
             } catch (err) {
                 console.error("쿠폰 조회 실패:", err);
+                setModalOpen(true);
             }
         };
         fetchData();
     }, [couponNum]);
+
+    const handleConfirm = () => navigate(-1);
 
     const openReceiptModal = async () => {
         try {
@@ -76,33 +85,48 @@ const PartnerCoupValCheck = () => {
             alert("상세 정보 조회 중 오류 발생");
         }
     };
+    if (!couponData) {
+        return (
+            <Layout>
+                <BasicModal
+                    mode="OnlyYes"
+                    isOpen={modalOpen}
+                    title="등록되지 않은 쿠폰입니다."
+                    onConfirm={handleConfirm}
+                />
+            </Layout>
+        )
+    }
+
+    const { vendor, product, status, redeem } = couponData
+    const isUsed = status === "USED"
 
     return (
         <Layout>
             <div className="flex flex-col mt-[56px]">
-                {couponData && (
-                    <DetailBox
-                        mode="coupinfo"
-                        title="쿠폰 정보"
-                        statusType={couponData.status === "USED" ? "used" : "unused"}
-                        statusColor={couponData.status === "USED" ? "green" : "red"}
-                        leftstring={couponData.status === "USED" ? ["소속 단체명", "요청 상세", "사용 일시"] : ["소속 단체명", "요청 상세"]}
-                        rightstring={couponData.status === "USED"
+                <DetailBox
+                    mode="coupinfo"
+                    title="쿠폰 정보"
+                    statusType={isUsed ? "used" : "unused"}
+                    statusColor={isUsed ? "green" : "red"}
+                    leftstring={
+                        isUsed
+                            ? ["소속 단체명", "요청 상세", "사용 일시"]
+                            : ["소속 단체명", "요청 상세"]
+                    }
+                    rightstring={
+                        isUsed
                             ? [
-                                couponData.vendor?.vendor_name || "-",
-                                couponData.product.product_name || "-",
-                                couponData.redeem?.used_at || "-"
-                            ]
-                            : [
-                                couponData.vendor?.vendor_name || "-",
-                                couponData.product.product_name || "-"
-                            ]
-                        }
-                    />
-                )}
+                                  vendor.vendor_name ?? "-",
+                                  product.product_name,
+                                  redeem?.used_at ?? "-",
+                              ]
+                            : [vendor.vendor_name ?? "-", product.product_name]
+                    }
+                />
 
                 <div className="w-full flex flex-col gap-4 mt-[106px]">
-                    {couponData?.status === "USED" ? (
+                    {isUsed ? (
                         <>
                             <CommonButton
                                 size="large"
@@ -132,52 +156,75 @@ const PartnerCoupValCheck = () => {
                             color="blue"
                             detail={{ label: "쿠폰 사용 처리", position: "none" }}
                             onClick={() => {
-                                setConfirmAction("use");
-                                setConfirmModalOpen(true);
+                                setConfirmAction("use")
+                                setConfirmModalOpen(true)
                             }}
                         />
                     )}
                 </div>
 
                 <BasicModal
+                    mode="OnlyYes"
+                    isOpen={modalOpen}
+                    title="등록되지 않은 쿠폰입니다."
+                    onConfirm={handleConfirm}
+                />
+
+                <BasicModal
                     mode="YesNo"
                     isOpen={confirmModalOpen}
-                    title={confirmAction === "cancel" ? "쿠폰 사용을 철회할까요?" : "쿠폰을 사용 처리할까요?"}
+                    title={
+                        confirmAction === "cancel"
+                            ? "쿠폰 사용을 철회할까요?"
+                            : "쿠폰을 사용 처리할까요?"
+                    }
                     onConfirm={async () => {
                         try {
-                            if (!couponNum || !couponData) throw new Error("정보 누락");
+                            if (!couponNum) throw new Error("쿠폰 번호 누락")
 
                             if (confirmAction === "use") {
                                 const res = await fetchCouponUse(couponNum);
-                                setCouponData(prev => prev ? {
-                                    ...prev,
-                                    status: "USED",
-                                    redeem: {
-                                        redeem_id: res.id,
-                                        used_at: res.used_at,
-                                        payment_code: couponNum
-                                    }
-                                } : prev);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                            ...prev,
+                                            status: "USED",
+                                            redeem: {
+                                                redeem_id: res.id,
+                                                used_at: res.used_at,
+                                                payment_code: couponNum,
+                                            },
+                                        }
+                                        : prev
+                                );
                             }
 
                             if (confirmAction === "cancel") {
-                                if (!couponData.redeem?.redeem_id) {
+                                if (!redeem?.payment_code) {
                                     throw new Error("필수 정보 누락");
                                 }
-                                await fetchCouponCancel(couponData.coupon_id, couponData.redeem.redeem_id);
-                                setCouponData(prev => prev ? {
-                                    ...prev,
-                                    status: "USABLE",
-                                    redeem: undefined
-                                } : prev);
+
+                                await fetchCouponCancel(redeem.payment_code);
+
+                                setCouponData((prev) =>
+                                    prev
+                                        ? {
+                                            ...prev,
+                                            status: "USABLE",
+                                            redeem: undefined,
+                                        }
+                                        : prev
+                                )
                             }
                         } catch (e) {
-                            console.error("쿠폰 처리 실패:", e);
-                            alert("처리 중 오류가 발생했습니다.");
+                            console.error("쿠폰 처리 실패:", e)
+                            alert("처리 중 오류가 발생했습니다.")
                         } finally {
-                            setConfirmModalOpen(false);
+                            setConfirmModalOpen(false)
                         }
                     }}
+
                     onClose={() => setConfirmModalOpen(false)}
                 />
 
@@ -188,7 +235,7 @@ const PartnerCoupValCheck = () => {
                 />
             </div>
         </Layout>
-    );
-};
+    )
+}
 
-export default PartnerCoupValCheck;
+export default PartnerCoupValCheck
