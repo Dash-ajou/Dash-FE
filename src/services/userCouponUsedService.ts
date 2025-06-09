@@ -6,7 +6,6 @@ export type UsedCoupon = {
   partner_name: string;
   used_at: string;
   payment_code: string;
-  payment_id: number;
 };
 
 export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
@@ -19,9 +18,8 @@ export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
       partnerName: string;
       usedAt: string;
       paymentCode: string;
-      paymentId: number;
     }[];
-  }>("/user/coupons/used");
+  }>("/general/coupons/list/used");
 
   return res.data.data.map(
     (item): UsedCoupon => ({
@@ -30,7 +28,6 @@ export const fetchUsedCoupon = async (): Promise<UsedCoupon[]> => {
       partner_name: item.partnerName,
       used_at: item.usedAt,
       payment_code: item.paymentCode,
-      payment_id: item.paymentId,
     }),
   );
 };
