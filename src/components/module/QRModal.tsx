@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import CommonButton from "../common/button/CommonButton"
 import BasicModal from "../common/modal/BasicModal.tsx"
 import { DeleteCoupon } from "../../services/userCoupManageService.ts"
@@ -26,6 +26,25 @@ const QRModal: React.FC<QRModalProps> = ({
     const navigate = useNavigate()
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false)
     const [isDevNoticeModalOpen, setIsDevNoticeModalOpen] = useState<boolean>(false)
+
+    const [timeLeft, setTimeLeft] = useState<number>(30)
+    const timerRef = useRef<number | null>(null)
+
+    useEffect(() => {
+        timerRef.current = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timerRef.current!)
+                    return 0
+                }
+                return prev - 1
+            })
+        }, 1000)
+
+        return () => {
+            clearInterval(timerRef.current!)
+        }
+    }, [])
 
     const handleDelete = async () => {
         try {
@@ -65,9 +84,16 @@ const QRModal: React.FC<QRModalProps> = ({
                             <div className="text-gray-500">QR 이미지 없음</div>
                         )}
                     </div>
-                    <p className="text-black text-sm font-normal tracking-widest text-center mb-8">
+                    <p className="text-black text-sm font-normal tracking-widest text-center ">
                         {coupnum}
                     </p>
+
+                    <div className="w-full flex flex-col items-center gap-2">
+                        <div className="text-black text-base font-semibold">{timeLeft}초 남음</div>
+                        <div className="w-full bg-gray-300 rounded-full h-2 overflow-hidden mb-8">
+                            <div className="bg-blue-500 h-full animate-shrink30"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="w-full flex flex-col gap-4 items-start">

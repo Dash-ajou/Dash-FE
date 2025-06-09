@@ -210,6 +210,19 @@ body {
     opacity: 8%;
   }
 
+  @keyframes progress-shrink {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+
+  .animate-progress-shrink {
+    animation: progress-shrink 30s linear forwards;
+  }
+
 }
 
 h1 {

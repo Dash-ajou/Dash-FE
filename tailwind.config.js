@@ -55,12 +55,17 @@ module.exports = {
                     "0%": { opacity: "0.5" },
                     "100%": { opacity: "0" },
                 },
+                shrink: {
+                    "0%": { width: "100%" },
+                    "100%": { width: "0%" },
+                },
             },
             animation: {
                 modalEnter: "modalEnter 400ms cubic-bezier(0.25, 1, 0.5, 1) forwards",
                 modalExit: "modalExit 400ms cubic-bezier(0.25, 1, 0.5, 1) forwards",
                 bgFadeIn: "bgFadeIn 400ms ease-out forwards",
                 bgFadeOut: "bgFadeOut 400ms ease-out forwards",
+                shrink30: "shrink 30s linear forwards",
             },
         },
     },
