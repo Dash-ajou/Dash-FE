@@ -2,7 +2,6 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import { VitePWA } from "vite-plugin-pwa"
 
-// https://vite.dev/config/
 export default defineConfig({
     plugins: [
         react(),
@@ -12,11 +11,12 @@ export default defineConfig({
                 cleanupOutdatedCaches: true, // 새로운 워커 등록 시 이전 캐시 삭제
                 skipWaiting: true, // 새 워커 바로 적용
                 clientsClaim: true, // 모든 탭에 적용
+                cacheId: "dash-cache-v1.0.1",
             },
             includeAssets: ["logo.svg", "apple-touch-icon.png"],
             manifest: {
                 name: "소상공인 쿠폰 발급 서비스: Dash",
-                short_name: "DASH",
+                short_name: "Dash",
                 start_url: "/",
                 display: "standalone",
                 scope: "/",
