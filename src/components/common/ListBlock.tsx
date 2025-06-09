@@ -3,8 +3,7 @@ import React from "react";
 type ListBlockProps = {
   type: "coupstatuslist" | "datetimelist" | "orgnamelist" | "mainorgnamelist";
   coupnum?: string;
-  coupstatus?: "Issued" | "Registered" | "Used";
-  name?: string;
+  coupstatus?: "Issued" | "Registered" | "Used" | "Canceled";
   datetime?: string;
   orgname?: string;
   coupea?: number;
@@ -17,7 +16,6 @@ const ListBlock: React.FC<ListBlockProps> = ({
   type,
   coupnum,
   coupstatus,
-  name,
   datetime,
   orgname,
   coupea,
@@ -30,9 +28,11 @@ const ListBlock: React.FC<ListBlockProps> = ({
       case "Issued":
         return `미등록`;
       case "Registered":
-        return `${name ? `${name}/` : ""}등록완료`;
+        return `등록완료`;
       case "Used":
-        return `${name ? `${name}/` : ""}사용완료`;
+        return `사용완료`;
+      case "Canceled":
+        return "발행 취소됨";
       default:
         return "";
     }
