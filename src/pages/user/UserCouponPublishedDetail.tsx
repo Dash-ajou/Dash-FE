@@ -15,7 +15,7 @@ import SlideUpModal from "../../components/common/modal/SlideUpModal"
 import BasicModal from "../../components/common/modal/BasicModal"
 import { fetchCouponByIssueID, CouponByIssueID } from "../../services/userCouponByIssueIdService"
 import { fetchPublishedCoupon, PublishedCoupon } from "../../services/userPublishedCouponService"
-import { cancelCouponRequest } from "../../services/VendorCouponCancleRequestService.ts"
+import { fetchcancelCouponRequest } from "../../services/vendorCouponCancelRequestService.ts"
 
 const UserCouponPublishedDetail = () => {
     const { issueId } = useParams<{ issueId: string }>()
@@ -169,7 +169,7 @@ const UserCouponPublishedDetail = () => {
                 onConfirm={async () => {
                     if (basicModalConfig.mode === "YesNo") {
                         try {
-                            const response = await cancelCouponRequest(numericIssueId)
+                            const response = await fetchcancelCouponRequest(numericIssueId)
 
                             if (response.status === "SUCCESS") {
                                 navigate(`/user/coupon/published/${numericIssueId}/cancel`)
