@@ -27,7 +27,7 @@ const UserUsedCoupon = () => {
 
   const handleUserCouponClick = async (coupon: UsedCoupon) => {
     try {
-      const res = await fetchCouponDetailService(String(coupon.coupon_id));
+      const res = await fetchCouponDetailService(coupon.coupon_id);
 
       const formatted: ReceiptCouponData = {
         coupon_id: res.data.coupon_id,

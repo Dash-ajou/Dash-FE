@@ -51,8 +51,6 @@ export type CouponDetailResponse = {
 export const fetchCouponDetailService = async (
   couponId: string | number,
 ): Promise<CouponDetailResponse> => {
-  const res = await apiClient.post<CouponDetailResponse>("/coupon/manage/coupon", {
-    coupon_id: couponId,
-  });
+  const res = await apiClient.get<CouponDetailResponse>(`/coupon/manage/coupon/${couponId}`);
   return res.data;
 };
