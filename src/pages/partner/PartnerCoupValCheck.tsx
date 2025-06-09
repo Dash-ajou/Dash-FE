@@ -46,12 +46,15 @@ const PartnerCoupValCheck = () => {
 
   const openReceiptModal = async () => {
     try {
-      if (!couponNum) throw new Error("쿠폰 번호 없음");
-      const res = await fetchCouponDetailService(couponNum);
-
-      if (!couponData?.redeem?.redeem_id || !couponData.redeem.payment_code) {
-        throw new Error("결제 정보가 누락되어 영수증을 표시할 수 없습니다.");
+      if (
+        !couponData?.coupon_id ||
+        !couponData.redeem?.redeem_id ||
+        !couponData.redeem.payment_code
+      ) {
+        throw new Error("필수 정보가 누락되어 영수증을 표시할 수 없습니다.");
       }
+
+      const res = await fetchCouponDetailService(couponData.coupon_id);
 
       const formatted: ReceiptCouponData = {
         coupon_id: res.data.coupon_id,
@@ -139,8 +142,13 @@ const PartnerCoupValCheck = () => {
                 color="red"
                 detail={{ label: "쿠폰 사용 철회", position: "none" }}
                 onClick={() => {
-                  setConfirmAction("cancel");
-                  setConfirmModalOpen(true);
+                  if (!couponData?.redeem?.payment_code) {
+                    alert("쿠폰 정보가 올바르지 않습니다.");
+                    return;
+                  }
+                  navigate(`/user/coupon/published/${couponData.coupon_id}/cancel`, {
+                    state: { payment_code: couponData.redeem.payment_code },
+                  });
                 }}
               />
             </>
