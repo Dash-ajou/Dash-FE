@@ -18,7 +18,6 @@ const PartnerNotification = () => {
     load();
   }, []);
 
-  // 외부 클릭 또는 터치 시 슬라이드 닫기
   useEffect(() => {
     const handleOutside = (event: MouseEvent | TouchEvent) => {
       if (
