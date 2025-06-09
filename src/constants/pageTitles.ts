@@ -22,6 +22,7 @@ const pageTitles: Record<string, string> = {
   "/partner/mypage": "파트너 마이페이지",
   "/partner/statistics": "통계 상세",
   "/partner/orgdetail": "단체별 상세조회",
+  "/partner/notification": "알림함",
   "/partner/menudetail": "메뉴별 상세조회",
   "/partner/coupon/scan": "QR 인식",
   "/partner/coupon/status": "쿠폰 상태 관리",
