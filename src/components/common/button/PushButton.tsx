@@ -67,8 +67,8 @@ const PushButton: React.FC<PushButtonProps> = ({
       case "COUPON_EXPIRE_WARNING": return "쿠폰 만료가 임박했어요";
       case "COUPON_RECEIVED": return "쿠폰을 선물받았어요";
       case "COUPON_USED": return "쿠폰 사용이 완료되었어요";
-      case "REQUEST_ISSUED": return "쿠폰 발행 요청이 도착했어요";
-      case "REQUEST_RECEIVED": return "발행 요청이 수락되었어요";
+      case "REQUEST_ISSUED": return "쿠폰 발행 요청이 수락되었어요";
+      case "REQUEST_RECEIVED": return "쿠폰 발행 요청이 도착했어요";
       default: return "알림 도착";
     }
   };
