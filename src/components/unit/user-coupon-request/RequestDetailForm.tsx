@@ -15,6 +15,7 @@ type RequestDetailFormProps = {
 type partnerType = {
     partner_id: number
     partner_name: string
+    owner_phone: string
 }
 
 type productType = {
@@ -45,6 +46,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
     const [isButtonActive, setIsButtonActive] = useState(false)
     const [showQuantityErrorModal, setShowQuantityErrorModal] = useState(false)
     const [partnerId, setPartnerId] = useState<number>(-1)
+    const [isPartnerPhoneDisabled, setIsPartnerPhoneDisabled] = useState(false)
 
     const checkAllFieldsFilled = useCallback(() => {
         const isValid =
@@ -90,6 +92,11 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
         if (localRequestDetail[field] !== value) {
             const updatedInfo = { ...localRequestDetail, [field]: value }
             setLocalRequestDetail(updatedInfo)
+
+            if (field === "storeName") {
+                setIsPartnerPhoneDisabled(false)
+                setLocalRequestDetail({ ...updatedInfo, partnerPhone: "" })
+            }
         }
     }
 
@@ -123,6 +130,7 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
             return response.data.map((item: partnerType) => ({
                 id: item.partner_id,
                 name: item.partner_name,
+                phone: item.owner_phone,
             }))
         }
         return []
@@ -135,14 +143,20 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
             return response.data.map((item: productType) => ({
                 id: item.product_id,
                 name: item.product_name,
+                phone: "",
             }))
         }
         return []
     }
 
-    const handleSelectSuggestion = (item: { id: number; name: string }) => {
-        setLocalRequestDetail({ ...localRequestDetail, storeName: item.name })
+    const handleSelectSuggestion = (item: { id: number; name: string; phone: string }) => {
+        setLocalRequestDetail({
+            ...localRequestDetail,
+            storeName: item.name,
+            partnerPhone: item.phone,
+        })
         setPartnerId(item.id)
+        setIsPartnerPhoneDisabled(true)
     }
 
     const handleItemSelectSuggestion = (index: number, item: { id: number; name: string }) => {
@@ -172,7 +186,9 @@ const RequestDetailForm: React.FC<RequestDetailFormProps> = ({
                 dropdown={false}
                 value={localRequestDetail.partnerPhone}
                 onInput={(e) => handleChange("partnerPhone", e.currentTarget.value)}
+                disabled={isPartnerPhoneDisabled}
             />
+
             {localRequestDetail.menu.map((item, index) => (
                 <div key={index} className="flex gap-1 items-end">
                     <div className="flex-[4]">

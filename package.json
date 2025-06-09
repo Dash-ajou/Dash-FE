@@ -24,8 +24,10 @@
     "react-native-wheely": "^0.6.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
+    "react-signature-canvas": "^1.1.0-alpha.2",
     "react-swipeable": "^7.0.2",
-    "react-time-picker-typescript": "^1.2.5"
+    "react-time-picker-typescript": "^1.2.5",
+    "trim-canvas": "^0.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

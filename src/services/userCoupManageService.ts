@@ -14,6 +14,24 @@ export const CouponRegister = async (data: { coupon_number: string }) => {
     }
 }
 
+export const couponRegisterSignUpload = async (data: FormData) => {
+    try {
+        const response = await apiClient.post("/general/coupons/register/sign", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+
+        if (response.data.status === "SUCCESS") {
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
+
 export const CouponPaymentCode = async (coupon_id: number) => {
     try {
         const response = await apiClient.post(`/general/coupons/${coupon_id}/generate-qrcode`)

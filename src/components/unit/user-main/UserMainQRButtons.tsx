@@ -5,6 +5,7 @@ import BasicModal from "../../common/modal/BasicModal"
 import QRModal from "../../module/QRModal"
 import { QRData } from "../../../types/QRData.ts"
 import { CouponPaymentCode } from "../../../services/userCoupManageService.ts"
+import { rateReview } from "../../../services/reviewService.ts"
 
 type Props = {
     qrData: QRData[]
@@ -18,6 +19,7 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const [payCode, setPayCode] = useState<string>("")
     const [qrCodeImg, setQrCodeImg] = useState<string>("")
+    const [rating, setRating] = useState(0)
 
     const handlers = useSwipeable({
         onSwipedLeft: () => currentIndex < qrData.length - 1 && setCurrentIndex((prev) => prev + 1),
@@ -36,16 +38,21 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
         if (!selectedQR) return
 
         try {
-            const res = await CouponPaymentCode(selectedQR.couponId)
-            if (res.success) {
-                setPayCode(res.data.paymentCode)
-                setQrCodeImg(res.data.qrcode_image)
-                setIsQRModalOpen(true)
+            const reviewRes = await rateReview({ rate: rating })
+            if (reviewRes.success) {
+                const res = await CouponPaymentCode(selectedQR.couponId)
+                if (res.success) {
+                    setPayCode(res.data.paymentCode)
+                    setQrCodeImg(res.data.qrcode_image)
+                    setIsQRModalOpen(true)
+                } else {
+                    alert("쿠폰 정보를 불러올 수 없습니다.")
+                }
             } else {
-                alert("쿠폰 정보를 불러올 수 없습니다.")
+                alert("리뷰 전송에 실패했습니다.")
             }
         } catch (error) {
-            alert("쿠폰 정보를 불러오는 중 에러가 발생했습니다." + error)
+            alert("리뷰 전송 중 에러가 발생했습니다." + error)
         }
     }
 
@@ -81,11 +88,14 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
             </div>
 
             <BasicModal
-                mode="YesNo"
+                mode="Review"
                 isOpen={isBasicModalOpen}
                 title="쿠폰을 사용하시나요?"
+                description="이때까지 만나본 Dash, 어때요?"
                 onClose={() => setIsBasicModalOpen(false)}
                 onConfirm={handleConfirm}
+                rating={rating}
+                onRatingChange={(value) => setRating(value)}
             />
 
             {isQRModalOpen && selectedQR && (

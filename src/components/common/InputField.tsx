@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, useCallback, useEffect, useState } from "rea
 import IconRegistry from "./icons/IconRegistry.tsx"
 import Icon from "./icons/Icon.tsx"
 
-type SuggestionItem = { id: number; name: string }
+type SuggestionItem = { id: number; name: string; phone: string }
 
 type InputFieldProps = {
     label?: string
