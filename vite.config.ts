@@ -15,10 +15,11 @@ export default defineConfig({
             },
             includeAssets: ["logo.svg", "apple-touch-icon.png"],
             manifest: {
-                name: "My App",
-                short_name: "App",
+                name: "소상공인 쿠폰 발급 서비스: Dash",
+                short_name: "DASH",
                 start_url: "/",
                 display: "standalone",
+                scope: "/",
                 background_color: "#ffffff",
                 theme_color: "#ffffff",
                 icons: [
