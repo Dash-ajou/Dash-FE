@@ -157,7 +157,7 @@ const Join: React.FC = () => {
                 />
             )}
 
-            {currentStep === JoinStep.COMPLETE && <JoinComplete />}
+            {currentStep === JoinStep.COMPLETE && <JoinComplete bottomPosition={bottomPosition} />}
         </Layout>
     )
 }
