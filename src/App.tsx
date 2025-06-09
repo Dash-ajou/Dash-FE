@@ -214,14 +214,7 @@ const App: React.FC = () => {
                     </ProtectedRoute>
                 }
             />
-            <Route
-                path="/user/coupon/published/:issueId/cancel"
-                element={
-                    <ProtectedRoute>
-                        <UserCouponCancel />
-                    </ProtectedRoute>
-                }
-            />
+
 
             <Route path="/partner/coupon/scan" element={<QRScanPage />} />
             <Route path="/partner/coupon/status/:couponNum" element={<PartnerCoupValCheck />} />
