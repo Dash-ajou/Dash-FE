@@ -35,9 +35,10 @@ import { getUserInfo } from "./services/authService.ts"
 import { setUserInfo } from "./store/userSlice.ts"
 import { setUserType } from "./store/typeSlice.ts"
 import { RootState } from "./store/store.ts"
-import PartnerUsedCoupon from './pages/partner/PartnerUsedCoupon.tsx'
-import UserUsedCoupon from './pages/user/UserUsedCoupon.tsx'
+import PartnerUsedCoupon from "./pages/partner/PartnerUsedCoupon.tsx"
+import UserUsedCoupon from "./pages/user/UserUsedCoupon.tsx"
 import { setIsMobile } from "./store/deviceSlice.ts"
+import CouponSign from "./pages/user/CouponSign.tsx"
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
@@ -147,6 +148,14 @@ const App: React.FC = () => {
                 element={
                     <ProtectedRoute>
                         <QRScanPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/user/coupon/register/:couponNum"
+                element={
+                    <ProtectedRoute>
+                        <CouponSign />
                     </ProtectedRoute>
                 }
             />
