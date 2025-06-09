@@ -1,7 +1,7 @@
 import apiClient from './apiClient.ts'
 
 export type Partner = {
-    id: number;
+    id?: number;
     business_name: string;
     owner_name: string;
     owner_phone: string;
@@ -14,6 +14,12 @@ export type Product = {
     partner_id: number;
     product_name: string;
     price: number;
+};
+
+export type Vendor = {
+    vendor_name: string;
+    president_name: string;
+    president_phone: string;
 };
 
 export type RegisterUser = {
@@ -33,10 +39,12 @@ export type CouponDetailResponse = {
         status: 'REGISTERABLE' | 'USABLE' | 'USED' | 'EXPIRED' | 'DISABLED' | 'CANCELED';
         product: Product;
         partner: Partner;
+        vendor: Vendor;
         register_code: string;
         register: RegisterUser;
         registered_at: string;
         expired_at: string;
+        paid_qrimage?: string | null;
     };
 };
 

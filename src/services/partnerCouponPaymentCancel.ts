@@ -14,10 +14,10 @@ type CancelCouponResponse = {
 };
 
 export const fetchPartnerCouponPaymentCancel = async (
-    paymentId: number
+    couponId: number
 ): Promise<CancelCouponResponse> => {
     const response = await apiClient.post<CancelCouponResponse>("/coupon/payment/cancel", {
-        payment_id: paymentId,
+        couponId,
     });
 
     if (response.data.status !== "SUCCESS") {
