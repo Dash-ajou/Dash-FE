@@ -4,12 +4,12 @@ import CommonButton from "../../components/common/button/CommonButton.tsx";
 import BasicModal from "../../components/common/modal/BasicModal.tsx";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { fetchCouponCancel } from "../../services/partnerCoupStatusChangeService.ts";
+import { fetchCancelCoupon } from "../../services/vendorCouponCancelRequestService";
 
 const CouponCancel = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const payment_code = location.state?.payment_code;
+  const issue_id = location.state?.issue_id;
   const [verifyCode, setVerifyCode] = useState("");
   const [showNotice, setShowNotice] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,10 +17,13 @@ const CouponCancel = () => {
 
   const handleCancel = async () => {
     try {
-      if (!payment_code) {
+      if (!issue_id) {
         throw new Error("쿠폰 정보가 올바르지 않습니다.");
       }
-      await fetchCouponCancel(payment_code);
+      if (verifyCode.length !== 6) {
+        throw new Error("인증번호는 6자리여야 합니다.");
+      }
+      await fetchCancelCoupon(issue_id, verifyCode);
       setModalTitle("쿠폰 사용이 철회되었습니다");
     } catch (err) {
       console.error(err);
@@ -43,7 +46,7 @@ const CouponCancel = () => {
     handleCancel();
   };
 
-  if (!payment_code) {
+  if (!issue_id) {
     return (
       <Layout>
         <div className="w-full mx-auto mt-16 flex flex-col gap-6 px-6 pb-40">
