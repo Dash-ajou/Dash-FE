@@ -17,14 +17,16 @@ export type Product = {
 };
 
 export type Vendor = {
+  vendor_id: number;
   vendor_name: string;
   president_name: string;
   president_phone: string;
+  owner_email: string;
+  registered_at: string;
 };
 
 export type RegisterUser = {
   name: string;
-  email: string | null;
   phone: string;
 };
 
@@ -52,5 +54,12 @@ export const fetchCouponDetailService = async (
   couponId: string | number,
 ): Promise<CouponDetailResponse> => {
   const res = await apiClient.get<CouponDetailResponse>(`/coupon/manage/coupon/${couponId}`);
+  return res.data;
+};
+
+export const fetchPaymentLogDetail = async (
+  paymentId: string | number,
+): Promise<CouponDetailResponse> => {
+  const res = await apiClient.get<CouponDetailResponse>(`/coupon/payment/log/${paymentId}`);
   return res.data;
 };
