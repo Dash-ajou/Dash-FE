@@ -58,6 +58,7 @@ const PartnerCoupValCheck = () => {
 
       const formatted: ReceiptCouponData = {
         coupon_id: res.data.coupon_id,
+        issue_id: res.data.issue_id,
         partner: {
           business_name: res.data.partner.business_name,
           owner_name: res.data.partner.owner_name,
@@ -146,7 +147,7 @@ const PartnerCoupValCheck = () => {
                     alert("쿠폰 정보가 올바르지 않습니다.");
                     return;
                   }
-                  navigate(`/user/coupon/published/${couponData.coupon_id}/cancel`, {
+                  navigate(`/user/coupon/published/${couponData.issue_id}/cancel`, {
                     state: { payment_code: couponData.redeem.payment_code },
                   });
                 }}
