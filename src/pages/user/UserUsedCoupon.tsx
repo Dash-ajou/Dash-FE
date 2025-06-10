@@ -31,6 +31,7 @@ const UserUsedCoupon = () => {
 
       const formatted: ReceiptCouponData = {
         coupon_id: res.data.coupon_id,
+        issue_id: res.data.issue_id,
         partner: {
           business_name: res.data.partner.business_name,
           owner_name: res.data.partner.owner_name,
