@@ -9,7 +9,10 @@ import {
 import BasicModal from "../../components/common/modal/BasicModal";
 import CommonButton from "../../components/common/button/CommonButton";
 import { fetchCouponUse, fetchCouponCancel } from "../../services/partnerCoupStatusChangeService";
-import { fetchCouponDetailService } from "../../services/couponDetailService";
+import {
+  fetchCouponDetailService,
+  fetchPaymentLogDetail,
+} from "../../services/couponDetailService";
 import ReceiptModal from "../../components/common/modal/ReceiptModal";
 import { ReceiptCouponData } from "../../types/ReceiptCouponData";
 
@@ -46,6 +49,7 @@ const PartnerCoupValCheck = () => {
 
   const openReceiptModal = async () => {
     try {
+      console.log("Attempting to open receipt modal. Current couponData:", couponData);
       if (
         !couponData?.coupon_id ||
         !couponData.redeem?.redeem_id ||
@@ -54,7 +58,7 @@ const PartnerCoupValCheck = () => {
         throw new Error("필수 정보가 누락되어 영수증을 표시할 수 없습니다.");
       }
 
-      const res = await fetchCouponDetailService(couponData.coupon_id);
+      const res = await fetchPaymentLogDetail(couponData.redeem.redeem_id);
 
       const formatted: ReceiptCouponData = {
         coupon_id: res.data.coupon_id,
