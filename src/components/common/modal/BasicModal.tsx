@@ -29,6 +29,12 @@ const BasicModal: React.FC<BasicModalProps> = ({
     const [bgAnimation, setBgAnimation] = useState("animate-bgFadeIn")
 
     useEffect(() => {
+        if ((rating === undefined || rating === 0) && onRatingChange) {
+            onRatingChange(5)
+        }
+    }, [isOpen])
+
+    useEffect(() => {
         if (isOpen) {
             setVisible(true)
             setAnimation("animate-modalEnter")
