@@ -30,7 +30,7 @@ const CouponSign: React.FC = () => {
 
     const handleCouponSignRegister = async (couponNum: string) => {
         try {
-            if (!sigCanvasRef.current) {
+            if (!sigCanvasRef.current || sigCanvasRef.current.isEmpty()) {
                 throw new Error("서명 데이터가 없습니다.")
             }
 
