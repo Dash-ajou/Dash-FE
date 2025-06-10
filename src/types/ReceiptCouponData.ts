@@ -1,5 +1,6 @@
 export type ReceiptCouponData = {
   coupon_id: number;
+  issue_id: number;
   partner: {
     business_name: string;
     owner_name?: string;
