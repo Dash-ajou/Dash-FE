@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CommonButton from "../button/CommonButton";
 import BasicModal from "../modal/BasicModal";
-import { fetchPartnerCouponPaymentCancel } from "../../../services/partnerCouponPaymentCancel";
+import { fetchCouponCancel } from "../../../services/partnerCoupStatusChangeService";
 import { ReceiptCouponData } from "../../../types/ReceiptCouponData";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -32,12 +32,8 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
           state: { payment_code: coupon.payment_code },
         });
       } else {
-        const res = await fetchPartnerCouponPaymentCancel(coupon.coupon_id);
-        if (res.data.result) {
-          setResultModalTitle("쿠폰 사용이 철회되었습니다.");
-        } else {
-          setResultModalTitle("쿠폰 철회에 실패했습니다.");
-        }
+        const res = await fetchCouponCancel(coupon.payment_code);
+        setResultModalTitle("쿠폰 사용이 철회되었습니다.");
         setResultModalOpen(true);
       }
     } catch (error) {
