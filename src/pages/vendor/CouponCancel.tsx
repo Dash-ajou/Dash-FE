@@ -89,13 +89,13 @@ const CouponCancel = () => {
         onClose={() => {
           setIsModalOpen(false);
           if (modalTitle.includes("완료")) {
-            navigate(-1);
+            navigate(`/user/coupon/published/${issue_id}`);
           }
         }}
         onConfirm={() => {
           setIsModalOpen(false);
           if (modalTitle.includes("완료")) {
-            navigate(-1);
+            navigate(`/user/coupon/published/${issue_id}`);
           }
         }}
       />
