@@ -9,10 +9,7 @@ import {
 import BasicModal from "../../components/common/modal/BasicModal";
 import CommonButton from "../../components/common/button/CommonButton";
 import { fetchCouponUse, fetchCouponCancel } from "../../services/partnerCoupStatusChangeService";
-import {
-  fetchCouponDetailService,
-  fetchPaymentLogDetail,
-} from "../../services/couponDetailService";
+import { fetchPaymentLogDetail } from "../../services/couponDetailService";
 import ReceiptModal from "../../components/common/modal/ReceiptModal";
 import { ReceiptCouponData } from "../../types/ReceiptCouponData";
 
