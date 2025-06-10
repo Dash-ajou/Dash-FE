@@ -32,7 +32,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ visible, onClose, coupon })
           state: { payment_code: coupon.payment_code },
         });
       } else {
-        const res = await fetchCouponCancel(coupon.payment_code);
+        await fetchCouponCancel(coupon.payment_code);
         setResultModalTitle("쿠폰 사용이 철회되었습니다.");
         setResultModalOpen(true);
       }
