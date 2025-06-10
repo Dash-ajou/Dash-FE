@@ -228,7 +228,9 @@ const UserCouponPublishedDetail = () => {
             try {
               const response = await fetchcancelCouponRequest(numericIssueId);
               if (response.status === "SUCCESS") {
-                navigate(`/user/coupon/published/${numericIssueId}/cancel`);
+                navigate(`/user/coupon/published/${numericIssueId}/cancel`, {
+                  state: { issue_id: numericIssueId },
+                });
               } else {
                 throw new Error("쿠폰 철회 요청 실패");
               }
