@@ -16,7 +16,7 @@ export const fetchCancelCoupon = async (issueId: number, verifyCode: string) => 
 
   const response = await apiClient.post(`/coupon/manage/${issueId}/cancel`, body, {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
   });
   return response.data;
