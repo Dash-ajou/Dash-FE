@@ -19,7 +19,7 @@ const UserMainQRButton: React.FC<Props> = ({ qrData }) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const [payCode, setPayCode] = useState<string>("")
     const [qrCodeImg, setQrCodeImg] = useState<string>("")
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
 
     const handlers = useSwipeable({
         onSwipedLeft: () => currentIndex < qrData.length - 1 && setCurrentIndex((prev) => prev + 1),
